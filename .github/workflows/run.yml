@@ -18,7 +18,7 @@ jobs:
 
       - name: Build the Docker image
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.IMAGE_NAME }}:latest .
-        
+
       - name: Run Docker container
-        run: docker run my_image
+        run: docker run swahili-whisper-training
 
