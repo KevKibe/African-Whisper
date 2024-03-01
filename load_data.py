@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv  
 from datasets import load_dataset, DatasetDict
 
+load_dotenv()
 
 class LoadData():
     def __init__(self):
