@@ -1,0 +1,10 @@
+transformers
+datasets
+librosa
+evaluate
+jiwer
+
+bitsandbytes==0.37
+accelerate
+git+https://github.com/huggingface/peft.git@main
+python-dotenv
