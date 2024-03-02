@@ -19,6 +19,7 @@ def model_prep():
  
     # model = get_peft_model(model, config)
     # model.print_trainable_parameters()
+    return model
 
 
 
