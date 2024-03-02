@@ -1,10 +1,5 @@
 from transformers import WhisperForConditionalGeneration
-from peft import prepare_model_for_int8_training
-from peft import LoraConfig, PeftModel, LoraModel, LoraConfig, get_peft_model
 
-
-def make_inputs_require_grad(module, input, output):
-    output.requires_grad_(True)
 def model_prep():
 
     # model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-small", load_in_8bit=True, device_map="auto")

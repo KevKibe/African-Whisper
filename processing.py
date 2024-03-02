@@ -8,11 +8,23 @@ from load_data import LoadData
 class Preprocess():
     def __init__(self, dataset):
         self.whisp_model = "openai/whisper-small"
-        self.feature_extractor = WhisperFeatureExtractor.from_pretrained(self.whisp_model)
-        self.tokenizer = WhisperTokenizer.from_pretrained(self.whisp_model)
-        self.processor = WhisperProcessor.from_pretrained(self.whisp_model, "sw", "transcribe")
+        self.language_abbr = "sw"
+        self.task = "transcribe"
         self.dataset = dataset
     
+    def feature_extractor(self):
+        feature_extractor = WhisperFeatureExtractor.from_pretrained(self.whisp_model)
+        return feature_extractor
+    
+    def tokenizer(self):
+        tokenizer = WhisperTokenizer.from_pretrained(self.whisp_model)
+        return tokenizer
+
+    def processor(self):
+        processor = WhisperProcessor.from_pretrained(self.whisp_model, self.language_abbr, self.task )
+        return processor
+        
+
     def remove_columns(self):
         dataset = self.dataset.remove_columns(["accent", "age", "client_id", "down_votes", "gender", "locale", "path", "segment", "up_votes", "variant"])
         return dataset
@@ -31,8 +43,8 @@ class Preprocess():
 
 
 
-data = LoadData()
-dataset = data.download_dataset()
-preprocessor = Preprocess(dataset)
-prepared_test_dataset = dataset["test"].map(preprocessor.prepare_dataset)
-print(prepared_test_dataset)
+# data = LoadData()
+# dataset = data.download_dataset()
+# preprocessor = Preprocess(dataset)
+# prepared_test_dataset = dataset["test"].map(preprocessor.prepare_dataset)
+# print(prepared_test_dataset)
