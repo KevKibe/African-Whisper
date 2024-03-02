@@ -4,8 +4,8 @@ librosa
 evaluate
 jiwer
 
-bitsandbytes==0.37.0
-accelerate==0.27.2
-numpy==1.25.2
+# bitsandbytes==0.37.0
+# accelerate==0.27.2
+# numpy==1.25.2
 git+https://github.com/huggingface/peft.git@main
 python-dotenv
