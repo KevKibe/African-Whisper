@@ -11,8 +11,8 @@ class LoadData():
 
     def download_dataset(self):
         common_voice = DatasetDict()
-        common_voice["train"] = load_dataset(self.dataset_name, self.language_abbr, split="train", token=self.huggingface_token)
-        common_voice["test"] = load_dataset(self.dataset_name, self.language_abbr, split="test", token=self.huggingface_token)
+        common_voice["train"] = load_dataset(self.dataset_name, self.language_abbr, split="train", token=self.huggingface_token, streaming = True)
+        common_voice["test"] = load_dataset(self.dataset_name, self.language_abbr, split="test", token=self.huggingface_token, streaming = True)
         return common_voice
 
 
