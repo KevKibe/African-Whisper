@@ -8,7 +8,7 @@ preprocessor = Preprocess(dataset)
 prepared_test_dataset = dataset["test"].map(preprocessor.prepare_dataset)
 tokenizer = preprocessor.tokenizer()
 
-input_str = dataset["test"][0]["sentence"]
+input_str = prepared_test_dataset["test"][0]["sentence"]
 labels = tokenizer(input_str).input_ids
 decoded_with_special = tokenizer.decode(labels, skip_special_tokens=False)
 decoded_str = tokenizer.decode(labels, skip_special_tokens=True)
