@@ -1,10 +1,12 @@
 # from collator import DataCollatorSpeechSeq2SeqWithPadding
 from load_data import LoadData
 from processing import Preprocess
+from pprint import pprint
 
 data = LoadData()
 dataset = data.download_dataset()
-print(dataset)
+pprint(dataset)
+pprint(type(dataset))
 preprocessor = Preprocess(dataset)
 dataset = preprocessor.remove_columns()
 # prepared_test_dataset = dataset["test"].map(preprocessor.prepare_dataset)
