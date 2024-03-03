@@ -11,7 +11,7 @@ preprocessor = Preprocess(dataset)
 dataset = preprocessor.remove_columns()
 # prepared_test_dataset = dataset["test"].map(preprocessor.prepare_dataset)
 tokenizer = preprocessor.tokenizer()
-
+pprint(type(dataset["train"]))
 input_str = dataset["train"][0]["sentence"]
 labels = tokenizer(input_str).input_ids
 decoded_with_special = tokenizer.decode(labels, skip_special_tokens=False)
