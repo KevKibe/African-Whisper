@@ -26,7 +26,7 @@ class Preprocess():
         
 
     def remove_columns(self):
-        dataset = self.dataset.remove_columns(["accent", "age", "client_id", "down_votes", "gender", "locale", "path", "segment", "up_votes", "variant"])
+        dataset = self.dataset.remove_columns(["accent", "age", "client_id", "down_votes", "gender", "locale", "path", "segment", "up_votes"])
         return dataset
     
     def resample_audio(self):
