@@ -11,4 +11,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 80
 
 
-CMD ["python", "src/trainer.py"]
+CMD ["python", "src/mains.py"]
