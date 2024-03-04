@@ -1,7 +1,15 @@
-# African Whisper: ASR for African Languages
+<h1 align="center">African Whisper: ASR for African Languages</h1>
 
-[![Last commit](https://img.shields.io/github/last-commit/KevKibe/Swahili-Whisper-Training?style=flat-square)](https://github.com/KevKibe/Swahili-Whisper-Training/commits/)
-[![License](https://img.shields.io/github/license/KevKibe/Swahili-Whisper-Training?style=flat-square&color=blue)](https://github.com/KevKibe/Swahili-Whisper-Training/blob/main/LICENSE)
+<p align="center">
+  <a href="https://github.com/KevKibe/African-Whisper/commits/">
+    <img src="https://img.shields.io/github/last-commit/KevKibe/African-Whisper?style=flat-square" alt="Last commit">
+  </a>
+  <a href="https://github.com/KevKibe/African-Whisper/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/KevKibe/African-Whisper?style=flat-square&color=blue" alt="License">
+  </a>
+</p>
+
+
 
 
 ## Description
