@@ -1,6 +1,6 @@
 # from collator import DataCollatorSpeechSeq2SeqWithPadding
 from load_data import LoadData
-from processing import Preprocess
+from data_processing import Preprocess
 from pprint import pprint
 
 data = LoadData()
