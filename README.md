@@ -17,6 +17,8 @@ On the other hand, Whisper, being an end-to-end ASR model, takes into account th
 
 For more details, you can refer to the [Whisper ASR model paper](https://cdn.openai.com/papers/whisper.pdf).
 
+## Proof of Concept
+A successful proof of concept has been achieved by fine-tuning the Whisper-small model using a Google Colab Notebook and tested on an audiofile to test the performance. The results were promising, indicating the potential of this approach for ASR in African languages. You can explore the process and results in detail in the [repository](https://github.com/KevKibe/Finetuning-WhisperSmall-LoRA-Swahili)
 
 ## Objectives
 Enhance the accuracy of ASR for native African languages.
@@ -28,7 +30,7 @@ Support linguistic diversity and cultural heritage preservation.
 
 - Clone the Repository: Clone or download the application code to your local machine.
 ```
-git clone https://github.com/KevKibe/KevKibe/Swahili-Whisper-Training.git
+git clone https://github.com/KevKibe/Swahili-Whisper-Training.git
 ```
 
 - Create a virtual environment for the project and activate it.
