@@ -7,7 +7,7 @@ class LoadData():
     def __init__(self):
         self.huggingface_token = "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"
         self.language_abbr = "sw"
-        self.dataset_name = "mozilla-foundation/common_voice_13_0"
+        self.dataset_name = "mozilla-foundation/common_voice_16_1"
 
     def download_dataset(self):
         common_voice = DatasetDict()
