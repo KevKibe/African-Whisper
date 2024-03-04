@@ -1,48 +1,63 @@
-import os
-from dotenv import load_dotenv  
-from datasets import load_dataset, DatasetDict
+from datasets import load_dataset, DatasetDict, Audio
 
-class LoadData:
+
+
+
+class Dataset:
     """
-    A class to load training and testing datasets from Hugging Face's Commonvoice dataset repository.
+    Manages loading, cleaning, and resampling of datasets from Hugging Face's Common Voice repository.
     
     Attributes:
-        huggingface_token (str): The Hugging Face API token for authenticated access.
-        language_abbr (str): The abbreviation of the language for the dataset to be downloaded.
-        dataset_name (str): The name of the dataset to be downloaded from Hugging Face.
+        huggingface_token (str): Hugging Face API token for authenticated access.
+        dataset_name (str): Name of the dataset to be downloaded from Hugging Face.
+        language_abbr (str): Abbreviation of the language for the dataset.
     """
     
-    def __init__(self,huggingface_token, dataset_name, language_abbr):
+    def __init__(self, huggingface_token: str, dataset_name: str, language_abbr: str):
         """
-        Initializes the LoadData object with necessary details for dataset downloading.
+        Initializes the DatasetManager with necessary details for dataset operations.
         
         Parameters:
-            huggingface_token (str): The Hugging Face API token.
-            language_abbr (str): The language abbreviation for the dataset.
+            huggingface_token (str): Hugging Face API token.
+            dataset_name (str): Name of the dataset.
+            language_abbr (str): Language abbreviation for the dataset.
         """
         self.huggingface_token = huggingface_token
-        self.language_abbr = language_abbr
         self.dataset_name = dataset_name
+        self.language_abbr = language_abbr
     
-    def download_dataset(self):
+    def load_dataset(self) -> DatasetDict:
         """
-        Downloads the specified dataset from Hugging Face and returns it as a DatasetDict object.
-        
-        The method specifically downloads the 'train' and 'test' splits of the dataset, enabling streaming to handle large datasets efficiently.
+        Downloads the specified dataset from Hugging Face, including 'train' and 'test' splits.
         
         Returns:
-            DatasetDict: A dictionary-like object containing 'train' and 'test' datasets.
+            DatasetDict: Object containing 'train' and 'test' datasets.
         """
         common_voice = DatasetDict()
-        common_voice["train"] = load_dataset(self.dataset_name, self.language_abbr, split="train", token=self.huggingface_token, streaming=True)
-        common_voice["test"] = load_dataset(self.dataset_name, self.language_abbr, split="test", token=self.huggingface_token, streaming=True)
+        common_voice["train"] = load_dataset(self.dataset_name, self.language_abbr, split="train", 
+                                             token=self.huggingface_token, streaming=True)
+        common_voice["test"] = load_dataset(self.dataset_name, self.language_abbr, split="test", 
+                                            token=self.huggingface_token, streaming=True)
         return common_voice
-
-
-
-# "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"
-# "sw"
-# "mozilla-foundation/common_voice_16_1"
-
-
-
+    
+    def clean_dataset(self) -> DatasetDict:
+        """
+        Removes unnecessary columns from the dataset to streamline processing.
+        
+        Returns:
+            DatasetDict: The cleaned dataset.
+        """
+        columns_to_remove = ["accent", "age", "client_id", "down_votes", "gender", "locale", "path", "segment", "up_votes"]
+        for split in self.dataset.keys():
+            self.dataset[split] = self.dataset[split].remove_columns(columns_to_remove)
+        return self.dataset
+    
+    def resample_audio_data(self) -> DatasetDict:
+        """
+        Resamples the audio data in the dataset to the required sampling rate for the Whisper model.
+        
+        Returns:
+            DatasetDict: The dataset with audio data resampled to 16000 Hz.
+        """
+        self.dataset = self.dataset.cast_column("audio", Audio(sampling_rate=16000))
+        return self.dataset

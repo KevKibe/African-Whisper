@@ -1,16 +1,21 @@
 # from collator import DataCollatorSpeechSeq2SeqWithPadding
-from load_data import LoadData
-from data_processing import Preprocess
+from load_data import Dataset
+from model_prep import ModelPrep
 from pprint import pprint
 
-data = LoadData()
-dataset = data.download_dataset()
-pprint(dataset)
-pprint(type(dataset))
-preprocessor = Preprocess(dataset)
-dataset = preprocessor.remove_columns()
-# prepared_test_dataset = dataset["test"].map(preprocessor.prepare_dataset)
-tokenizer = preprocessor.tokenizer()
+language_abbr = "sw"
+dataset_name = "mozilla-foundation/common_voice_16_1"
+huggingface_token = "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"
+data = Dataset(huggingface_token, dataset_name,language_abbr)
+dataset = data.load_dataset()
+dataset = data.clean_dataset()
+
+model_id = "openai/whisper-small"
+processing_task = "transcribe"
+model = ModelPrep(dataset, model_id, language_abbr, processing_task)
+tokenizer = model.initialize_tokenizer()
+
+
 pprint(type(dataset["train"]))
 for i, example in enumerate(dataset["train"]):
     if i == 0:  # If you just want to process the first item for demonstration
