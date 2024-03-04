@@ -23,5 +23,12 @@ jobs:
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.IMAGE_NAME }}:latest
 
       - name: Run Docker container
-        run: docker run ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.IMAGE_NAME }}:latest
+        run: |
+          docker run \
+            -e HUGGINGFACE_TOKEN=${{ secrets.HUGGINGFACE_TOKEN }} \
+            -e DATASET_NAME='mozilla-foundation/common_voice_16_1' \
+            -e LANGUAGE_ABBR='sw' \
+            -e MODEL_ID='openai/whisper-small' \
+            -e PROCESSING_TASK='transcribe' \
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.IMAGE_NAME }}:latest
 
