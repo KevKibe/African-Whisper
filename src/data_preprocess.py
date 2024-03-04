@@ -17,22 +17,18 @@ class DatasetProcessor:
         """
         columns_to_remove = ["accent", "age", "client_id", "down_votes", "gender", "locale", "path", "segment", "up_votes"]
 
-        for split in self.dataset.keys():
-            self.dataset[split] = self.dataset[split].remove_columns(columns_to_remove)
-
+        # for split in self.dataset.keys():
+        #     self.dataset[split] = self.dataset[split].remove_columns(columns_to_remove)
+        self.dataset =self.dataset.remove_columns(columns_to_remove)
         return self.dataset
     
     def prepare_dataset(self, example):
 
         audio = example["audio"]
-        
-        # Compute log-Mel input features from input audio array
         example["input_features"] = self.feature_extractor(audio["array"], sampling_rate=audio["sampling_rate"]).input_features[0]
         
-        # Encode target text to label ids
         example["labels"] = self.tokenizer(example["sentence"]).input_ids
         
-        # Return the processed example, possibly excluding original audio and sentence to save memory
         return {"input_features": example["input_features"], "labels": example["labels"]}
     
 

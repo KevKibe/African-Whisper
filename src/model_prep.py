@@ -1,5 +1,6 @@
 from transformers import WhisperFeatureExtractor, WhisperTokenizer, WhisperProcessor
 from datasets import DatasetDict
+from transformers import WhisperForConditionalGeneration
 
 
 class ModelPrep:
@@ -56,5 +57,21 @@ class ModelPrep:
             WhisperProcessor: Unified processor for the model.
         """
         return WhisperProcessor.from_pretrained(self.model_id, self.language_abbr, self.processing_task)
-    
+     
+    def initialize_model(self) -> WhisperForConditionalGeneration:
+        """
+        Initializes and retrieves the Whisper model configured for conditional generation.
+
+        This method sets up the Whisper model with specific configurations, ensuring it is
+        ready for use in tasks such as transcription or translation, depending on the
+        processing task specified during the class initialization.
+
+        Returns:
+            WhisperForConditionalGeneration: The configured Whisper model ready for conditional generation tasks.
+        """
+        model = WhisperForConditionalGeneration.from_pretrained(self.model_id)
+        model.config.forced_decoder_ids = None
+        model.config.suppress_tokens = []  
+        return model
+
     
