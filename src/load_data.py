@@ -35,9 +35,9 @@ class Dataset:
         """
         common_voice = DatasetDict()
         common_voice["train"] = load_dataset(self.dataset_name, self.language_abbr, split="train", 
-                                             token=self.huggingface_token, streaming=True, trust_remote_code=True)
+                                             token=self.huggingface_token, streaming = False, trust_remote_code=True)
         common_voice["test"] = load_dataset(self.dataset_name, self.language_abbr, split="test", 
-                                            token=self.huggingface_token, streaming=True, trust_remote_code=True)
+                                            token=self.huggingface_token, streaming = False, trust_remote_code=True)
         return common_voice
     
 
