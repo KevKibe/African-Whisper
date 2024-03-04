@@ -5,7 +5,7 @@ evaluate==0.4.1
 jiwer==3.0.3
 
 bitsandbytes==0.40.2
-accelerat==0.21.0
+accelerate==0.21.0
 # numpy==1.25.2
 peft==0.4.0
 python-dotenv==1.0.1
