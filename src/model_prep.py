@@ -56,3 +56,5 @@ class ModelPrep:
             WhisperProcessor: Unified processor for the model.
         """
         return WhisperProcessor.from_pretrained(self.model_id, self.language_abbr, self.processing_task)
+    
+    

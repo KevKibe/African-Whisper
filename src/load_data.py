@@ -1,4 +1,4 @@
-from datasets import load_dataset, DatasetDict, Audio
+from datasets import load_dataset, DatasetDict
 
 
 
@@ -35,32 +35,9 @@ class Dataset:
         """
         common_voice = DatasetDict()
         common_voice["train"] = load_dataset(self.dataset_name, self.language_abbr, split="train", 
-                                             token=self.huggingface_token, streaming=False, trust_remote_code=True)
+                                             token=self.huggingface_token, streaming=True, trust_remote_code=True)
         common_voice["test"] = load_dataset(self.dataset_name, self.language_abbr, split="test", 
-                                            token=self.huggingface_token, streaming=False, trust_remote_code=True)
+                                            token=self.huggingface_token, streaming=True, trust_remote_code=True)
         return common_voice
     
-    def clean_dataset(self, dataset) -> DatasetDict:
-        """
-        Removes unnecessary columns from the dataset to streamline processing .
-        
-        Returns:
-            DatasetDict: The cleaned dataset.
-        """
-        columns_to_remove = ["accent", "age", "client_id", "down_votes", "gender", "locale", "path", "segment", "up_votes"]
-
-        for split in dataset.keys():
-            dataset[split] = dataset[split].remove_columns(columns_to_remove)
-
-        return dataset
-     
-    def resample_audio_data(self, dataset) -> DatasetDict:
-        """
-        Resamples the audio data in the dataset to the required sampling rate for the Whisper model.
-        
-        Returns:
-            DatasetDict: The dataset with audio data resampled to 16000 Hz.
-        """
-        dataset = dataset.cast_column("audio", Audio(sampling_rate=16000))
-        return dataset
 
