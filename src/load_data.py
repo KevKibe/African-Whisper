@@ -5,7 +5,7 @@ from datasets import load_dataset, DatasetDict
 
 class Dataset:
     """
-    Manages loading, cleaning, and resampling of datasets from Hugging Face's Common Voice repository.
+    Manages loading of the datasets from Hugging Face's Common Voice repository.
     
     Attributes:
         huggingface_token (str): Hugging Face API token for authenticated access.

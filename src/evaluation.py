@@ -39,15 +39,9 @@ class MetricComputer:
         """
         pred_ids = pred.predictions
         label_ids = pred.label_ids
-
-        # Replace -100 with the pad_token_id in labels
         label_ids[label_ids == -100] = self.tokenizer.pad_token_id
-
-        # Decode predictions and labels, skipping special tokens
         pred_str = self.tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
         label_str = self.tokenizer.batch_decode(label_ids, skip_special_tokens=True)
-
-        # Compute the metric
         wer = 100 * self.metric.compute(predictions=pred_str, references=label_str)
 
         return {"wer": wer}

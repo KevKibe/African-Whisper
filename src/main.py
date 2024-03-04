@@ -1,29 +1,27 @@
-from load_data import Dataset
-from model_prep import ModelPrep
-from pprint import pprint
-from data_preprocess import DatasetProcessor
-from collator import DataCollatorSpeechSeq2SeqWithPadding
+import argparse
+from trainer import Trainer
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Run the training orchestrator with specified parameters.")
+    parser.add_argument("--huggingface_token", type=str, required=True, help="Hugging Face API token for authenticated access.")
+    parser.add_argument("--dataset_name", type=str, default="mozilla-foundation/common_voice_16_1", help="Name of the dataset to be downloaded from Hugging Face.")
+    parser.add_argument("--language_abbr", type=str, default="sw", help="Abbreviation of the language for the dataset.")
+    parser.add_argument("--model_id", type=str, default="openai/whisper-small", help="Model ID for the model to be used in training.")
+    parser.add_argument("--processing_task", type=str, default="transcribe", help="The processing task to be performed.")
+    
+    return parser.parse_args()
 
-language_abbr = "sw"
-dataset_name = "mozilla-foundation/common_voice_16_0"
-huggingface_token = "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"
-data_loader = Dataset(huggingface_token, dataset_name, language_abbr)
-dataset = data_loader.load_dataset()
-
-# Prepare the model and processing utilities
-model_id = "openai/whisper-small"
-processing_task = "transcribe"
-model_prep = ModelPrep(dataset, model_id, language_abbr, processing_task)
-tokenizer = model_prep.initialize_tokenizer()
-feature_extractor = model_prep.initialize_feature_extractor()
-feature_processor = model_prep.initialize_processor()
-
-
-
-# Clean and process the dataset
-data_processor = DatasetProcessor(dataset, feature_extractor, tokenizer)
-processed_dataset = data_processor.clean_dataset()
-# pprint("processed_data:set", processed_dataset)
-pprint(type(processed_dataset["train"]))
-
+if __name__ == "__main__":
+    args = parse_args()
+    
+    orchestrator = Trainer(
+        huggingface_token=args.huggingface_token,
+        dataset_name=args.dataset_name,
+        language_abbr=args.language_abbr,
+        model_id=args.model_id,
+        processing_task=args.processing_task
+    )
+    
+    orchestrator.load_dataset()
+    orchestrator.prepare_model()
+    orchestrator.train()
