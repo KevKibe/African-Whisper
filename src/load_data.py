@@ -1,3 +1,4 @@
+import os
 from datasets import load_dataset, DatasetDict
 
 class Dataset:
@@ -25,16 +26,23 @@ class Dataset:
     
     def load_dataset(self) -> DatasetDict:
         """
-        Downloads the specified dataset from Hugging Face, including 'train' and 'test' splits.
-        
-        Returns:
-            DatasetDict: Object containing 'train' and 'test' datasets.
+        Checks if the dataset is available in the cache directory. If so, loads it from there.
+        Otherwise, downloads the specified dataset from Hugging Face, including 'train' and 'test' splits.
         """
+        cache_directory = f'./{self.language_abbr}'
+        if os.path.exists(cache_directory):
+            print(f"Loading dataset for {self.language_abbr} from cache.")
+        else:
+            print(f"Cache directory not found for {self.language_abbr}. Downloading dataset...")
+
         common_voice = DatasetDict()
         common_voice["train"] = load_dataset(self.dataset_name, self.language_abbr, split="train", 
-                                             token=self.huggingface_token, streaming = False, trust_remote_code=True)
+                                             token=self.huggingface_token, streaming=False, 
+                                             trust_remote_code=True, cache_dir=cache_directory)
         common_voice["test"] = load_dataset(self.dataset_name, self.language_abbr, split="test", 
-                                            token=self.huggingface_token, streaming = False, trust_remote_code=True)
+                                            token=self.huggingface_token, streaming=False, 
+                                            trust_remote_code=True, cache_dir=cache_directory)
+
         return common_voice
     
 
