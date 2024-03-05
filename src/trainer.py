@@ -22,7 +22,7 @@ class Trainer:
         metric (Metric): The evaluation metric to be used.
     """
 
-    def __init__(self, huggingface_token: str, dataset_name: str, language_abbr: str, model_id: str, processing_task: str):
+    def __init__(self, huggingface_read_token: str, huggingface_push_token:str, dataset_name: str, language_abbr: str, model_id: str, processing_task: str):
         """
         Initializes the Trainer with the necessary configuration and loads the evaluation metric.
 
@@ -33,7 +33,8 @@ class Trainer:
             model_id (str): Model ID for the model to be used in training.
             processing_task (str): The processing task to be performed (e.g., "transcribe").
         """
-        self.huggingface_token = huggingface_token
+        self.huggingface_read_token = huggingface_read_token
+        self.huggingface_push_token = huggingface_push_token
         self.dataset_name = dataset_name
         self.language_abbr = language_abbr
         self.model_id = model_id
@@ -46,7 +47,7 @@ class Trainer:
 
     def load_dataset(self):
         """Loads the dataset using the provided dataset name and language abbreviation."""
-        data_loader = Dataset(self.huggingface_token, self.dataset_name, self.language_abbr)
+        data_loader = Dataset(self.huggingface_read_token, self.dataset_name, self.language_abbr)
         self.dataset = data_loader.load_dataset()
 
     def prepare_model(self):
@@ -79,14 +80,14 @@ class Trainer:
         """Trains the model using the provided dataset, model, and training arguments."""
         data_collator = DataCollatorSpeechSeq2SeqWithPadding(processor=self.feature_processor)
         training_args = Seq2SeqTrainingArguments(
-            output_dir="./whisper-small-sw",  
+            output_dir=f"./{self.model_id}-{self.language_abbr}",  
             per_device_train_batch_size=16,
             gradient_accumulation_steps=1,
             learning_rate=1e-5,
             warmup_steps=50,
             max_steps=50,
             gradient_checkpointing=True,
-            fp16=True,
+            fp16=False,
             evaluation_strategy="steps",
             per_device_eval_batch_size=8,
             predict_with_generate=True,
@@ -98,7 +99,9 @@ class Trainer:
             load_best_model_at_end=True,
             metric_for_best_model="wer",
             greater_is_better=False,
-            push_to_hub=False,
+            push_to_hub = True,
+            hub_token = self.huggingface_push_token,
+
         )
 
         trainer = Seq2SeqTrainer(
@@ -108,7 +111,7 @@ class Trainer:
             eval_dataset=self.dataset["test"],
             data_collator=data_collator,
             compute_metrics=self.compute_metrics,
-            tokenizer=self.feature_processor.feature_extractor,
+            tokenizer=self.feature_processor.feature_extractor            
         )
 
         trainer.train()
