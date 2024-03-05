@@ -29,6 +29,7 @@ class ModelPrep:
         self.model_id = model_id
         self.language_abbr = language_abbr
         self.processing_task = processing_task
+        
     
     def initialize_feature_extractor(self) -> WhisperFeatureExtractor:
         """
@@ -37,7 +38,7 @@ class ModelPrep:
         Returns:
             WhisperFeatureExtractor: Configured feature extractor for the model.
         """
-        return WhisperFeatureExtractor.from_pretrained(self.model_id)
+        return WhisperFeatureExtractor.from_pretrained(self.model_id, cache_dir = f'./{self.language_abbr}/feature-extractor')
     
     def initialize_tokenizer(self) -> WhisperTokenizer:
         """
@@ -46,7 +47,7 @@ class ModelPrep:
         Returns:
             WhisperTokenizer: Configured tokenizer for the model.
         """
-        return WhisperTokenizer.from_pretrained(self.model_id)
+        return WhisperTokenizer.from_pretrained(self.model_id, cache_dir=f'./{self.language_abbr}/tokenizer')
 
     def initialize_processor(self) -> WhisperProcessor:
         """
@@ -69,7 +70,7 @@ class ModelPrep:
         Returns:
             WhisperForConditionalGeneration: The configured Whisper model ready for conditional generation tasks.
         """
-        model = WhisperForConditionalGeneration.from_pretrained(self.model_id)
+        model = WhisperForConditionalGeneration.from_pretrained(self.model_id, cache_dir= f'./{self.language_abbr}/model')
         model.config.forced_decoder_ids = None
         model.config.suppress_tokens = []  
         return model
