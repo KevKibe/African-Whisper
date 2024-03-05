@@ -26,5 +26,5 @@ jobs:
         run: |
           docker run \
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.IMAGE_NAME }}:latest \
-            /bin/bash -c "python3 src/main.py --huggingface_token ${{ secrets.HUGGINGFACE_TOKEN }} --dataset_name mozilla-foundation/common_voice_16_1 --language_abbr ti --model_id openai/whisper-small --processing_task transcribe"
+            /bin/bash -c "python3 src/main.py --huggingface_read_token ${{ secrets.HUGGINGFACE_READ_TOKEN }} --huggingface_push_token ${{ secrets.HUGGINGFACE_PUSH_TOKEN }} --dataset_name mozilla-foundation/common_voice_16_1 --language_abbr ti --model_id openai/whisper-small --processing_task transcribe"
 
