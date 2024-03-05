@@ -1,3 +1,8 @@
 venv
 src/__pycache__
 src/sw
+src/ti
+dist
+build
+africanwhisper.egg-info
+setup.py
