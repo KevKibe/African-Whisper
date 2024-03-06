@@ -1,3 +1,4 @@
+import os
 from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer
 from collator import DataCollatorSpeechSeq2SeqWithPadding
 import evaluate
@@ -10,7 +11,7 @@ class Trainer:
     A Trainer class for fine-tuning and training speech-to-text models using the Hugging Face Transformers library.
 
     """
-    def __init__(self, huggingface_push_token:str, model_id: str, dataset: DatasetDict , model: str, feature_processor, feature_extractor, tokenizer, language_abbr: str,):
+    def __init__(self, huggingface_push_token:str, model_id: str, dataset: DatasetDict , model: str, feature_processor, feature_extractor, tokenizer, language_abbr: str,wandb_api_key: str):
         """
         Initializes the Trainer with the necessary components and configurations for training.
 
@@ -24,6 +25,7 @@ class Trainer:
             tokenizer (PreTrainedTokenizer): The tokenizer for text data.
             language_abbr (str): Abbreviation for the dataset's language.
         """
+        os.environ["WANDB_API_KEY"] = wandb_api_key
         self.dataset = dataset
         self.model = model
         self.model_id = model_id
@@ -67,7 +69,7 @@ class Trainer:
             warmup_steps=50,
             max_steps=50,
             gradient_checkpointing=True,
-            fp16=True,
+            fp16=False,
             evaluation_strategy="steps",
             per_device_eval_batch_size=8,
             predict_with_generate=True,
@@ -80,6 +82,7 @@ class Trainer:
             greater_is_better=False,
             push_to_hub = True,
             hub_token = self.huggingface_push_token,
+            report_to = "wandb"
 
         )
 
