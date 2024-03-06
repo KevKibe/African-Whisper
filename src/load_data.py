@@ -6,7 +6,7 @@ class Dataset:
     Manages loading of the datasets from Hugging Face's Common Voice repository.
     
     Attributes:
-        huggingface_token (str): Hugging Face API token for authenticated access.
+        huggingface_token (str): Hugging Face API token for read authenticated access.
         dataset_name (str): Name of the dataset to be downloaded from Hugging Face.
         language_abbr (str): Abbreviation of the language for the dataset.
     """
@@ -28,6 +28,9 @@ class Dataset:
         """
         Checks if the dataset is available in the cache directory. If so, loads it from there.
         Otherwise, downloads the specified dataset from Hugging Face, including 'train' and 'test' splits.
+
+        Returns:
+            DatasetDict: The downloaded dataset.
         """
         cache_directory = f'./{self.language_abbr}'
         if os.path.exists(cache_directory):
