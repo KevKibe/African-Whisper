@@ -10,6 +10,7 @@ def parse_args():
     parser.add_argument("--language_abbr", type=str, default="sw", help="Abbreviation of the language for the dataset.")
     parser.add_argument("--model_id", type=str, default="openai/whisper-small", help="Model ID for the model to be used in training.")
     parser.add_argument("--processing_task", type=str, default="transcribe", help="The processing task to be performed.")
+    parser.add_argument("--wandb_api_key", type=str, help="The wandb.ai api key for monitoring training runs, signup and generate an api key.")
     
     return parser.parse_args()
 
@@ -33,7 +34,8 @@ if __name__ == "__main__":
             feature_processor=feature_processor,
             feature_extractor=feature_extractor,
             tokenizer=tokenizer,
-            language_abbr=args.language_abbr
+            language_abbr=args.language_abbr,
+            wandb_api_key=args.wandb_api_key
             )
     orchestrator.train()
     
