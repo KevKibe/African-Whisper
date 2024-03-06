@@ -7,9 +7,6 @@ class MetricComputer:
     This class encapsulates the functionality of loading a specific metric from the
     `evaluate` library and computing it using predictions and labels processed by a tokenizer.
 
-    Attributes:
-        metric (evaluate.Metric): The evaluation metric loaded from the `evaluate` library.
-        tokenizer (PreTrainedTokenizer): The tokenizer used for decoding prediction and label IDs.
     """
 
     def __init__(self, metric_name: str, tokenizer):
