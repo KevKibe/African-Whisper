@@ -8,4 +8,5 @@ bitsandbytes==0.42.0
 accelerate==0.27.2
 peft==0.9.0
 python-dotenv==1.0.1
-numpy
+numpy==1.26.4
+wandb==0.16.4
