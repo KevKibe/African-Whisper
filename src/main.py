@@ -1,5 +1,6 @@
 import argparse
-from trainer import Trainer
+from data_prep import DataPrep
+from model_trainer import Trainer
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Run the training orchestrator with specified parameters.")
@@ -14,16 +15,26 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    
-    orchestrator = Trainer(
+    process = DataPrep(
         huggingface_read_token=args.huggingface_read_token,
-        huggingface_push_token=args.huggingface_push_token,
         dataset_name=args.dataset_name,
         language_abbr=args.language_abbr,
         model_id=args.model_id,
         processing_task=args.processing_task
     )
-    
-    orchestrator.load_dataset()
-    orchestrator.prepare_model()
+    tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
+    processed_dataset = process.load_dataset(feature_extractor, tokenizer)
+
+    orchestrator = Trainer(
+            huggingface_push_token=args.huggingface_push_token,
+            model_id=args.model_id,
+            dataset=processed_dataset,
+            model=model,
+            feature_processor=feature_processor,
+            feature_extractor=feature_extractor,
+            tokenizer=tokenizer,
+            language_abbr=args.language_abbr
+            )
     orchestrator.train()
+    
+    
