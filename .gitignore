@@ -6,3 +6,4 @@ dist
 build
 africanwhisper.egg-info
 setup.py
+src/openai
