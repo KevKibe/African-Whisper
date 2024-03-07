@@ -73,7 +73,7 @@ class WhisperModelPrep:
         model = WhisperForConditionalGeneration.from_pretrained(self.model_id, cache_dir= f'./{self.language_abbr}/model')
         model.config.forced_decoder_ids = None
         model.config.suppress_tokens = []  
-        model.generation_config.language = f"{self.language_abbr}"  
+        model.generation_config.language = "en"  
         model.generation_config.task = "transcribe"
         return model
 
