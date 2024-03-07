@@ -73,7 +73,7 @@ class Trainer:
             evaluation_strategy="steps",
             per_device_eval_batch_size=8,
             predict_with_generate=True,
-            generation_max_length=True,
+            generation_max_length=225,
             save_steps=25,
             eval_steps=25,
             logging_steps=10,
