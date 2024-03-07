@@ -69,7 +69,7 @@ class Trainer:
             warmup_steps=50,
             max_steps=50,
             gradient_checkpointing=True,
-            fp16=True,
+            fp16=False,
             evaluation_strategy="steps",
             per_device_eval_batch_size=8,
             predict_with_generate=True,
