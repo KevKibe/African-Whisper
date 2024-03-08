@@ -68,8 +68,8 @@ class DataPrep:
         print(f"Test dataset size: {len(self.dataset['test'])}")
         processor = AudioDataProcessor(self.dataset, feature_extractor, tokenizer)
         cleaned_dataset = processor.clean_dataset()
-        cleaned_dataset["train"] = cleaned_dataset["train"].map(lambda example: processor.resampled_dataset(example), num_proc = 2)
-        cleaned_dataset["test"] = cleaned_dataset["test"].map(lambda example: processor.resampled_dataset(example), num_proc = 2)
+        cleaned_dataset["train"] = cleaned_dataset["train"].map(lambda example: processor.resampled_dataset(example))
+        cleaned_dataset["test"] = cleaned_dataset["test"].map(lambda example: processor.resampled_dataset(example))
         return cleaned_dataset
 
         
