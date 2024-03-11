@@ -68,29 +68,30 @@ def dataset_to_records(dataset):
     return records
 
 
-def decode_predictions(trainer, predictions):
+def decode_predictions( predictions, tokenizer):
     pred_ids = predictions.predictions
-    print(type(trainer.tokenizer))
-    pred_str = trainer.tokenizer.batch_decode(pred_ids, skip_special_tokens=True, )
+    print(type(tokenizer))
+    pred_str = tokenizer.batch_decode(pred_ids, skip_special_tokens=True, )
     return pred_str
 
-def compute_measures(predictions, labels):
+def compute_measures(predictions, labels,):
     measures = [jiwer.compute_measures(ls, ps) for ps, ls in zip(predictions, labels)]
     measures_df = pd.DataFrame(measures)[["wer", "hits", "substitutions", "deletions", "insertions"]]
     return measures_df
 
 
 class WandbProgressResultsCallback(WandbCallback):
-    def __init__(self, trainer, sample_dataset): 
+    def __init__(self, trainer, sample_dataset, tokenizer): 
         super().__init__()
         self.trainer = trainer
         self.sample_dataset = sample_dataset
         self.records_df = dataset_to_records(sample_dataset)
+        self.tokenizer = tokenizer
         
     def on_log(self, args, state, control, model=None, logs=None, **kwargs):
         super().on_log(args, state, control, model, logs)
         predictions = self.trainer.predict(self.sample_dataset)
-        predictions = decode_predictions(self.trainer, predictions)
+        predictions = decode_predictions(predictions, self.tokenizer)
         measures_df = compute_measures(predictions, self.records_df["sentence"].tolist())
         records_df = pd.concat([self.records_df, measures_df], axis=1)
         records_df["prediction"] = predictions
