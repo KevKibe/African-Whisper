@@ -1,6 +1,8 @@
 from transformers import TrainerCallback
 from transformers.integrations import WandbCallback
 import holoviews as hv
+# from bokeh.resources import INLINE      
+hv.extension("bokeh", logo=False)
 import panel as pn
 import numpy as np
 from io import StringIO
@@ -15,7 +17,8 @@ import numbers
 def record_to_html(sample_record):
     audio_array = np.array(sample_record["audio"]["array"])
     audio_sr = sample_record["audio"]["sampling_rate"]
-    audio_duration = sample_record["length"]
+    audio_data = sample_record['audio']
+    audio_duration = len(audio_data) / 16000
     audio_spectrogram = np.array(sample_record["spectrogram"])
 
     bounds = (0,0, audio_duration, audio_spectrogram.max())
@@ -55,9 +58,11 @@ def dataset_to_records(dataset):
     records = []
     for item in dataset:
         record = {}
+        audio_data = item['audio'] 
+        audio_duration = len(audio_data) / 16000 
         record["audio_with_spec"] = wandb.Html(record_to_html(item))
         record["sentence"] = item["sentence"]
-        record["length"] = item["length"]
+        record["length"] = audio_duration
         records.append(record)
     records = pd.DataFrame(records)
     return records
