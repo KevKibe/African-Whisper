@@ -57,7 +57,7 @@ cd src
 ```
 python main.py \
     --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE \
-    --huggingface_push_token YOUR_HUGGING_FACE_PUSH_TOKEN_HERE \
+    --huggingface_write_token YOUR_HUGGING_FACE_WRITE_TOKEN_HERE \
     --dataset_name DATASET_NAME \
     --language_abbr LANGUAGE_ABBREVIATION \
     --model_id MODEL_ID \
