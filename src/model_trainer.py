@@ -116,6 +116,8 @@ class Trainer:
             callbacks=[ShuffleCallback()],            
         )        
         samples_dataset = self.dataset["test"].map(self.compute_spectrograms)
-        progress_callback = WandbProgressResultsCallback(trainer, samples_dataset)
+        model_prep = WhisperModelPrep(self.dataset, self.model_id, self.language_abbr, 'transcribe')
+        tokenizer = model_prep.initialize_tokenizer()
+        progress_callback = WandbProgressResultsCallback(trainer, samples_dataset, tokenizer)
         trainer.add_callback(progress_callback)
         trainer.train()
