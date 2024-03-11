@@ -3,7 +3,17 @@ from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer
 from collator import DataCollatorSpeechSeq2SeqWithPadding
 import evaluate
 from datasets import DatasetDict
+from wandb_callback import WandbProgressResultsCallback
+from transformers.trainer_pt_utils import IterableDatasetShard
+from torch.utils.data import IterableDataset
+from transformers import TrainerCallback
 
+class ShuffleCallback(TrainerCallback):
+    def on_epoch_begin(self, args, state, control, train_dataloader, **kwargs):
+        if isinstance(train_dataloader.dataset, IterableDatasetShard):
+            pass 
+        elif isinstance(train_dataloader.dataset, IterableDataset):
+            train_dataloader.dataset.set_epoch(train_dataloader.dataset._epoch + 1)
 
 class Trainer:
     """
@@ -11,7 +21,7 @@ class Trainer:
     A Trainer class for fine-tuning and training speech-to-text models using the Hugging Face Transformers library.
 
     """
-    def __init__(self, huggingface_push_token:str, model_id: str, dataset: DatasetDict , model: str, feature_processor, feature_extractor, tokenizer, language_abbr: str,wandb_api_key: str):
+    def __init__(self, huggingface_write_token:str, model_id: str, dataset: DatasetDict , model: str, feature_processor, feature_extractor, tokenizer, language_abbr: str,wandb_api_key: str):
         """
         Initializes the Trainer with the necessary components and configurations for training.
 
@@ -32,7 +42,7 @@ class Trainer:
         self.tokenizer = tokenizer
         self.feature_processor = feature_processor
         self.feature_extractor = feature_extractor
-        self.huggingface_push_token = huggingface_push_token
+        self.huggingface_write_token = huggingface_write_token
         self.language_abbr = language_abbr
         self.metric = evaluate.load("wer")
 
@@ -81,7 +91,7 @@ class Trainer:
             metric_for_best_model="wer",
             greater_is_better=False,
             push_to_hub = True,
-            hub_token = self.huggingface_push_token,
+            hub_token = self.huggingface_write_token,
             report_to = "wandb"
 
         )
@@ -93,7 +103,10 @@ class Trainer:
             eval_dataset=self.dataset["test"],
             data_collator=data_collator,
             compute_metrics=self.compute_metrics,
-            tokenizer=self.feature_processor.feature_extractor            
+            tokenizer=self.feature_processor.feature_extractor,
+            callbacks=[ShuffleCallback()],            
         )
-
+        samples_dataset = self.dataset["test"]
+        progress_callback = WandbProgressResultsCallback(trainer, samples_dataset)
+        trainer.add_callback(progress_callback)
         trainer.train()
