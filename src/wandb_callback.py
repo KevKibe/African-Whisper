@@ -70,6 +70,7 @@ def dataset_to_records(dataset):
 
 def decode_predictions(trainer, predictions):
     pred_ids = predictions.predictions
+    print(type(trainer.tokenizer))
     pred_str = trainer.tokenizer.batch_decode(pred_ids, skip_special_tokens=True, )
     return pred_str
 
