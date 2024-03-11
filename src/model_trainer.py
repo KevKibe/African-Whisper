@@ -7,6 +7,8 @@ from wandb_callback import WandbProgressResultsCallback
 from transformers.trainer_pt_utils import IterableDatasetShard
 from torch.utils.data import IterableDataset
 from transformers import TrainerCallback
+from audio_data_processor import AudioDataProcessor
+from whisper_model_prep import WhisperModelPrep
 
 class ShuffleCallback(TrainerCallback):
     def on_epoch_begin(self, args, state, control, train_dataloader, **kwargs):
@@ -63,6 +65,13 @@ class Trainer:
         label_str = self.tokenizer.batch_decode(label_ids, skip_special_tokens=True)
         wer = 100 * self.metric.compute(predictions=pred_str, references=label_str)
         return {"wer": wer}
+    
+    def compute_spectrograms(self, example):
+        waveform =  example["audio"]["array"]
+        model_prep = WhisperModelPrep(self.dataset, self.model_id, self.language_abbr, 'transcribe')
+        feature_extractor = model_prep.initialize_feature_extractor()
+        specs = feature_extractor(waveform, sampling_rate=16000, padding="do_not_pad").input_features[0]
+        return {"spectrogram": specs}
 
     def train(self):
         """
@@ -105,8 +114,8 @@ class Trainer:
             compute_metrics=self.compute_metrics,
             tokenizer=self.feature_processor.feature_extractor,
             callbacks=[ShuffleCallback()],            
-        )
-        samples_dataset = self.dataset["test"]
+        )        
+        samples_dataset = self.dataset["test"].map(self.compute_spectrograms)
         progress_callback = WandbProgressResultsCallback(trainer, samples_dataset)
         trainer.add_callback(progress_callback)
         trainer.train()
