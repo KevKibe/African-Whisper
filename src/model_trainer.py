@@ -100,7 +100,6 @@ class Trainer:
             metric_for_best_model="wer",
             greater_is_better=False,
             push_to_hub = True,
-            hub_strategy="checkpoint",
             hub_token = self.huggingface_write_token,
             report_to = "wandb",
             remove_unused_columns=False, 
