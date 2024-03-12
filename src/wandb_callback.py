@@ -86,7 +86,7 @@ class RecordAnalyzer:
         records = pd.DataFrame(records)
         return records
 
-    def decode_predictions(self, predictions) -> list:
+    def decode_predictions(self, predictions, tokenizer) -> list:
         """
         Decode model predictions into human-readable format.
 
@@ -97,7 +97,7 @@ class RecordAnalyzer:
             list: Decoded predictions.
         """
         pred_ids = predictions.predictions
-        pred_str = self.tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
+        pred_str = tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
         return pred_str
 
     def compute_measures(self, predictions, labels) -> pd.DataFrame:
