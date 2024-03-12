@@ -124,7 +124,7 @@ class Trainer:
         tokenizer = model_prep.initialize_tokenizer()
         tokenizer.save_pretrained(training_args.output_dir)
 
-        trainer.add_callback(PushToHubCallback(output_dir=training_args.output_dir, tokenizer=tokenizer))
+        # trainer.add_callback(PushToHubCallback(output_dir=training_args.output_dir, tokenizer=tokenizer, hub_token = training_args.hub_token))
 
         progress_callback = WandbProgressResultsCallback(trainer, eval_dataset, tokenizer)
         trainer.add_callback(progress_callback)
