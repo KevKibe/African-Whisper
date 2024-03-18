@@ -80,13 +80,37 @@ Here's a short description of each argument used in the command:
 
 - **--wandb_api_key**: Your Weights & Biases (W&B) API key. This is used for logging and tracking the training process if you're using W&B for experiment tracking.
 
-## Contributing 
-Pending Tasks
+## Inference
 
-- [ ] **HuggingFace Streaming Data Support**: Implement functionality to train the model using streaming data from HuggingFace datasets.
-- [ ] **ASR Model Eval**: Develop a pipeline for evaluating trained ASR model.
-- [ ] **Support for PEFT fine-tuning**: Develop support for finetuning model using Parameter Efficient Fine-Tuning(PEFT)  
-- [ ] **Cloud Provider Integration Tests**: Establish a set of integration tests to ensure seamless deployment and operation across various cloud providers.
+- To get inference from your fine-tuned model, follow these steps:
+- Navigate to the project directory 
+```
+cd src
+```
+- To get the Gradio inference URL:
+```
+python inference.py \
+    --model-name YOUR_FINETUNED-MODEL \
+    --language_abbr LANGUAGE_ABBREVIATION \
+    --tokenizer OPENAI_MODEL_ID \
+    --huggingface-read-token YOUR_HUGGING_FACE_READ_TOKEN_HERE \
+
+```
+- **--model_name**: Name of the fine-tuned model to use in your huggingfacehub repo. This should match the model's identifier on the Hugging Face Model Hub.
+- **--language_abbr**: The abbreviation of the language for the dataset you're using. Example: 'sw' for Swahili. This is used to specify the language variant of the dataset if it supports multiple languages.
+- **--tokenizer**: Whisper model version you used to fine-tune your model e.g openai/whisper-tiny, openai/whisper-base, openai/whisper-small, openai/whisper-medium, openai/whisper-large, openai/whisper-large-v2.
+- **--huggingface_read_token**: Your Hugging Face authentication token for read access. It allows you to download datasets and models from Hugging Face.
+
+
+
+## Contributing 
+Contributions are welcome and encouraged.
+
+Before contributing, please take a moment to review our [Contribution Guidelines](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/CONTRIBUT) for important information on how to contribute to this project.
+
+If you're unsure about anything or need assistance, don't hesitate to reach out to us or open an issue to discuss your ideas.
+
+We look forward to your contributions!
 
 
 
