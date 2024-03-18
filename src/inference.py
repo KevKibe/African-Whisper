@@ -63,11 +63,11 @@ demo = gr.Blocks()
 mf_transcribe = gr.Interface(
     fn=transcribe,
     inputs=[
-        gr.Audio(source="microphone", type="filepath", optional=True),
-        gr.Audio(source="upload", type="filepath", optional=True),
+        gr.Audio(sources="microphone", type="filepath"),
+        gr.Audio(sources="upload", type="filepath"),
     ],
     outputs="text",
-    layout="horizontal",
+    # layout="horizontal",
     theme="huggingface",
     title="Whisper Tiny Tamil Demo: Transcribe Audio",
     description=(
@@ -80,9 +80,9 @@ mf_transcribe = gr.Interface(
 
 yt_transcribe = gr.Interface(
     fn=yt_transcribe,
-    inputs=[gr.inputs.Textbox(lines=1, placeholder="Paste the URL to a YouTube video here", label="YouTube URL")],
+    inputs=[gr.Textbox(lines=1, placeholder="Paste the URL to a YouTube video here", label="YouTube URL")],
     outputs=["html", "text"],
-    layout="horizontal",
+    # layout="horizontal",
     theme="huggingface",
     title="Whisper Tiny Tamil Demo: Transcribe YouTube",
     description=(
