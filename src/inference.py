@@ -3,23 +3,32 @@ import gradio as gr
 import pytube as pt
 from transformers import pipeline, WhisperTokenizer
 from huggingface_hub import model_info
+import argparse
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Whisper Demo: Transcribe Audio and YouTube")
+    parser.add_argument("--model-name", type=str, help="Name of the fine-tuned model to use in your huggingfacehub repo")
+    parser.add_argument("--lang", type=str, help="Language abbreviation for transcription")
+    parser.add_argument("--tokenizer", type = str, help = "whisper model version you used to fine-tune your model e.g openai/whisper-tiny, openai/whisper-base, openai/whisper-small, openai/whisper-medium, openai/whisper-large, openai/whisper-large-v2")
+    parser.add_argument("--huggingface-read-token", type = str, help = "Hugging Face API token for read authenticated access.")
+    return parser.parse_args()
+
+args = parse_args()
 
 
-MODEL_NAME = "KevinKibe/whisper-small-ti" 
-lang = "en"
-
-tokenizer = WhisperTokenizer.from_pretrained("openai/whisper-small", cache_dir='./ti/tokenizer')
+tokenizer = WhisperTokenizer.from_pretrained(args.tokenizer, cache_dir='./ti/tokenizer')
 
 device = 0 if torch.cuda.is_available() else "cpu"
 pipe = pipeline(
     task="automatic-speech-recognition",
-    model=MODEL_NAME,
+    model=args.model_name,
+    token = args.huggingface_read_token,
     tokenizer=tokenizer, 
     chunk_length_s=30,
     device=device,
 )
 
-pipe.model.config.forced_decoder_ids = pipe.tokenizer.get_decoder_prompt_ids(language=lang, task="translate")
+pipe.model.config.forced_decoder_ids = pipe.tokenizer.get_decoder_prompt_ids(language=args.lang, task="transcribe")
 
 def transcribe(microphone, file_upload):
     warn_output = ""
@@ -67,12 +76,10 @@ mf_transcribe = gr.Interface(
         gr.Audio(sources="upload", type="filepath"),
     ],
     outputs="text",
-    # layout="horizontal",
-    theme="huggingface",
-    title="Whisper Tiny Tamil Demo: Transcribe Audio",
+    title="Whisper Demo: Transcribe Audio",
     description=(
         "Transcribe long-form microphone or audio inputs with the click of a button! Demo uses the the fine-tuned"
-        f" checkpoint [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and 🤗 Transformers to transcribe audio files"
+        f" checkpoint [{args.model_name}](https://huggingface.co/{args.model_name}) and 🤗 Transformers to transcribe audio files"
         " of arbitrary length."
     ),
     allow_flagging="never",
@@ -82,12 +89,10 @@ yt_transcribe = gr.Interface(
     fn=yt_transcribe,
     inputs=[gr.Textbox(lines=1, placeholder="Paste the URL to a YouTube video here", label="YouTube URL")],
     outputs=["html", "text"],
-    # layout="horizontal",
-    theme="huggingface",
-    title="Whisper Tiny Tamil Demo: Transcribe YouTube",
+    title="Whisper Demo: Transcribe YouTube",
     description=(
         "Transcribe long-form YouTube videos with the click of a button! Demo uses the the fine-tuned checkpoint:"
-        f" [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and 🤗 Transformers to transcribe audio files of"
+        f" [{args.model_name}](https://huggingface.co/{args.model_name}) and 🤗 Transformers to transcribe audio files of"
         " arbitrary length."
     ),
     allow_flagging="never",
