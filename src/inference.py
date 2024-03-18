@@ -63,8 +63,8 @@ demo = gr.Blocks()
 mf_transcribe = gr.Interface(
     fn=transcribe,
     inputs=[
-        gr.inputs.Audio(source="microphone", type="filepath", optional=True),
-        gr.inputs.Audio(source="upload", type="filepath", optional=True),
+        gr.Audio(source="microphone", type="filepath", optional=True),
+        gr.Audio(source="upload", type="filepath", optional=True),
     ],
     outputs="text",
     layout="horizontal",
