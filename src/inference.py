@@ -6,7 +6,7 @@ from huggingface_hub import model_info
 
 
 MODEL_NAME = "KevinKibe/whisper-small-ti" 
-lang = "ti"
+lang = "en"
 
 tokenizer = WhisperTokenizer.from_pretrained("openai/whisper-small", cache_dir='./ti/tokenizer')
 
