@@ -1,16 +1,16 @@
-# Contributing to [Your Project Name]
+# Contributing to African Whisper
 
-Welcome to [Your Project Name]! We appreciate your interest in contributing to our open-source project. Please take a moment to review the following guidelines to ensure a smooth and collaborative experience for everyone.
+Welcome to African Whisper! We appreciate your interest in contributing to our open-source project. Please take a moment to review the following guidelines to ensure a smooth and collaborative experience for everyone.
 
 ## Code of Conduct
 
-Before contributing, please read and adhere to our [Code of Conduct](CODE_OF_CONDUCT.md). We are committed to fostering an inclusive and respectful community.
+Before contributing, please read and adhere to our [Code of Conduct](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/CODE_OF_CONDUCT.md). We are committed to fostering an inclusive and respectful community.
 
 ## How to Contribute
 
 ### Reporting Bugs or Issues
 
-If you encounter a bug or issue with the project, please search the [issue tracker](link-to-issue-tracker) to see if it has already been reported. If not, please open a new issue with a clear and descriptive title, along with detailed steps to reproduce the issue.
+If you encounter a bug or issue with the project, please search the [issue tracker](https://github.com/KevKibe/African-Whisper/issues) to see if it has already been reported. If not, please open a new issue with a clear and descriptive title, along with detailed steps to reproduce the issue.
 
 ### Suggesting Enhancements or New Features
 
