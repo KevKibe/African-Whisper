@@ -62,7 +62,8 @@ python main.py \
     --language_abbr LANGUAGE_ABBREVIATION \
     --model_id MODEL_ID \
     --processing_task PROCESSING_TASK \
-    --wandb_api_key YOUR_WANDB_API_KEY_HERE
+    --wandb_api_key YOUR_WANDB_API_KEY_HERE \
+    --use_peft TRUE or FALSE
 ```
 Here's a short description of each argument used in the command:
 
@@ -80,6 +81,8 @@ Here's a short description of each argument used in the command:
 
 - **--wandb_api_key**: Your Weights & Biases (W&B) API key. This is used for logging and tracking the training process if you're using W&B for experiment tracking.
 
+- **--use_peft**: True to train your model using PEFT method, False for full fine-tuning.
+
 ## Inference
 
 - To get inference from your fine-tuned model, follow these steps:
@@ -90,10 +93,10 @@ cd src
 - To get the Gradio inference URL:
 ```
 python inference.py \
-    --model-name YOUR_FINETUNED-MODEL \
+    --model_name YOUR_FINETUNED-MODEL \
     --language_abbr LANGUAGE_ABBREVIATION \
     --tokenizer OPENAI_MODEL_ID \
-    --huggingface-read-token YOUR_HUGGING_FACE_READ_TOKEN_HERE \
+    --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE \
 
 ```
 - **--model_name**: Name of the fine-tuned model to use in your huggingfacehub repo. This should match the model's identifier on the Hugging Face Model Hub.
