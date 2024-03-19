@@ -1,7 +1,8 @@
 from transformers import WhisperFeatureExtractor, WhisperTokenizer, WhisperProcessor
 from datasets import DatasetDict
 from transformers import WhisperForConditionalGeneration
-
+from peft import prepare_model_for_kbit_training
+from peft import LoraConfig, PeftModel, LoraModel, LoraConfig, get_peft_model
 
 class WhisperModelPrep:
     """
@@ -15,7 +16,7 @@ class WhisperModelPrep:
         processing_task (str): Specific task for the Whisper model to execute.
     """
     
-    def __init__(self, dataset: DatasetDict, model_id: str, language_abbr: str, processing_task: str):
+    def __init__(self, dataset: DatasetDict, model_id: str, language_abbr: str, processing_task: str, use_peft: bool = False):
         """
         Sets up the dataset and configuration for processing with the Whisper model.
         
@@ -29,6 +30,7 @@ class WhisperModelPrep:
         self.model_id = model_id
         self.language_abbr = language_abbr
         self.processing_task = processing_task
+        self.use_peft = use_peft
         
     
     def initialize_feature_extractor(self) -> WhisperFeatureExtractor:
@@ -70,11 +72,16 @@ class WhisperModelPrep:
         Returns:
             WhisperForConditionalGeneration: The configured Whisper model ready for conditional generation tasks.
         """
-        model = WhisperForConditionalGeneration.from_pretrained(self.model_id, cache_dir= f'./{self.language_abbr}/model')
+        model = WhisperForConditionalGeneration.from_pretrained(self.model_id, cache_dir=f'./{self.language_abbr}/model', load_in_8bit=True, device_map="auto")
         model.config.forced_decoder_ids = None
         model.config.suppress_tokens = []  
         model.generation_config.language = "en"  
         model.generation_config.task = "transcribe"
+        
+        if self.use_peft:
+            model = prepare_model_for_kbit_training(model)
+            config = LoraConfig(r=32, lora_alpha=64, target_modules=["q_proj", "v_proj"], lora_dropout=0.05, bias="none")
+            model = get_peft_model(model, config)
+        
+        model.print_trainable_parameters()
         return model
-
-    

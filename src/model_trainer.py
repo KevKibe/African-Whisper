@@ -22,7 +22,7 @@ class Trainer:
     A Trainer class for fine-tuning and training speech-to-text models using the Hugging Face Transformers library.
 
     """
-    def __init__(self, huggingface_write_token:str, model_id: str, dataset: DatasetDict , model: str, feature_processor, feature_extractor, tokenizer, language_abbr: str,wandb_api_key: str):
+    def __init__(self, huggingface_write_token:str, model_id: str, dataset: DatasetDict , model: str, feature_processor, feature_extractor, tokenizer, language_abbr: str,wandb_api_key: str, use_peft:bool = True):
         """
         Initializes the Trainer with the necessary components and configurations for training.
 
@@ -46,6 +46,7 @@ class Trainer:
         self.huggingface_write_token = huggingface_write_token
         self.language_abbr = language_abbr
         self.metric = evaluate.load("wer")
+        self.use_peft = use_peft
 
     def compute_metrics(self, pred) -> dict:
         """
@@ -67,7 +68,7 @@ class Trainer:
     
     def compute_spectrograms(self, example) ->  dict:
         waveform =  example["audio"]["array"]
-        model_prep = WhisperModelPrep(self.dataset, self.model_id, self.language_abbr, 'transcribe')
+        model_prep = WhisperModelPrep(self.dataset, self.model_id, self.language_abbr, 'transcribe', self.use_peft)
         feature_extractor = model_prep.initialize_feature_extractor()
         specs = feature_extractor(waveform, sampling_rate=16000, padding="do_not_pad").input_features[0]
         return {"spectrogram": specs}
