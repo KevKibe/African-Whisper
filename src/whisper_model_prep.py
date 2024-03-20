@@ -16,7 +16,7 @@ class WhisperModelPrep:
         processing_task (str): Specific task for the Whisper model to execute.
     """
     
-    def __init__(self, dataset: DatasetDict, model_id: str, language_abbr: str, processing_task: str, use_peft: bool = False):
+    def __init__(self, dataset: DatasetDict, model_id: str, language_abbr: str, processing_task: str, use_peft: bool = True):
         """
         Sets up the dataset and configuration for processing with the Whisper model.
         
@@ -82,6 +82,7 @@ class WhisperModelPrep:
             model = prepare_model_for_kbit_training(model)
             config = LoraConfig(r=32, lora_alpha=64, target_modules=["q_proj", "v_proj"], lora_dropout=0.05, bias="none")
             model = get_peft_model(model, config)
+            model.print_trainable_parameters()
         
-        model.print_trainable_parameters()
         return model
+    
