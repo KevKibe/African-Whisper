@@ -83,6 +83,8 @@ class WhisperModelPrep:
             config = LoraConfig(r=32, lora_alpha=64, target_modules=["q_proj", "v_proj"], lora_dropout=0.05, bias="none")
             model = get_peft_model(model, config)
             model.print_trainable_parameters()
+        else:
+            print("PEFT optimization is not enabled.")
         
         return model
     

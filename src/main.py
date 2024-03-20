@@ -11,7 +11,7 @@ def parse_args():
     parser.add_argument("--model_id", type=str, default="openai/whisper-small", help="Model ID for the model to be used in training.")
     parser.add_argument("--processing_task", type=str, default="transcribe", help="The processing task to be performed.")
     parser.add_argument("--wandb_api_key", type=str, help="The wandb.ai api key for monitoring training runs, signup and generate an api key.")
-    parser.add_argument("--use_peft", type = bool, default = True, help = "True to train your model using PEFT method, False for full finetuning")
+    parser.add_argument("--use_peft", type = bool, help = "True to train your model using PEFT method, False for full finetuning")
 
     return parser.parse_args()
 
