@@ -28,7 +28,7 @@ pipe = pipeline(
     device=device,
 )
 print(pipe.model.config.model_type)
-pipe.model.config.forced_decoder_ids = pipe.tokenizer.get_decoder_prompt_ids(language=args.lang, task="transcribe")
+pipe.model.config.forced_decoder_ids = pipe.tokenizer.get_decoder_prompt_ids(language=args.language_abbr, task="transcribe")
 
 def transcribe(microphone, file_upload):
     warn_output = ""
