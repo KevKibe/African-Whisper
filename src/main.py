@@ -22,7 +22,8 @@ if __name__ == "__main__":
         dataset_name=args.dataset_name,
         language_abbr=args.language_abbr,
         model_id=args.model_id,
-        processing_task=args.processing_task
+        processing_task=args.processing_task,
+        use_peft = args.use_peft
     )
     tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
     processed_dataset = process.load_dataset(feature_extractor, tokenizer)
