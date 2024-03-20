@@ -22,7 +22,7 @@ class Trainer:
     A Trainer class for fine-tuning and training speech-to-text models using the Hugging Face Transformers library.
 
     """
-    def __init__(self, huggingface_write_token:str, model_id: str, dataset: DatasetDict , model: str, feature_processor, feature_extractor, tokenizer, language_abbr: str,wandb_api_key: str, use_peft:bool = True):
+    def __init__(self, huggingface_write_token:str, model_id: str, dataset: DatasetDict , model: str, feature_processor, feature_extractor, tokenizer, language_abbr: str,wandb_api_key: str, use_peft:bool):
         """
         Initializes the Trainer with the necessary components and configurations for training.
 
@@ -120,7 +120,7 @@ class Trainer:
             callbacks=[ShuffleCallback()],            
         )   
 
-        model_prep = WhisperModelPrep(self.dataset, self.model_id, self.language_abbr, 'transcribe')
+        model_prep = WhisperModelPrep(self.dataset, self.model_id, self.language_abbr, 'transcribe', self.use_peft)
         tokenizer = model_prep.initialize_tokenizer()
         tokenizer.save_pretrained(training_args.output_dir)
 

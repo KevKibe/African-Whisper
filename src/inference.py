@@ -5,6 +5,7 @@ from transformers import pipeline, WhisperTokenizer
 from huggingface_hub import model_info
 import argparse
 
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Whisper Demo: Transcribe Audio and YouTube")
     parser.add_argument("--model_name", type=str, help="Name of the fine-tuned model to use in your huggingfacehub repo")
@@ -28,7 +29,7 @@ pipe = pipeline(
     device=device,
 )
 print(pipe.model.config.model_type)
-pipe.model.config.forced_decoder_ids = pipe.tokenizer.get_decoder_prompt_ids(language=args.lang, task="transcribe")
+pipe.model.config.forced_decoder_ids = pipe.tokenizer.get_decoder_prompt_ids(language=args.language_abbr, task="transcribe")
 
 def transcribe(microphone, file_upload):
     warn_output = ""
