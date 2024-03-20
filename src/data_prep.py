@@ -12,7 +12,7 @@ class DataPrep:
 
     """
 
-    def __init__(self, huggingface_read_token: str, dataset_name: str, language_abbr: str, model_id: str, processing_task: str):
+    def __init__(self, huggingface_read_token: str, dataset_name: str, language_abbr: str, model_id: str, processing_task: str, use_peft: bool):
         """
         Initializes the Trainer with the necessary configuration and loads the evaluation metric.
 
@@ -28,7 +28,8 @@ class DataPrep:
         self.language_abbr = language_abbr
         self.model_id = model_id
         self.processing_task = processing_task
-        self.model_prep = WhisperModelPrep(self.dataset_name, self.model_id, self.language_abbr, self.processing_task)
+        self.use_peft = use_peft
+        self.model_prep = WhisperModelPrep(self.dataset_name, self.model_id, self.language_abbr, self.processing_task, self.use_peft)
         self.data_loader = Dataset(self.huggingface_read_token, self.dataset_name, self.language_abbr)
 
     def prepare_model(self) -> Tuple[WhisperFeatureExtractor, WhisperTokenizer, WhisperProcessor, WhisperForConditionalGeneration]:
