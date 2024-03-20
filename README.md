@@ -63,7 +63,7 @@ python main.py \
     --model_id MODEL_ID \
     --processing_task PROCESSING_TASK \
     --wandb_api_key YOUR_WANDB_API_KEY_HERE \
-    --use_peft TRUE or FALSE
+    --use_peft 
 ```
 Here's a short description of each argument used in the command:
 
@@ -81,7 +81,7 @@ Here's a short description of each argument used in the command:
 
 - **--wandb_api_key**: Your Weights & Biases (W&B) API key. This is used for logging and tracking the training process if you're using W&B for experiment tracking.
 
-- **--use_peft**: True to train your model using PEFT method, False for full fine-tuning.
+- **--use_peft**: Add this flag to fine-tune using PEFT method and omit it to do full fine-tuning.
 
 ## Inference
 
@@ -90,6 +90,12 @@ Here's a short description of each argument used in the command:
 ```
 cd src
 ```
+- Ensure that ffmpeg is installed by running the following commands:
+```
+apt-get update
+apt-get install ffmpeg
+```
+
 - To get the Gradio inference URL:
 ```
 python inference.py \
@@ -97,13 +103,11 @@ python inference.py \
     --language_abbr LANGUAGE_ABBREVIATION \
     --tokenizer OPENAI_MODEL_ID \
     --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE \
-
 ```
 - **--model_name**: Name of the fine-tuned model to use in your huggingfacehub repo. This should match the model's identifier on the Hugging Face Model Hub.
 - **--language_abbr**: The abbreviation of the language for the dataset you're using. Example: 'sw' for Swahili. This is used to specify the language variant of the dataset if it supports multiple languages.
 - **--tokenizer**: Whisper model version you used to fine-tune your model e.g openai/whisper-tiny, openai/whisper-base, openai/whisper-small, openai/whisper-medium, openai/whisper-large, openai/whisper-large-v2.
 - **--huggingface_read_token**: Your Hugging Face authentication token for read access. It allows you to download datasets and models from Hugging Face.
-
 
 
 ## Contributing 
