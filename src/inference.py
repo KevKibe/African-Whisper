@@ -4,14 +4,8 @@ import pytube as pt
 from transformers import pipeline, WhisperTokenizer
 from huggingface_hub import model_info
 import argparse
-import subprocess
 
-try:
-    subprocess.run(['sudo', 'apt-get', 'install', 'ffmpeg'], check=True)
-    print("FFmpeg installed successfully!")
-except subprocess.CalledProcessError as e:
-    print(f"Error installing FFmpeg: {e}")
-    
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Whisper Demo: Transcribe Audio and YouTube")
     parser.add_argument("--model_name", type=str, help="Name of the fine-tuned model to use in your huggingfacehub repo")
