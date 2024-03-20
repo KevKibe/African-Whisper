@@ -72,19 +72,24 @@ class WhisperModelPrep:
         Returns:
             WhisperForConditionalGeneration: The configured Whisper model ready for conditional generation tasks.
         """
-        model = WhisperForConditionalGeneration.from_pretrained(self.model_id, cache_dir=f'./{self.language_abbr}/model', load_in_8bit=True, device_map="auto")
-        model.config.forced_decoder_ids = None
-        model.config.suppress_tokens = []  
-        model.generation_config.language = "en"  
-        model.generation_config.task = "transcribe"
         
         if self.use_peft:
+            model = WhisperForConditionalGeneration.from_pretrained(self.model_id, cache_dir=f'./{self.language_abbr}/model', load_in_8bit=True, device_map="auto")
+            model.config.forced_decoder_ids = None
+            model.config.suppress_tokens = []  
+            model.generation_config.language = "en"  
+            model.generation_config.task = "transcribe"
             model = prepare_model_for_kbit_training(model)
             config = LoraConfig(r=32, lora_alpha=64, target_modules=["q_proj", "v_proj"], lora_dropout=0.05, bias="none")
             model = get_peft_model(model, config)
             model.print_trainable_parameters()
         else:
             print("PEFT optimization is not enabled.")
+            model = WhisperForConditionalGeneration.from_pretrained(self.model_id, cache_dir=f'./{self.language_abbr}/model')
+            model.config.forced_decoder_ids = None
+            model.config.suppress_tokens = []  
+            model.generation_config.language = "en"  
+            model.generation_config.task = "transcribe"
         
         return model
     
