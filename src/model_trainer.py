@@ -120,7 +120,7 @@ class Trainer:
             callbacks=[ShuffleCallback()],            
         )   
 
-        model_prep = WhisperModelPrep(self.dataset, self.model_id, self.language_abbr, 'transcribe')
+        model_prep = WhisperModelPrep(self.dataset, self.model_id, self.language_abbr, 'transcribe', self.use_peft)
         tokenizer = model_prep.initialize_tokenizer()
         tokenizer.save_pretrained(training_args.output_dir)
 
