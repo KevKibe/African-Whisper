@@ -16,7 +16,7 @@ class WhisperModelPrep:
         processing_task (str): Specific task for the Whisper model to execute.
     """
     
-    def __init__(self, dataset: DatasetDict, model_id: str, language_abbr: str, processing_task: str, use_peft: bool = True):
+    def __init__(self, dataset: DatasetDict, model_id: str, language_abbr: str, processing_task: str, use_peft: bool):
         """
         Sets up the dataset and configuration for processing with the Whisper model.
         
