@@ -1,0 +1,5 @@
+fastapi[all]
+uvicorn[standard]
+transformers==4.38.2
+pytube==15.0.0
+pydantic==2.6.4
