@@ -17,7 +17,7 @@ def parse_args():
 args = parse_args()
 
 
-tokenizer = WhisperTokenizer.from_pretrained(args.tokenizer, cache_dir='./ti/tokenizer')
+tokenizer = WhisperTokenizer.from_pretrained(args.tokenizer)
 
 device = 0 if torch.cuda.is_available() else "cpu"
 pipe = pipeline(
