@@ -50,7 +50,7 @@ pip install -r requirements.txt
 ```
 - Navigate to the project directory 
 ```
-cd src
+cd src/training
 ```
 
 - To start the training , use the following command:
@@ -88,7 +88,7 @@ Here's a short description of each argument used in the command:
 - To get inference from your fine-tuned model, follow these steps:
 - Navigate to the project directory 
 ```
-cd src
+cd src/training
 ```
 - Ensure that ffmpeg is installed by running the following commands:
 ```
