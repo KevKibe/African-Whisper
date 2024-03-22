@@ -1,13 +1,11 @@
 from setuptools import setup, find_packages
 
-with open('requirements.txt') as f:
-    requirements = f.read().splitlines()
+
 
 setup(
     name='africanwhisper',
-    version='0.1',
+    version='0.2-beta',
     packages=find_packages(),
-    install_requires=requirements,
     python_requires='>=3.8',
     author='Kevin Kibe',
     author_email='keviinkibe@gmail.com',
