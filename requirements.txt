@@ -16,3 +16,4 @@ gradio==4.21.0
 pytube==15.0.0
 tensorflow==2.16.1
 tf-keras==2.16.0
+scipy==1.12.0
