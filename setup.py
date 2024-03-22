@@ -7,7 +7,7 @@ sys.path.append("src")
 
 setup(
     name='africanwhisper',
-    version='0.2-beta',
+    version='0.3-beta',
     packages=find_packages(),
     python_requires='>=3.8',
     author='Kevin Kibe',
