@@ -2,7 +2,7 @@ from transformers import WhisperFeatureExtractor, WhisperTokenizer, WhisperProce
 from datasets import DatasetDict
 from transformers import WhisperForConditionalGeneration
 from peft import prepare_model_for_kbit_training
-from peft import LoraConfig, PeftModel, LoraModel, LoraConfig, get_peft_model
+from peft import LoraConfig, LoraConfig, get_peft_model
 
 class WhisperModelPrep:
     """
