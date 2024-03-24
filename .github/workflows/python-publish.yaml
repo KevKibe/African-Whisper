@@ -1,6 +1,9 @@
 name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 
-on: push
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -36,9 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/africanwhisper 
-    permissions:
-      id-token: ${{ secrets.PYPI_API_TOKEN }}  
+      url: https://pypi.org/p/africanwhisper  
 
     steps:
     - name: Download all the dists
@@ -47,22 +48,22 @@ jobs:
         name: python-package-distributions
         path: dist/
     - name: Publish distribution 📦 to PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
+      run: |
+        python3 -m pip install twine --user
+        python3 -m twine upload --repository pypi --username keviinkibe __token__ --password ${{ secrets.PYPI_API_TOKEN }} dist/*
 
  
   publish-to-testpypi:
     name: Publish Python 🐍 distribution 📦 to TestPyPI
+    if: github.ref == 'refs/heads/master'  # Only publish to TestPyPI on push to master
     needs:
     - build
     runs-on: ubuntu-latest
-
+    
     environment:
       name: testpypi
-      url: https://test.pypi.org/p/africanwhisper 
-
-    permissions:
-      id-token: ${{ secrets.PYPI_API_TOKEN }}    # IMPORTANT: mandatory for trusted publishing
-
+      url: https://test.pypi.org/p/africanwhisper  # Replace africanwhisper with your package name
+    
     steps:
     - name: Download all the dists
       uses: actions/download-artifact@v3
@@ -70,6 +71,6 @@ jobs:
         name: python-package-distributions
         path: dist/
     - name: Publish distribution 📦 to TestPyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        repository-url: https://test.pypi.org/legacy/
+      run: |
+        python3 -m pip install twine --user
+        python3 -m twine upload --repository testpypi --username keviinkibe __token__ --password ${{ secrets.PYPI_API_TOKEN }} dist/*
