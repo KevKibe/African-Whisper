@@ -1,7 +1,7 @@
 from transformers import  WhisperFeatureExtractor, WhisperTokenizer, WhisperProcessor, WhisperForConditionalGeneration
-from .load_data import Dataset
-from .whisper_model_prep import WhisperModelPrep
-from .audio_data_processor import AudioDataProcessor
+from load_data import Dataset
+from whisper_model_prep import WhisperModelPrep
+from audio_data_processor import AudioDataProcessor
 from datasets import DatasetDict
 from typing import Tuple
 

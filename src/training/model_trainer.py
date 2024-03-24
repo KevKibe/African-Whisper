@@ -1,13 +1,13 @@
 import os
 from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer, PushToHubCallback
-from .collator import DataCollatorSpeechSeq2SeqWithPadding
+from collator import DataCollatorSpeechSeq2SeqWithPadding
 import evaluate
 from datasets import DatasetDict
-from .wandb_callback import WandbProgressResultsCallback
+from wandb_callback import WandbProgressResultsCallback
 from transformers.trainer_pt_utils import IterableDatasetShard
 from torch.utils.data import IterableDataset
 from transformers import TrainerCallback
-from .whisper_model_prep import WhisperModelPrep
+from whisper_model_prep import WhisperModelPrep
 
 class ShuffleCallback(TrainerCallback):
     def on_epoch_begin(self, args, state, control, train_dataloader, **kwargs):

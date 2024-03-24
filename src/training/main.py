@@ -1,6 +1,6 @@
 import argparse
-from .data_prep import DataPrep
-from .model_trainer import Trainer
+from data_prep import DataPrep
+from model_trainer import Trainer
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Run the training orchestrator with specified parameters.")
