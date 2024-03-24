@@ -9,6 +9,9 @@
   </a>
 </p>
 
+<div style="text-align:center;">
+    <img src= "image.png">
+</div>
 
 ## Description
 African Whisper is an open-source project aimed at enhancing Automatic Speech Recognition (ASR) capabilities for African languages. Leveraging the power of advanced machine learning techniques, this project fine-tunes the Whisper ASR model developed by OpenAI to better recognize and transcribe African languages.
@@ -48,14 +51,10 @@ source venv/bin/activate
 ```
 pip install -r requirements.txt
 ```
-- Navigate to the project directory 
-```
-cd src/training
-```
 
 - To start the training , use the following command:
 ```
-python main.py \
+python -m training.main \
     --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE \
     --huggingface_write_token YOUR_HUGGING_FACE_WRITE_TOKEN_HERE \
     --dataset_name DATASET_NAME \
@@ -86,19 +85,28 @@ Here's a short description of each argument used in the command:
 ## Inference
 
 - To get inference from your fine-tuned model, follow these steps:
-- Navigate to the project directory 
-```
-cd src/training
-```
+
 - Ensure that ffmpeg is installed by running the following commands:
 ```
-apt-get update
-apt-get install ffmpeg
+# on Ubuntu or Debian
+sudo apt update && sudo apt install ffmpeg
+
+# on Arch Linux
+sudo pacman -S ffmpeg
+
+# on MacOS using Homebrew (https://brew.sh/)
+brew install ffmpeg
+
+# on Windows using Chocolatey (https://chocolatey.org/)
+choco install ffmpeg
+
+# on Windows using Scoop (https://scoop.sh/)
+scoop install ffmpeg
 ```
 
 - To get the Gradio inference URL:
 ```
-python inference.py \
+python -m training.inference \
     --model_name YOUR_FINETUNED-MODEL \
     --language_abbr LANGUAGE_ABBREVIATION \
     --tokenizer OPENAI_MODEL_ID \

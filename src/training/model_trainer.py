@@ -45,7 +45,6 @@ class Trainer:
         self.feature_extractor = feature_extractor
         self.huggingface_write_token = huggingface_write_token
         self.language_abbr = language_abbr
-        self.metric = evaluate.load("wer")
         self.use_peft = use_peft
 
     def compute_metrics(self, pred) -> dict:
@@ -63,7 +62,8 @@ class Trainer:
         label_ids[label_ids == -100] = self.tokenizer.pad_token_id
         pred_str = self.tokenizer.batch_decode(pred_ids, skip_special_tokens=True, normalize = True)
         label_str = self.tokenizer.batch_decode(label_ids, skip_special_tokens=True, normalize = True)
-        wer = 100 * self.metric.compute(predictions=pred_str, references=label_str)
+        metric = evaluate.load("wer")
+        wer = 100 * metric.compute(predictions=pred_str, references=label_str)
         return {"wer": wer}
     
     def compute_spectrograms(self, example) ->  dict:
