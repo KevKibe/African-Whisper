@@ -52,13 +52,6 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Extract tag name
-        id: extract_tag
-        run: echo ::set-output name=tag::${GITHUB_REF/refs\/tags\//}
-
-      - name: Set version in setup.cfg
-        run: sed -i "s|version =.*|version = ${{ steps.extract_tag.outputs.tag }}/g" setup.cfg
-
       - name: Publish distribution 📦 to PyPI
         run: |
           python3 -m pip install twine
