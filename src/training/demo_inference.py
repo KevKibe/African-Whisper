@@ -3,6 +3,7 @@ import gradio as gr
 import pytube as pt
 from transformers import pipeline, WhisperTokenizer
 
+
 class WhisperDemo:
     def __init__(self, model_name, language_abbr, tokenizer, huggingface_read_token):
         self.model_name = model_name
@@ -22,7 +23,11 @@ class WhisperDemo:
             chunk_length_s=30,
             device=device,
         )
-        self.pipe.model.config.forced_decoder_ids = self.pipe.tokenizer.get_decoder_prompt_ids(language=self.language_abbr, task="transcribe")
+        self.pipe.model.config.forced_decoder_ids = (
+            self.pipe.tokenizer.get_decoder_prompt_ids(
+                language=self.language_abbr, task="transcribe"
+            )
+        )
 
     def transcribe(self, microphone, file_upload):
         warn_output = ""
@@ -33,7 +38,9 @@ class WhisperDemo:
             )
 
         elif (microphone is None) and (file_upload is None):
-            return "ERROR: You have to either use the microphone or upload an audio file"
+            return (
+                "ERROR: You have to either use the microphone or upload an audio file"
+            )
 
         file = microphone if microphone is not None else file_upload
         text = self.pipe(file)["text"]
@@ -74,7 +81,13 @@ class WhisperDemo:
 
         yt_transcribe_interface = gr.Interface(
             fn=self.yt_transcribe,
-            inputs=[gr.Textbox(lines=1, placeholder="Paste the URL to a YouTube video here", label="YouTube URL")],
+            inputs=[
+                gr.Textbox(
+                    lines=1,
+                    placeholder="Paste the URL to a YouTube video here",
+                    label="YouTube URL",
+                )
+            ],
             outputs=["html", "text"],
             title="Whisper Demo: Transcribe YouTube",
             description=(
@@ -85,5 +98,8 @@ class WhisperDemo:
             allow_flagging="never",
         )
 
-        demo = gr.TabbedInterface([mf_transcribe, yt_transcribe_interface], ["Transcribe Audio", "Transcribe YouTube"])
+        demo = gr.TabbedInterface(
+            [mf_transcribe, yt_transcribe_interface],
+            ["Transcribe Audio", "Transcribe YouTube"],
+        )
         demo.launch(share=True)

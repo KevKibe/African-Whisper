@@ -2,13 +2,16 @@ from datasets import DatasetDict
 import librosa
 from transformers import PreTrainedTokenizer
 
+
 class AudioDataProcessor:
     """
     Processes audio datasets for use in whisper models, including cleaning and resampling.
 
     """
-    
-    def __init__(self, dataset: DatasetDict, feature_extractor, tokenizer: PreTrainedTokenizer):
+
+    def __init__(
+        self, dataset: DatasetDict, feature_extractor, tokenizer: PreTrainedTokenizer
+    ):
         """
         Initializes the DatasetProcessor with the dataset, feature extractor, and tokenizer.
 
@@ -28,7 +31,17 @@ class AudioDataProcessor:
         Returns:
             DatasetDict: The cleaned dataset.
         """
-        columns_to_remove = ["accent", "age", "client_id", "down_votes", "gender", "locale", "path", "segment", "up_votes"]
+        columns_to_remove = [
+            "accent",
+            "age",
+            "client_id",
+            "down_votes",
+            "gender",
+            "locale",
+            "path",
+            "segment",
+            "up_votes",
+        ]
         self.dataset = self.dataset.remove_columns(columns_to_remove)
         return self.dataset
 
@@ -42,12 +55,18 @@ class AudioDataProcessor:
         Returns:
             dict: The updated sample resampled to 16000kHz.
         """
-        resampled_audio = librosa.resample(sample["audio"]["array"], orig_sr=sample["audio"]["sampling_rate"], target_sr=16000)
+        resampled_audio = librosa.resample(
+            sample["audio"]["array"],
+            orig_sr=sample["audio"]["sampling_rate"],
+            target_sr=16000,
+        )
 
         sample["audio"]["array"] = resampled_audio
         sample["audio"]["sampling_rate"] = 16000
 
-        audio_features = self.feature_extractor(resampled_audio, sampling_rate=16000).input_features[0]
+        audio_features = self.feature_extractor(
+            resampled_audio, sampling_rate=16000
+        ).input_features[0]
 
         tokenized_sentence = self.tokenizer(sample["sentence"]).input_ids
 
@@ -55,9 +74,3 @@ class AudioDataProcessor:
         sample["labels"] = tokenized_sentence
 
         return sample
-
-        
-
-
-
-

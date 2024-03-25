@@ -1,5 +1,6 @@
 from transformers.integrations import WandbCallback
 import holoviews as hv
+
 hv.extension("bokeh", logo=False)
 import panel as pn
 import numpy as np
@@ -12,11 +13,11 @@ from pathlib import Path
 from io import StringIO
 
 
-
 class RecordAnalyzer:
     """
     Class to analyze and process records from a dataset.
     """
+
     def __init__(self):
         self.tokenizer = None
 
@@ -32,7 +33,7 @@ class RecordAnalyzer:
         """
         audio_array = np.array(sample_record["audio"]["array"])
         audio_sr = sample_record["audio"]["sampling_rate"]
-        audio_data = sample_record['audio']
+        audio_data = sample_record["audio"]
         audio_duration = len(audio_data) / 16000
         audio_spectrogram = np.array(sample_record["spectrogram"])
 
@@ -40,24 +41,32 @@ class RecordAnalyzer:
 
         waveform_int = np.int16(audio_array * 32767)
 
-        hv_audio = pn.pane.Audio(waveform_int, sample_rate=audio_sr, name='Audio', throttle=500)
+        hv_audio = pn.pane.Audio(
+            waveform_int, sample_rate=audio_sr, name="Audio", throttle=500
+        )
 
         slider = pn.widgets.FloatSlider(end=audio_duration, visible=False, step=0.001)
-        line_audio = hv.VLine(0).opts(color='black')
-        line_spec = hv.VLine(0).opts(color='red')
+        line_audio = hv.VLine(0).opts(color="black")
+        line_spec = hv.VLine(0).opts(color="red")
 
-        slider.jslink(hv_audio, value='time', bidirectional=True)
-        slider.jslink(line_audio, value='glyph.location')
-        slider.jslink(line_spec, value='glyph.location')
+        slider.jslink(hv_audio, value="time", bidirectional=True)
+        slider.jslink(line_audio, value="glyph.location")
+        slider.jslink(line_spec, value="glyph.location")
 
         time = np.linspace(0, audio_duration, num=len(audio_array))
-        line_plot_hv = hv.Curve(
-            (time, audio_array), ["Time (s)", "amplitude"]).opts(
-            width=500, height=150, axiswise=True) * line_audio
+        line_plot_hv = (
+            hv.Curve((time, audio_array), ["Time (s)", "amplitude"]).opts(
+                width=500, height=150, axiswise=True
+            )
+            * line_audio
+        )
 
-        hv_spec_gram = hv.Image(
-            audio_spectrogram, bounds=(bounds), kdims=["Time (s)", "Frequency (hz)"]).opts(
-            width=500, height=150, labelled=[], axiswise=True, color_levels=512) * line_spec
+        hv_spec_gram = (
+            hv.Image(
+                audio_spectrogram, bounds=(bounds), kdims=["Time (s)", "Frequency (hz)"]
+            ).opts(width=500, height=150, labelled=[], axiswise=True, color_levels=512)
+            * line_spec
+        )
 
         combined = pn.Row(hv_audio, hv_spec_gram, line_plot_hv, slider)
         audio_html = StringIO()
@@ -77,7 +86,7 @@ class RecordAnalyzer:
         records = []
         for item in dataset:
             record = {}
-            audio_data = item['audio']
+            audio_data = item["audio"]
             audio_duration = len(audio_data) / 16000
             record["audio_with_spec"] = wandb.Html(self.record_to_html(item))
             record["sentence"] = item["sentence"]
@@ -111,18 +120,21 @@ class RecordAnalyzer:
         Returns:
             pd.DataFrame: DataFrame containing computed evaluation measures.
         """
-        measures = [jiwer.compute_measures(ls, ps) for ps, ls in zip(predictions, labels)]
-        measures_df = pd.DataFrame(measures)[["wer", "hits", "substitutions", "deletions", "insertions"]]
+        measures = [
+            jiwer.compute_measures(ls, ps) for ps, ls in zip(predictions, labels)
+        ]
+        measures_df = pd.DataFrame(measures)[
+            ["wer", "hits", "substitutions", "deletions", "insertions"]
+        ]
         return measures_df
-
-
 
 
 class WandbProgressResultsCallback(WandbCallback):
     """
     Callback class for logging training progress to Weights & Biases.
     """
-    def __init__(self, trainer, sample_dataset, tokenizer): 
+
+    def __init__(self, trainer, sample_dataset, tokenizer):
         """
         Initialize the WandbProgressResultsCallback instance.
 
@@ -137,7 +149,7 @@ class WandbProgressResultsCallback(WandbCallback):
         self.records_analyzer = RecordAnalyzer()
         self.records_df = self.records_analyzer.dataset_to_records(sample_dataset)
         self.tokenizer = tokenizer
-        
+
     def on_log(self, args, state, control, model=None, logs=None, **kwargs):
         """
         Log training progress to Weights & Biases.
@@ -155,14 +167,18 @@ class WandbProgressResultsCallback(WandbCallback):
         """
         super().on_log(args, state, control, model, logs)
         predictions = self.trainer.predict(self.sample_dataset)
-        predictions = self.records_analyzer.decode_predictions(predictions, self.tokenizer)
-        measures_df = self.records_analyzer.compute_measures(predictions, self.records_df["sentence"].tolist())
+        predictions = self.records_analyzer.decode_predictions(
+            predictions, self.tokenizer
+        )
+        measures_df = self.records_analyzer.compute_measures(
+            predictions, self.records_df["sentence"].tolist()
+        )
         records_df = pd.concat([self.records_df, measures_df], axis=1)
         records_df["prediction"] = predictions
         records_df["step"] = state.global_step
         records_table = self._wandb.Table(dataframe=records_df)
         self._wandb.log({"sample_predictions": records_table})
-        
+
     def on_save(self, args, state, control, model=None, tokenizer=None, **kwargs):
         """
         Save the trained model as an artifact in Weights & Biases.
@@ -193,8 +209,8 @@ class WandbProgressResultsCallback(WandbCallback):
                     }
                 )
                 artifact = self._wandb.Artifact(
-                    name=f"model-{self._wandb.run.id}",
-                    type="model", metadata=metadata)
+                    name=f"model-{self._wandb.run.id}", type="model", metadata=metadata
+                )
                 for f in Path(temp_dir).glob("*"):
                     if f.is_file():
                         with artifact.new_file(f.name, mode="wb") as fa:
