@@ -10,8 +10,8 @@ jobs:
       - uses: actions/setup-python@v2
       - run: pip install ruff
       - run: |
-          ruff check .
-          ruff fix .
+          ruff check src/ .
+          ruff check --fix .
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: 'Style fixes by Ruff'
