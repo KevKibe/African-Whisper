@@ -1,5 +1,6 @@
 import evaluate
 
+
 class MetricComputer:
     """
     A class to compute metrics for model predictions.
@@ -42,5 +43,3 @@ class MetricComputer:
         wer = 100 * self.metric.compute(predictions=pred_str, references=label_str)
 
         return {"wer": wer}
-
-
