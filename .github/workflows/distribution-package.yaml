@@ -1,9 +1,6 @@
 name: Build and Publish Python distribution to PyPI 
 
 on:
-  push:
-    branches:
-      - master
   release:
     types: [published]
 
