@@ -1,7 +1,4 @@
 from transformers.integrations import WandbCallback
-import holoviews as hv
-
-hv.extension("bokeh", logo=False)
 import panel as pn
 import numpy as np
 import wandb
@@ -11,6 +8,8 @@ import tempfile
 import numbers
 from pathlib import Path
 from io import StringIO
+import holoviews as hv
+hv.extension("bokeh", logo=False)
 
 
 class RecordAnalyzer:
