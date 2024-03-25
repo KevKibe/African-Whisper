@@ -53,7 +53,7 @@ jobs:
     - name: Publish distribution 📦 to PyPI
       run: |
         python3 -m pip install twine --user
-        python3 -m twine upload --repository pypi --username keviinkibe --password ${{ secrets.PYPI_API_TOKEN }} dist/africanwhisper-package-distribution/*
+        python3 -m twine upload --repository pypi --username keviinkibe --password ${{ secrets.PYPI_API_TOKEN }} africanwhisper-package-distribution/*
 
 
 
