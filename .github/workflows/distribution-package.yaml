@@ -1,12 +1,40 @@
-name: Publish Python distribution to PyPI on Release
+name: Build and Publish Python distribution to PyPI 
 
 on:
+  push:
+    branches:
+      - master
   release:
     types: [published]
 
 jobs:
+  build:
+    name: Build distribution 📦
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Install pypa/build
+        run: >-
+          python3 -m
+          pip install
+          build
+          --user
+      - name: Build a binary wheel and a source tarball
+        run: python3 -m build
+      - name: Store the distribution packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: africanwhisper-package-distribution
+          path: dist
+
   publish-to-pypi:
     name: Publish Python distribution to PyPI
+    needs: build
     runs-on: ubuntu-latest
     environment:
       name: pypi
@@ -20,7 +48,7 @@ jobs:
           path: africanwhisper-package-distribution
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
