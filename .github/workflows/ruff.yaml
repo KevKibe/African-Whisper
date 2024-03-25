@@ -13,6 +13,7 @@ jobs:
           ruff check src/ .
           ruff check --fix .
           ruff format --config=ruff.toml
+          ruff format --config=ruff.toml -- --fix
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
