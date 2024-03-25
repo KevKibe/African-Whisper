@@ -73,7 +73,7 @@ jobs:
     - name: Download all the dists
       uses: actions/download-artifact@v4
       with:
-        name: africanwhisper-package-distribution.zip
+        name: africanwhisper-package-distribution
         path: dist/
     - name: Publish distribution 📦 to TestPyPI
       run: |
