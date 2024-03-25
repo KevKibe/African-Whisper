@@ -30,6 +30,9 @@ jobs:
         name: africanwhisper-package-distribution
         path: dist/
 
+
+
+
   publish-to-pypi:
     name: >-
       Publish Python 🐍 distribution 📦 to PyPI
@@ -50,7 +53,9 @@ jobs:
     - name: Publish distribution 📦 to PyPI
       run: |
         python3 -m pip install twine --user
-        python3 -m twine upload --repository pypi --username keviinkibe __token__ --password ${{ secrets.PYPI_API_TOKEN }} dist/*
+        python3 -m twine upload --repository pypi --username keviinkibe --password ${{ secrets.PYPI_API_TOKEN }} dist/*
+
+
 
  
   publish-to-testpypi:
@@ -68,9 +73,9 @@ jobs:
     - name: Download all the dists
       uses: actions/download-artifact@v3
       with:
-        name: africanwhisper-package-distribution
+        name: africanwhisper-package-distribution.zip
         path: dist/
     - name: Publish distribution 📦 to TestPyPI
       run: |
         python3 -m pip install twine --user
-        python3 -m twine upload --repository testpypi --username keviinkibe __token__ --password ${{ secrets.PYPI_API_TOKEN }} dist/*
+        python3 -m twine upload --repository testpypi --username keviinkibe --password ${{ secrets.PYPI_API_TOKEN }} dist/*
