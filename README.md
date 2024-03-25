@@ -9,9 +9,9 @@
   </a>
 </p>
 
-<div style="text-align:center;">
-    <img src= "image.png">
-</div>
+<p align="center">
+    <img src= "image.png" width="100">
+</p>
 
 ## Description
 African Whisper is an open-source project aimed at enhancing Automatic Speech Recognition (ASR) capabilities for African languages. Leveraging the power of advanced machine learning techniques, this project fine-tunes the Whisper ASR model developed by OpenAI to better recognize and transcribe African languages.
