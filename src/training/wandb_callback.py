@@ -86,15 +86,27 @@ class RecordAnalyzer:
         records = []
         for batch in dataset:
             for item in batch:
-                record = {}
-                audio_data = item["audio"]
-                audio_duration = len(audio_data) / 16000
-                record["audio_with_spec"] = wandb.Html(self.record_to_html(item))
-                record["sentence"] = item["sentence"]
-                record["length"] = audio_duration
-                records.append(record)
-            records = pd.DataFrame(records)
-            return records
+                # Check if the item is a dictionary
+                if isinstance(item, dict):
+                    # Check if the item contains the "audio" key
+                    if "audio" in item:
+                        audio_data = item["audio"]
+                        audio_duration = len(audio_data) / 16000
+                        record = {
+                            "audio_with_spec": wandb.Html(self.record_to_html(item)),
+                            "sentence": item["sentence"],
+                            "length": audio_duration
+                        }
+                        records.append(record)
+                    else:
+                        # Handle the case where the "audio" key is missing
+                        print("Warning: Missing 'audio' key in item:", item)
+                else:
+                    # Handle the case where the item is not a dictionary
+                    print("Warning: Item is not a dictionary:", item)
+        # Move the DataFrame creation outside of the loop
+        records = pd.DataFrame(records)
+        return records
 
     def decode_predictions(self, predictions, tokenizer) -> list:
         """
