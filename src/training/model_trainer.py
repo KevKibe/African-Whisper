@@ -94,6 +94,7 @@ class Trainer:
         sample_dataset = Dataset.from_list(samples)
 
         return sample_dataset
+    
     def compute_spectrograms(self, example) -> dict:
         waveform = example["audio"]["array"]
         model_prep = WhisperModelPrep(
@@ -142,7 +143,7 @@ class Trainer:
         )
 
         eval_dataset = self.dataset["test"]
-
+        # eval_dataset = self.dataset["test"].map(self.compute_spectrograms)
         # eval_dataset = self.load_samples_dataset(self.dataset["test"]).map(self.compute_spectrograms)
 
         trainer = Seq2SeqTrainer(
@@ -164,8 +165,8 @@ class Trainer:
 
         # trainer.add_callback(PushToHubCallback(output_dir=training_args.output_dir, tokenizer=tokenizer, hub_token = training_args.hub_token))
 
-        # progress_callback = WandbProgressResultsCallback(
-        #     trainer, eval_dataset, tokenizer
-        # )
-        # trainer.add_callback(progress_callback)
+        progress_callback = WandbProgressResultsCallback(
+            trainer, eval_dataset, tokenizer
+        )
+        trainer.add_callback(progress_callback)
         trainer.train()

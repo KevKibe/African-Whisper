@@ -84,16 +84,17 @@ class RecordAnalyzer:
             pd.DataFrame: DataFrame containing the processed records.
         """
         records = []
-        for item in dataset:
-            record = {}
-            audio_data = item["audio"]
-            audio_duration = len(audio_data) / 16000
-            record["audio_with_spec"] = wandb.Html(self.record_to_html(item))
-            record["sentence"] = item["sentence"]
-            record["length"] = audio_duration
-            records.append(record)
-        records = pd.DataFrame(records)
-        return records
+        for batch in dataset:
+            for item in batch:
+                record = {}
+                audio_data = item["audio"]
+                audio_duration = len(audio_data) / 16000
+                record["audio_with_spec"] = wandb.Html(self.record_to_html(item))
+                record["sentence"] = item["sentence"]
+                record["length"] = audio_duration
+                records.append(record)
+            records = pd.DataFrame(records)
+            return records
 
     def decode_predictions(self, predictions, tokenizer) -> list:
         """
