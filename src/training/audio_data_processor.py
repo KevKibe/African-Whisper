@@ -25,7 +25,7 @@ class AudioDataProcessor:
         self.processor = feature_processor
 
     
-    def prepare_dataset(self, batch) -> DatasetDict:
+    def prepare_dataset(self, batch: DatasetDict) -> DatasetDict:
         """
         Preprocesses a batch of data for training.
 
@@ -50,4 +50,21 @@ class AudioDataProcessor:
         processed_batch["labels"] = self.processor.tokenizer(batch["sentence"]).input_ids
         # print(processed_batch)
         return processed_batch
+    
+    def prepare_dataset_(self, batch):
+        # load and (possibly) resample audio datato 16kHz
+        audio = batch["audio"]
+
+        # compute log-Mel input features from input audio array 
+        batch["input_features"] = self.processor.feature_extractor(audio["array"], sampling_rate=audio["sampling_rate"]).input_features[0]
+        # compute input length of audio sample in seconds
+        batch["input_length"] = len(audio["array"]) / audio["sampling_rate"]
+        
+        # optional pre-processing steps
+        transcription = batch["sentence"]
+
+        # encode target text to label ids
+        batch["labels"] = self.processor.tokenizer(transcription).input_ids
+        print(batch)
+        return batch
 
