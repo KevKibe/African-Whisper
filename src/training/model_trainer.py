@@ -29,7 +29,8 @@ class Trainer:
         self,
         huggingface_write_token: str,
         model_id: str,
-        dataset: DatasetDict,
+        train_dataset: DatasetDict,
+        test_dataset: DatasetDict,
         model: str,
         feature_processor,
         feature_extractor,
@@ -52,7 +53,8 @@ class Trainer:
             language_abbr (str): Abbreviation for the dataset's language.
         """
         os.environ["WANDB_API_KEY"] = wandb_api_key
-        self.dataset = dataset
+        self.train_dataset = train_dataset
+        self.test_dataset = test_dataset
         self.model = model
         self.model_id = model_id
         self.tokenizer = tokenizer
@@ -98,7 +100,7 @@ class Trainer:
     def compute_spectrograms(self, example) -> dict:
         waveform = example["audio"]["array"]
         model_prep = WhisperModelPrep(
-            self.dataset, self.model_id, self.language_abbr, "transcribe", self.use_peft
+            self.model_id, self.language_abbr, "transcribe", self.use_peft
         )
         feature_extractor = model_prep.initialize_feature_extractor()
         specs = feature_extractor(
@@ -142,14 +144,12 @@ class Trainer:
             ignore_data_skip=True,
         )
 
-        eval_dataset = self.dataset["test"]
-        # eval_dataset = self.dataset["test"].map(self.compute_spectrograms)
-        # eval_dataset = self.load_samples_dataset(self.dataset["test"]).map(self.compute_spectrograms)
+        eval_dataset = self.test_dataset.map(self.compute_spectrograms)
 
         trainer = Seq2SeqTrainer(
             args=training_args,
             model=self.model,
-            train_dataset=self.dataset["train"],
+            train_dataset=self.train_dataset,
             eval_dataset=eval_dataset,
             data_collator=data_collator,
             compute_metrics=self.compute_metrics,
@@ -158,7 +158,7 @@ class Trainer:
         )
 
         model_prep = WhisperModelPrep(
-            self.dataset, self.model_id, self.language_abbr, "transcribe", self.use_peft
+            self.model_id, self.language_abbr, "transcribe", self.use_peft
         )
         tokenizer = model_prep.initialize_tokenizer()
         tokenizer.save_pretrained(training_args.output_dir)
