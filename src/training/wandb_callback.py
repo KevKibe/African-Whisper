@@ -9,7 +9,7 @@ import numbers
 from pathlib import Path
 from io import StringIO
 import holoviews as hv
-
+import datasets
 hv.extension("bokeh", logo=False)
 
 
@@ -75,33 +75,26 @@ class RecordAnalyzer:
         return audio_html
 
     def dataset_to_records(self, dataset) -> pd.DataFrame:
-        """Convert a dataset to a DataFrame of records.
+        """
+        Convert a dataset to a DataFrame of records.
 
         Args:
-        ----
             dataset (list): List of records in the dataset.
 
         Returns:
-        -------
             pd.DataFrame: DataFrame containing the processed records.
-
         """
-        records = [] #TODO: This loop needs to be removed/optimized: currently just a placeholder
-        for batch in dataset:
-            for item in batch:
-                if isinstance(item, dict):
-                    if "audio" in item:
-                        audio_data = item["audio"]
-                        audio_duration = len(audio_data) / 16000
-                        record = {
-                            "audio_with_spec": wandb.Html(self.record_to_html(item)),
-                            "sentence": item["sentence"],
-                            "length": audio_duration
-                        }
-                        records.append(record)
+        records = []
+        for item in dataset:
+            record = {}
+            audio_data = item["audio"]
+            audio_duration = len(audio_data) / 16000
+            record["audio_with_spec"] = wandb.Html(self.record_to_html(item))
+            record["sentence"] = item["sentence"]
+            record["length"] = audio_duration
+            records.append(record)
         records = pd.DataFrame(records)
         return records
-
 
     def decode_predictions(self, predictions, tokenizer) -> list:
         """Decode model predictions into human-readable format.
@@ -184,8 +177,6 @@ class WandbProgressResultsCallback(WandbCallback):
         predictions = self.records_analyzer.decode_predictions(
             predictions, self.tokenizer
         )
-        print(self.records_df.head()) 
-        print(self.records_df.info())
         measures_df = self.records_analyzer.compute_measures(
             predictions, self.records_df["sentence"].tolist()
         )
