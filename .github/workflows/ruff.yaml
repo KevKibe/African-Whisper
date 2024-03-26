@@ -11,7 +11,7 @@ jobs:
       - run: pip install ruff
       - run: |
               ruff check src/ .
-              ruff check --fix 
+              ruff check --fix src/
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
