@@ -44,7 +44,6 @@ class DataPrep:
         self.processing_task = processing_task
         self.use_peft = use_peft
         self.model_prep = WhisperModelPrep(
-            self.dataset_name,
             self.model_id,
             self.language_abbr,
             self.processing_task,
@@ -104,7 +103,7 @@ class DataPrep:
         print(f"Testing Dataset Size: {self.data_loader.count_examples(dataset['test'])}")
         dataset = dataset.cast_column("audio", Audio(sampling_rate=16000))
         processor = AudioDataProcessor(dataset, feature_extractor, tokenizer, processor)
-        processed_datasets = dataset.map(processor.prepare_dataset, remove_columns=list(next(iter(dataset.values())).features)).with_format("torch")
-        return processed_datasets
+        processed_train_dataset = dataset['train'].map(processor.prepare_dataset, remove_columns=list(next(iter(dataset.values())).features)).with_format("torch")
+        return processed_train_dataset, dataset["test"]
 
 
