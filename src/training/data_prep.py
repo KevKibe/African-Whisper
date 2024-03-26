@@ -7,7 +7,7 @@ from transformers import (
 from .load_data import Dataset
 from .whisper_model_prep import WhisperModelPrep
 from .audio_data_processor import AudioDataProcessor
-from datasets import DatasetDict
+from datasets import DatasetDict, Audio, IterableDatasetDict
 from typing import Tuple
 
 
@@ -82,7 +82,7 @@ class DataPrep:
             self.model,
         )
 
-    def load_dataset(self, feature_extractor, tokenizer) -> DatasetDict:
+    def load_dataset(self, feature_extractor, tokenizer, processor) -> DatasetDict:
         """
         Retrieves and preprocesses the specified dataset for model training and evaluation.
 
@@ -97,15 +97,14 @@ class DataPrep:
                         ready for use in model training and evaluation. Each split has been cleaned and
                         processed to include only the necessary features for model input.
         """
-        self.dataset = self.data_loader.load_dataset()
-        print(f"Training dataset size: {len(self.dataset['train'])}")
-        print(f"Test dataset size: {len(self.dataset['test'])}")
-        processor = AudioDataProcessor(self.dataset, feature_extractor, tokenizer)
-        cleaned_dataset = processor.clean_dataset()
-        cleaned_dataset["train"] = cleaned_dataset["train"].map(
-            lambda example: processor.resampled_dataset(example)
-        )
-        cleaned_dataset["test"] = cleaned_dataset["test"].map(
-            lambda example: processor.resampled_dataset(example)
-        )
-        return cleaned_dataset
+        dataset = IterableDatasetDict()
+        dataset["train"] = self.data_loader.load_streaming_dataset(split = "train")
+        dataset["test"] = self.data_loader.load_streaming_dataset(split = "test")
+        print(f"Training Dataset Size: {self.data_loader.count_examples(dataset['train'])}")
+        print(f"Testing Dataset Size: {self.data_loader.count_examples(dataset['test'])}")
+        dataset = dataset.cast_column("audio", Audio(sampling_rate=16000))
+        processor = AudioDataProcessor(dataset, feature_extractor, tokenizer, processor)
+        processed_datasets = dataset.map(processor.prepare_dataset, remove_columns=list(next(iter(dataset.values())).features)).with_format("torch")
+        return processed_datasets
+
+

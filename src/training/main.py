@@ -68,7 +68,8 @@ if __name__ == "__main__":
         use_peft=args.use_peft,
     )
     tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
-    processed_dataset = process.load_dataset(feature_extractor, tokenizer)
+
+    processed_dataset = process.load_dataset(feature_extractor, tokenizer, feature_processor)
     trainer = Trainer(
         huggingface_write_token=args.huggingface_write_token,
         model_id=args.model_id,

@@ -2,7 +2,7 @@ import os
 from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer
 from .collator import DataCollatorSpeechSeq2SeqWithPadding
 import evaluate
-from datasets import DatasetDict
+from datasets import DatasetDict, Dataset
 from .wandb_callback import WandbProgressResultsCallback
 from transformers.trainer_pt_utils import IterableDatasetShard
 from torch.utils.data import IterableDataset
@@ -84,7 +84,16 @@ class Trainer:
         metric = evaluate.load("wer")
         wer = 100 * metric.compute(predictions=pred_str, references=label_str)
         return {"wer": wer}
+    
+    def load_samples_dataset(dataset, num_samples=100):
+        samples = []
+        for i, item in enumerate(dataset):
+            samples.append(item)
+            if i == (num_samples-1):
+                break
+        sample_dataset = Dataset.from_list(samples)
 
+        return sample_dataset
     def compute_spectrograms(self, example) -> dict:
         waveform = example["audio"]["array"]
         model_prep = WhisperModelPrep(
@@ -132,7 +141,9 @@ class Trainer:
             ignore_data_skip=True,
         )
 
-        eval_dataset = self.dataset["test"].map(self.compute_spectrograms)
+        eval_dataset = self.dataset["test"]
+
+        # eval_dataset = self.load_samples_dataset(self.dataset["test"]).map(self.compute_spectrograms)
 
         trainer = Seq2SeqTrainer(
             args=training_args,
@@ -153,8 +164,8 @@ class Trainer:
 
         # trainer.add_callback(PushToHubCallback(output_dir=training_args.output_dir, tokenizer=tokenizer, hub_token = training_args.hub_token))
 
-        progress_callback = WandbProgressResultsCallback(
-            trainer, eval_dataset, tokenizer
-        )
-        trainer.add_callback(progress_callback)
+        # progress_callback = WandbProgressResultsCallback(
+        #     trainer, eval_dataset, tokenizer
+        # )
+        # trainer.add_callback(progress_callback)
         trainer.train()

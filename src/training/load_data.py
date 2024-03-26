@@ -1,5 +1,6 @@
 import os
-from datasets import load_dataset, DatasetDict
+from datasets import load_dataset, DatasetDict, interleave_datasets, IterableDatasetDict
+from typing import Optional
 
 
 class Dataset:
@@ -25,40 +26,38 @@ class Dataset:
         self.dataset_name = dataset_name
         self.language_abbr = language_abbr
 
-    def load_dataset(self) -> DatasetDict:
+    
+    def load_streaming_dataset(self, split: Optional[str] = 'train', **kwargs) -> DatasetDict:
         """
-        Checks if the dataset is available in the cache directory. If so, loads it from there.
-        Otherwise, downloads the specified dataset from Hugging Face, including 'train' and 'test' splits.
+        Load the streaming dataset.
+
+        Args:
+            split (Optional[str]): The dataset split to load. Defaults to 'train'.
+            **kwargs: Additional keyword arguments.
 
         Returns:
-            DatasetDict: The downloaded dataset.
+            DatasetDict: The loaded streaming dataset.
         """
-        cache_directory = f"./{self.language_abbr}"
-        if os.path.exists(cache_directory):
-            print(f"Loading dataset for {self.language_abbr} from cache.")
+        if "+" in split:
+            dataset_splits = [load_dataset(self.dataset_name, self.language_abbr, split=split_name, streaming=True, token = self.huggingface_token, **kwargs) for split_name in split.split("+")]
+            interleaved_dataset = interleave_datasets(dataset_splits)
+            return interleaved_dataset
         else:
-            print(
-                f"Cache directory not found for {self.language_abbr}. Downloading dataset..."
-            )
+            dataset = load_dataset(self.dataset_name, self.language_abbr, split=split, streaming=True,token = self.huggingface_token, **kwargs)
+            return dataset
+        
+    def count_examples(self, dataset: DatasetDict) -> int:
+        """
+        Count the number of examples in the dataset.
 
-        common_voice = DatasetDict()
-        common_voice["train"] = load_dataset(
-            self.dataset_name,
-            self.language_abbr,
-            split="train",
-            token=self.huggingface_token,
-            streaming=False,
-            trust_remote_code=True,
-            cache_dir=cache_directory,
-        )
-        common_voice["test"] = load_dataset(
-            self.dataset_name,
-            self.language_abbr,
-            split="test",
-            token=self.huggingface_token,
-            streaming=False,
-            trust_remote_code=True,
-            cache_dir=cache_directory,
-        )
+        Args:
+            dataset (DatasetDict): The dataset to count examples from.
 
-        return common_voice
+        Returns:
+            int: The number of examples in the dataset.
+        """
+        count = 0
+        for _ in dataset:
+            count += 1
+        return count    
+    
