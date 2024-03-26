@@ -20,7 +20,6 @@ class WhisperModelPrep:
 
     def __init__(
         self,
-        dataset: DatasetDict,
         model_id: str,
         language_abbr: str,
         processing_task: str,
@@ -36,7 +35,6 @@ class WhisperModelPrep:
             processing_task (str, optional): Task for the Whisper model.
 
         """
-        self.dataset = dataset
         self.model_id = model_id
         self.language_abbr = language_abbr
         self.processing_task = processing_task
