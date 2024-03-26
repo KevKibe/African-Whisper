@@ -184,6 +184,8 @@ class WandbProgressResultsCallback(WandbCallback):
         predictions = self.records_analyzer.decode_predictions(
             predictions, self.tokenizer
         )
+        print(self.records_df.head()) 
+        print(self.records_df.info())
         measures_df = self.records_analyzer.compute_measures(
             predictions, self.records_df["sentence"].tolist()
         )
