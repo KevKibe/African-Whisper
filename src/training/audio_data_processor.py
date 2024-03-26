@@ -25,10 +25,29 @@ class AudioDataProcessor:
         self.processor = feature_processor
 
     
-    def prepare_dataset(self, batch):
+    def prepare_dataset(self, batch) -> DatasetDict:
+        """
+        Preprocesses a batch of data for training.
+
+        This method prepares the input features, input length, and labels for a batch of data.
+
+        Args:
+            batch (dict): A dictionary representing a batch of data containing audio and sentence information.
+
+        Returns:
+            dict: A dictionary representing the processed batch with input features, input length, and labels.
+        """
         audio = batch["audio"]
-        batch["input_features"] = self.processor.feature_extractor(audio["array"], sampling_rate=audio["sampling_rate"]).input_features[0]
-        batch["input_length"] = len(audio["array"]) / audio["sampling_rate"]
-        transcription = batch["sentence"]
-        batch["labels"] = self.processor.tokenizer(transcription).input_ids
-        return batch
+        processed_batch = {
+            "audio": audio,
+            "sentence": batch["sentence"]
+        }
+        processed_batch["input_features"] = self.processor.feature_extractor(
+            audio["array"], 
+            sampling_rate=audio["sampling_rate"]
+        ).input_features[0]
+        processed_batch["input_length"] = len(audio["array"]) / audio["sampling_rate"]
+        processed_batch["labels"] = self.processor.tokenizer(batch["sentence"]).input_ids
+        
+        return processed_batch
+
