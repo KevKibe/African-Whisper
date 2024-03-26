@@ -69,11 +69,12 @@ if __name__ == "__main__":
     )
     tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
 
-    processed_dataset = process.load_dataset(feature_extractor, tokenizer, feature_processor)
+    processed_train_dataset, test_dataset = process.load_dataset(feature_extractor, tokenizer, feature_processor)
     trainer = Trainer(
         huggingface_write_token=args.huggingface_write_token,
         model_id=args.model_id,
-        dataset=processed_dataset,
+        train_dataset=processed_train_dataset,
+        test_dataset=test_dataset,
         model=model,
         feature_processor=feature_processor,
         feature_extractor=feature_extractor,
