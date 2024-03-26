@@ -48,6 +48,6 @@ class AudioDataProcessor:
         ).input_features[0]
         processed_batch["input_length"] = len(audio["array"]) / audio["sampling_rate"]
         processed_batch["labels"] = self.processor.tokenizer(batch["sentence"]).input_ids
-        
+        # print(processed_batch)
         return processed_batch
 

@@ -104,6 +104,5 @@ class DataPrep:
         dataset = dataset.cast_column("audio", Audio(sampling_rate=16000))
         processor = AudioDataProcessor(dataset, feature_extractor, tokenizer, processor)
         processed_train_dataset = dataset['train'].map(processor.prepare_dataset, remove_columns=list(next(iter(dataset.values())).features)).with_format("torch")
-        processed_test_dataset = dataset['test'].map(processor.prepare_dataset, remove_columns=list(next(iter(dataset.values())).features)).with_format("torch")
-        return processed_train_dataset, processed_test_dataset
+        return processed_train_dataset, dataset["train"]
 
