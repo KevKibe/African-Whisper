@@ -47,7 +47,7 @@ from training.demo_inference import WhisperDemo
 huggingface_read_token = " "
 huggingface_write_token = " "
 dataset_name = "mozilla-foundation/common_voice_16_1"
-language_abbr= "af" 
+language_abbr= "af" # choose a small dataset so as to not run out of memory
 model_id= "openai/whisper-small"
 processing_task= "transcribe" 
 wandb_api_key = " "
@@ -167,7 +167,6 @@ Before contributing, please take a moment to review our [Contribution Guidelines
 If you're unsure about anything or need assistance, don't hesitate to reach out to us or open an issue to discuss your ideas.
 
 We look forward to your contributions!
-
 
 
 ## License
