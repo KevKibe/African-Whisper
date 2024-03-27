@@ -97,9 +97,7 @@ def generate_demo():
             gr.Radio(["transcribe", "translate"], label="Task"),
         ],
         outputs="text",
-        layout="horizontal",
-        theme="huggingface",
-        title="Whisper Large V3: Transcribe Audio",
+        title="Whisper : Transcribe Audio",
         description=(
             "Transcribe long-form microphone or audio inputs with the click of a button! Demo uses the OpenAI Whisper"
             f" checkpoint [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and 🤗 Transformers to transcribe audio files"
@@ -115,9 +113,7 @@ def generate_demo():
             gr.Radio(["transcribe", "translate"], label="Task"),
         ],
         outputs="text",
-        layout="horizontal",
-        theme="huggingface",
-        title="Whisper Large V3: Transcribe Audio",
+        title="Whisper : Transcribe Audio",
         description=(
             "Transcribe long-form microphone or audio inputs with the click of a button! Demo uses the OpenAI Whisper"
             f" checkpoint [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and 🤗 Transformers to transcribe audio files"
@@ -133,8 +129,7 @@ def generate_demo():
             gr.Radio(["transcribe", "translate"], label="Task")
         ],
         outputs=["html", "text"],
-        theme="huggingface",
-        title="Whisper Large V3: Transcribe YouTube",
+        title="Whisper : Transcribe YouTube",
         description=(
             "Transcribe long-form YouTube videos with the click of a button! Demo uses the OpenAI Whisper checkpoint"
             f" [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and 🤗 Transformers to transcribe video files of"
