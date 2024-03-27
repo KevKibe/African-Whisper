@@ -87,65 +87,67 @@ def yt_transcribe(yt_url, task, max_filesize=75.0):
 
     return html_embed_str, text
 
+def generate_demo():
+    demo = gr.Blocks()
 
-demo = gr.Blocks()
+    mf_transcribe = gr.Interface(
+        fn=transcribe,
+        inputs=[
+            gr.inputs.Audio(source="microphone", type="filepath", optional=True),
+            gr.inputs.Radio(["transcribe", "translate"], label="Task", default="transcribe"),
+        ],
+        outputs="text",
+        layout="horizontal",
+        theme="huggingface",
+        title="Whisper Large V3: Transcribe Audio",
+        description=(
+            "Transcribe long-form microphone or audio inputs with the click of a button! Demo uses the OpenAI Whisper"
+            f" checkpoint [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and 🤗 Transformers to transcribe audio files"
+            " of arbitrary length."
+        ),
+        allow_flagging="never",
+    )
 
-mf_transcribe = gr.Interface(
-    fn=transcribe,
-    inputs=[
-        gr.inputs.Audio(source="microphone", type="filepath", optional=True),
-        gr.inputs.Radio(["transcribe", "translate"], label="Task", default="transcribe"),
-    ],
-    outputs="text",
-    layout="horizontal",
-    theme="huggingface",
-    title="Whisper Large V3: Transcribe Audio",
-    description=(
-        "Transcribe long-form microphone or audio inputs with the click of a button! Demo uses the OpenAI Whisper"
-        f" checkpoint [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and 🤗 Transformers to transcribe audio files"
-        " of arbitrary length."
-    ),
-    allow_flagging="never",
-)
+    file_transcribe = gr.Interface(
+        fn=transcribe,
+        inputs=[
+            gr.inputs.Audio(source="upload", type="filepath", optional=True, label="Audio file"),
+            gr.inputs.Radio(["transcribe", "translate"], label="Task", default="transcribe"),
+        ],
+        outputs="text",
+        layout="horizontal",
+        theme="huggingface",
+        title="Whisper Large V3: Transcribe Audio",
+        description=(
+            "Transcribe long-form microphone or audio inputs with the click of a button! Demo uses the OpenAI Whisper"
+            f" checkpoint [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and 🤗 Transformers to transcribe audio files"
+            " of arbitrary length."
+        ),
+        allow_flagging="never",
+    )
 
-file_transcribe = gr.Interface(
-    fn=transcribe,
-    inputs=[
-        gr.inputs.Audio(source="upload", type="filepath", optional=True, label="Audio file"),
-        gr.inputs.Radio(["transcribe", "translate"], label="Task", default="transcribe"),
-    ],
-    outputs="text",
-    layout="horizontal",
-    theme="huggingface",
-    title="Whisper Large V3: Transcribe Audio",
-    description=(
-        "Transcribe long-form microphone or audio inputs with the click of a button! Demo uses the OpenAI Whisper"
-        f" checkpoint [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and 🤗 Transformers to transcribe audio files"
-        " of arbitrary length."
-    ),
-    allow_flagging="never",
-)
+    yt_transcribe = gr.Interface(
+        fn=yt_transcribe,
+        inputs=[
+            gr.inputs.Textbox(lines=1, placeholder="Paste the URL to a YouTube video here", label="YouTube URL"),
+            gr.inputs.Radio(["transcribe", "translate"], label="Task", default="transcribe")
+        ],
+        outputs=["html", "text"],
+        layout="horizontal",
+        theme="huggingface",
+        title="Whisper Large V3: Transcribe YouTube",
+        description=(
+            "Transcribe long-form YouTube videos with the click of a button! Demo uses the OpenAI Whisper checkpoint"
+            f" [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and 🤗 Transformers to transcribe video files of"
+            " arbitrary length."
+        ),
+        allow_flagging="never",
+    )
 
-yt_transcribe = gr.Interface(
-    fn=yt_transcribe,
-    inputs=[
-        gr.inputs.Textbox(lines=1, placeholder="Paste the URL to a YouTube video here", label="YouTube URL"),
-        gr.inputs.Radio(["transcribe", "translate"], label="Task", default="transcribe")
-    ],
-    outputs=["html", "text"],
-    layout="horizontal",
-    theme="huggingface",
-    title="Whisper Large V3: Transcribe YouTube",
-    description=(
-        "Transcribe long-form YouTube videos with the click of a button! Demo uses the OpenAI Whisper checkpoint"
-        f" [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and 🤗 Transformers to transcribe video files of"
-        " arbitrary length."
-    ),
-    allow_flagging="never",
-)
+    with demo:
+        gr.TabbedInterface([mf_transcribe, file_transcribe, yt_transcribe], ["Microphone", "Audio file", "YouTube"])
 
-with demo:
-    gr.TabbedInterface([mf_transcribe, file_transcribe, yt_transcribe], ["Microphone", "Audio file", "YouTube"])
 
-def launch():
     demo.launch(enable_queue=True, share = True)
+
+generate_demo()
