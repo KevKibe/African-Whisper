@@ -133,7 +133,6 @@ def generate_demo():
             gr.Radio(["transcribe", "translate"], label="Task")
         ],
         outputs=["html", "text"],
-        layout="horizontal",
         theme="huggingface",
         title="Whisper Large V3: Transcribe YouTube",
         description=(
