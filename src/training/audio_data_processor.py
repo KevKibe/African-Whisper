@@ -1,6 +1,5 @@
 from datasets import DatasetDict
 from transformers import PreTrainedTokenizer
-import librosa
 
 class AudioDataProcessor:
     """
