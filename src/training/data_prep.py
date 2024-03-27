@@ -81,7 +81,7 @@ class DataPrep:
             self.model,
         )
 
-    def load_dataset(self, feature_extractor: WhisperFeatureExtractor, tokenizer: WhisperTokenizer, processor: WhisperProcessor) -> DatasetDict:
+    def load_dataset(self, feature_extractor, tokenizer, processor) -> DatasetDict:
         """
         Retrieves and preprocesses the specified dataset for model training and evaluation.
 
@@ -103,6 +103,6 @@ class DataPrep:
         print(f"Testing Dataset Size: {self.data_loader.count_examples(dataset['test'])}")
         dataset = dataset.cast_column("audio", Audio(sampling_rate=16000))
         processor = AudioDataProcessor(dataset, feature_extractor, tokenizer, processor)
-        processed_train_dataset = dataset['train'].map(processor.prepare_dataset, remove_columns=list(next(iter(dataset.values())).features)).with_format("torch")
-        return processed_train_dataset, dataset["train"]
+        processed_datasets = dataset.map(processor.prepare_dataset, remove_columns=list(next(iter(dataset.values())).features)).with_format("torch")
+        return processed_datasets
 

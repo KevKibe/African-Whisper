@@ -29,8 +29,7 @@ class Trainer:
         self,
         huggingface_write_token: str,
         model_id: str,
-        train_dataset: DatasetDict,
-        test_dataset: DatasetDict,
+        dataset: DatasetDict,
         model: str,
         feature_processor,
         feature_extractor,
@@ -53,8 +52,7 @@ class Trainer:
             language_abbr (str): Abbreviation for the dataset's language.
         """
         os.environ["WANDB_API_KEY"] = wandb_api_key
-        self.train_dataset = train_dataset
-        self.test_dataset = test_dataset
+        self.dataset = dataset
         self.model = model
         self.model_id = model_id
         self.tokenizer = tokenizer
@@ -144,12 +142,13 @@ class Trainer:
             ignore_data_skip=True,
         )
 
-        eval_dataset = self.test_dataset.map(self.compute_spectrograms)
+        # eval_dataset = self.test_dataset.map(self.compute_spectrograms)
+        eval_dataset = self.dataset["test"]
 
         trainer = Seq2SeqTrainer(
             args=training_args,
             model=self.model,
-            train_dataset=self.train_dataset,
+            train_dataset=self.dataset["train"],
             eval_dataset=eval_dataset,
             data_collator=data_collator,
             compute_metrics=self.compute_metrics,
@@ -165,8 +164,8 @@ class Trainer:
 
         # trainer.add_callback(PushToHubCallback(output_dir=training_args.output_dir, tokenizer=tokenizer, hub_token = training_args.hub_token))
 
-        progress_callback = WandbProgressResultsCallback(
-            trainer, eval_dataset, tokenizer
-        )
-        trainer.add_callback(progress_callback)
+        # progress_callback = WandbProgressResultsCallback(
+        #     trainer, eval_dataset, tokenizer
+        # )
+        # trainer.add_callback(progress_callback)
         trainer.train()
