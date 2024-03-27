@@ -94,7 +94,7 @@ def generate_demo():
         fn=transcribe,
         inputs=[
             gr.Audio(sources="microphone", type="filepath"),
-            gr.Radio(["transcribe", "translate"], label="Task", default="transcribe"),
+            gr.Radio(["transcribe", "translate"], label="Task"),
         ],
         outputs="text",
         layout="horizontal",
@@ -112,7 +112,7 @@ def generate_demo():
         fn=transcribe,
         inputs=[
             gr.Audio(sources="upload", type="filepath", label="Audio file"),
-            gr.Radio(["transcribe", "translate"], label="Task", default="transcribe"),
+            gr.Radio(["transcribe", "translate"], label="Task"),
         ],
         outputs="text",
         layout="horizontal",
@@ -130,7 +130,7 @@ def generate_demo():
         fn=yt_transcribe,
         inputs=[
             gr.Textbox(lines=1, placeholder="Paste the URL to a YouTube video here", label="YouTube URL"),
-            gr.Radio(["transcribe", "translate"], label="Task", default="transcribe")
+            gr.Radio(["transcribe", "translate"], label="Task")
         ],
         outputs=["html", "text"],
         layout="horizontal",
