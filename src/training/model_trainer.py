@@ -2,8 +2,8 @@ import os
 from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer
 from .collator import DataCollatorSpeechSeq2SeqWithPadding
 import evaluate
-from datasets import DatasetDict
-from .wandb_callback import WandbProgressResultsCallback
+from datasets import DatasetDict, Dataset
+# from .wandb_callback import WandbProgressResultsCallback
 from transformers.trainer_pt_utils import IterableDatasetShard
 from torch.utils.data import IterableDataset
 from transformers import TrainerCallback
@@ -84,11 +84,21 @@ class Trainer:
         metric = evaluate.load("wer")
         wer = 100 * metric.compute(predictions=pred_str, references=label_str)
         return {"wer": wer}
+    
+    def load_samples_dataset(dataset, num_samples=100):
+        samples = []
+        for i, item in enumerate(dataset):
+            samples.append(item)
+            if i == (num_samples-1):
+                break
+        sample_dataset = Dataset.from_list(samples)
 
+        return sample_dataset
+    
     def compute_spectrograms(self, example) -> dict:
         waveform = example["audio"]["array"]
         model_prep = WhisperModelPrep(
-            self.dataset, self.model_id, self.language_abbr, "transcribe", self.use_peft
+            self.model_id, self.language_abbr, "transcribe", self.use_peft
         )
         feature_extractor = model_prep.initialize_feature_extractor()
         specs = feature_extractor(
@@ -110,8 +120,8 @@ class Trainer:
             per_device_train_batch_size=64,
             gradient_accumulation_steps=1,
             learning_rate=1e-5,
-            warmup_steps=100,
-            max_steps=200,
+            # warmup_steps=100,
+            max_steps=100,
             gradient_checkpointing=True,
             fp16=False,
             optim="adamw_bnb_8bit",
@@ -119,9 +129,9 @@ class Trainer:
             per_device_eval_batch_size=32,
             predict_with_generate=True,
             generation_max_length=225,
-            save_steps=50,
-            eval_steps=50,
-            logging_steps=100,
+            save_steps=25,
+            eval_steps=25,
+            logging_steps=25,
             load_best_model_at_end=True,
             metric_for_best_model="wer",
             greater_is_better=False,
@@ -132,7 +142,8 @@ class Trainer:
             ignore_data_skip=True,
         )
 
-        eval_dataset = self.dataset["test"].map(self.compute_spectrograms)
+        # eval_dataset = self.test_dataset.map(self.compute_spectrograms)
+        eval_dataset = self.dataset["test"]
 
         trainer = Seq2SeqTrainer(
             args=training_args,
@@ -146,15 +157,15 @@ class Trainer:
         )
 
         model_prep = WhisperModelPrep(
-            self.dataset, self.model_id, self.language_abbr, "transcribe", self.use_peft
+            self.model_id, self.language_abbr, "transcribe", self.use_peft
         )
         tokenizer = model_prep.initialize_tokenizer()
         tokenizer.save_pretrained(training_args.output_dir)
 
         # trainer.add_callback(PushToHubCallback(output_dir=training_args.output_dir, tokenizer=tokenizer, hub_token = training_args.hub_token))
 
-        progress_callback = WandbProgressResultsCallback(
-            trainer, eval_dataset, tokenizer
-        )
-        trainer.add_callback(progress_callback)
+        # progress_callback = WandbProgressResultsCallback(
+        #     trainer, eval_dataset, tokenizer
+        # )
+        # trainer.add_callback(progress_callback)
         trainer.train()
