@@ -93,7 +93,7 @@ def generate_demo():
     mf_transcribe = gr.Interface(
         fn=transcribe,
         inputs=[
-            gr.Audio(sources="microphone", type="filepath", optional=True),
+            gr.Audio(sources="microphone", type="filepath"),
             gr.Radio(["transcribe", "translate"], label="Task", default="transcribe"),
         ],
         outputs="text",
@@ -111,7 +111,7 @@ def generate_demo():
     file_transcribe = gr.Interface(
         fn=transcribe,
         inputs=[
-            gr.Audio(sources="upload", type="filepath", optional=True, label="Audio file"),
+            gr.Audio(sources="upload", type="filepath", label="Audio file"),
             gr.Radio(["transcribe", "translate"], label="Task", default="transcribe"),
         ],
         outputs="text",
