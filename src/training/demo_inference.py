@@ -68,11 +68,30 @@ class WhisperDemo:
             inputs=[
                 gr.Audio(sources="microphone", type="filepath"),
                 gr.Audio(sources="upload", type="filepath"),
+                gr.inputs.Radio(["transcribe", "translate"], label="Task", default="transcribe")
             ],
             outputs="text",
             title="Whisper Demo: Transcribe Audio",
             description=(
                 "Transcribe long-form microphone or audio inputs with the click of a button! Demo uses the fine-tuned"
+                f" checkpoint [{self.model_name}](https://huggingface.co/{self.model_name}) and 🤗 Transformers to transcribe audio files"
+                " of arbitrary length."
+            ),
+            allow_flagging="never",
+        )
+
+        file_transcribe = gr.Interface(
+            fn=self.transcribe,
+            inputs=[
+                gr.inputs.Audio(source="upload", type="filepath", optional=True, label="Audio file"),
+                gr.inputs.Radio(["transcribe", "translate"], label="Task", default="transcribe")
+            ],
+            outputs="text",
+            layout="horizontal",
+            theme="huggingface",
+            title="Whisper Large V3: Transcribe Audio",
+            description=(
+                "Transcribe long-form microphone or audio inputs with the click of a button! Demo uses the OpenAI Whisper"
                 f" checkpoint [{self.model_name}](https://huggingface.co/{self.model_name}) and 🤗 Transformers to transcribe audio files"
                 " of arbitrary length."
             ),
@@ -86,7 +105,8 @@ class WhisperDemo:
                     lines=1,
                     placeholder="Paste the URL to a YouTube video here",
                     label="YouTube URL",
-                )
+                ),
+                gr.inputs.Radio(["transcribe", "translate"], label="Task", default="transcribe")
             ],
             outputs=["html", "text"],
             title="Whisper Demo: Transcribe YouTube",

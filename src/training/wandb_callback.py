@@ -9,7 +9,6 @@ import numbers
 from pathlib import Path
 from io import StringIO
 import holoviews as hv
-import datasets
 hv.extension("bokeh", logo=False)
 
 

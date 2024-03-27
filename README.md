@@ -34,7 +34,43 @@ A successful proof of concept has been achieved by fine-tuning the Whisper-small
 To develop a highly efficient fine-tuning pipeline utilizing the ongoing enrichment of audio datasets by the [Mozilla Foundation](https://commonvoice.mozilla.org/en), eventually having Automatic Speech Recognition (ASR) for African languages just as good as other non-African languages.
 
 
-## Setup and Installation
+## Usage on a Notebook
+
+```python
+!pip install africanwhisper
+
+from training.data_prep import DataPrep
+from training.model_trainer import Trainer
+from training.demo_inference import WhisperDemo
+
+# refer the setuup and installation section to know more about these parameters
+huggingface_read_token = " "
+huggingface_write_token = " "
+dataset_name = "mozilla-foundation/common_voice_16_1"
+language_abbr= "af" # choose a small dataset so as to not run out of memory
+model_id= "openai/whisper-small"
+processing_task= "transcribe" 
+wandb_api_key = " "
+use_peft = True
+
+# Downloading the model, tokenizer, feature extractor and processor
+process = DataPrep(huggingface_read_token, dataset_name,language_abbr,model_id, processing_task, use_peft)
+tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
+
+# Preprocessing the Dataset
+processed_dataset = process.load_dataset(feature_extractor, tokenizer) #if you get an error, restart kernel and run again
+
+# Training the model
+trainer = Trainer(huggingface_write_token, model_id, processed_dataset, model, feature_processor, feature_extractor, tokenizer, language_abbr, wandb_api_key, use_peft)
+trainer.train()
+
+# Generate demo
+model_name = " " # Your finetuned model name on huggingface hub e.g ""KevinKibe/whisper-small-af"
+demo = WhisperDemo(model_name, language_abbr, model_id, huggingface_read_token)
+demo.generate_demo()
+```
+
+## Usage on a Virtual Machine
 
 - Clone the Repository: Clone or download the application code to your local machine.
 ```
@@ -106,7 +142,7 @@ scoop install ffmpeg
 
 - To get the Gradio inference URL:
 ```
-python -m training.inference \
+python -m training.gradio_demo \
     --model_name YOUR_FINETUNED-MODEL \
     --language_abbr LANGUAGE_ABBREVIATION \
     --tokenizer OPENAI_MODEL_ID \
@@ -120,45 +156,17 @@ python -m training.inference \
 
 ## Deployment
 
-- To deploy your fine-tuned model (assuming it's on Hugging Face Hub) as a REST API endpoint, follow these instructions:
+- To deploy your fine-tuned model (assuming it's on Hugging Face Hub) as a REST API endpoint, follow this [instructions](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/deployment.md).
 
-1. Install dependencies by running the command:
-```
-pip install -r requirements.txt
-```
-
-2. Update the file `src/deployment/main.py` with:
- - model_name = "Name of the fine-tuned model to use in your huggingfacehub repo"
- - tokenizer = "Whisper model version you used to fine-tune your model e.g openai/whisper-tiny, openai/whisper-base, openai/whisper-small, openai/whisper-medium, openai/whisper-large, openai/whisper-large-v2"
- - huggingface_read_token = "Your Hugging Face authentication token for read access"
- - language_abbr = "The abbreviation of the language for the dataset you're using. Example: 'sw' for Swahili."
-
-3. Run it locally by executing the command:
-```
-uvicorn --host 0.0.0.0 main:app
-```
-
-4. Try it out by accessing the Swagger UI at `http://localhost:8000/docs` and uploading either an .mp3 file or a .wav file. Alternatively, you can use Postman with the URL `http://localhost:8000/transcribe`.
-
-5. Containerize your application using the command:
-```
-docker build -t your-docker-username/your-image-name: your-tag .
-
-```
-6. Push it to Dockerhub using the command:
-```
-docker push your-docker-username/your-image-name: your-tag
-```
 
 ## Contributing 
 Contributions are welcome and encouraged.
 
-Before contributing, please take a moment to review our [Contribution Guidelines](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/CONTRIBUT) for important information on how to contribute to this project.
+Before contributing, please take a moment to review our [Contribution Guidelines](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/CONTRIBUTING.md) for important information on how to contribute to this project.
 
 If you're unsure about anything or need assistance, don't hesitate to reach out to us or open an issue to discuss your ideas.
 
 We look forward to your contributions!
-
 
 
 ## License
