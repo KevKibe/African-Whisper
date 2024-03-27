@@ -139,9 +139,9 @@ def generate_demo():
     # )
 
     with demo:
-        gr.TabbedInterface([mf_transcribe, file_transcribe, yt_transcribe], ["Microphone", "Audio file", "YouTube"])
+        gr.TabbedInterface([mf_transcribe, file_transcribe], ["Microphone", "Audio file"])
 
 
-    demo.launch(enable_queue=True, share = True)
+    demo.launch( share = True)
 
 generate_demo()
