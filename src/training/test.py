@@ -122,21 +122,21 @@ def generate_demo():
         allow_flagging="never",
     )
 
-    yt_transcribe = gr.Interface(
-        fn=yt_transcribe,
-        inputs=[
-            gr.Textbox(lines=1, placeholder="Paste the URL to a YouTube video here", label="YouTube URL"),
-            gr.Radio(["transcribe", "translate"], label="Task")
-        ],
-        outputs=["html", "text"],
-        title="Whisper : Transcribe YouTube",
-        description=(
-            "Transcribe long-form YouTube videos with the click of a button! Demo uses the OpenAI Whisper checkpoint"
-            f" [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and 🤗 Transformers to transcribe video files of"
-            " arbitrary length."
-        ),
-        allow_flagging="never",
-    )
+    # yt_transcribe = gr.Interface(
+    #     fn=yt_transcribe,
+    #     inputs=[
+    #         gr.Textbox(lines=1, placeholder="Paste the URL to a YouTube video here", label="YouTube URL"),
+    #         gr.Radio(["transcribe", "translate"], label="Task")
+    #     ],
+    #     outputs=["html", "text"],
+    #     title="Whisper : Transcribe YouTube",
+    #     description=(
+    #         "Transcribe long-form YouTube videos with the click of a button! Demo uses the OpenAI Whisper checkpoint"
+    #         f" [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and 🤗 Transformers to transcribe video files of"
+    #         " arbitrary length."
+    #     ),
+    #     allow_flagging="never",
+    # )
 
     with demo:
         gr.TabbedInterface([mf_transcribe, file_transcribe, yt_transcribe], ["Microphone", "Audio file", "YouTube"])
