@@ -4,6 +4,7 @@ import pytube as pt
 from transformers import pipeline, WhisperTokenizer
 import os
 
+
 class WhisperDemo:
     def __init__(self, model_name, huggingface_read_token):
         self.model_name = model_name
@@ -12,7 +13,6 @@ class WhisperDemo:
 
     def initialize_pipeline(self):
         device = 0 if torch.cuda.is_available() else "cpu"
-        os.environ["HF_TOKEN"] = self.huggingface_read_token
         self.pipe = pipeline(
             task="automatic-speech-recognition",
             model=self.model_name,
