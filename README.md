@@ -14,15 +14,18 @@
 </p>
 
 ## Description
-African Whisper is an open-source project aimed at enhancing Automatic Speech Recognition (ASR) capabilities for African languages. Leveraging the power of advanced machine learning techniques, this project fine-tunes the Whisper ASR model developed by OpenAI to better recognize and transcribe African languages.
+African Whisper is an open-source project aimed at enhancing Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages. 
+This is done by developing a package to allow seamless fine-tuning and deployment of the Whisper ASR model developed by OpenAI to better recognize and transcribe African languages for all developers.
 
 ## Why Whisper?
 
 Whisper is an open-source Automatic Speech Recognition (ASR) system developed by OpenAI.<br> 
 
 Here’s why Whisper stands out: 
-- **Extensive Training Data**: Trained on 680,000 hours of multilingual and multitask supervised data from the web.
+- **Extensive Training Data**: Trained on 680,000 hours of multilingual and multitask(translation and transcription) supervised data from the web.
+
 - **Sequence-based Understanding**: Unlike Word2Vec, which lacks sequential context, Whisper considers the full sequence of spoken words, ensuring accurate context and nuance recognition.
+
 - **Simplification for Developers**: Using Whisper, developers can deploy one model for transcribing a multitude of languages, including underrepresented ones, without sacrificing quality or context.
 
 For more details, you can refer to the [Whisper ASR model paper](https://cdn.openai.com/papers/whisper.pdf).
@@ -31,41 +34,70 @@ For more details, you can refer to the [Whisper ASR model paper](https://cdn.ope
 A successful proof of concept has been achieved by fine-tuning the Whisper-small model using a Google Colab Notebook and tested on an audiofile to test the performance. The results were promising, indicating the potential of this approach for ASR in African languages. You can explore the process and results in detail in the [repository](https://github.com/KevKibe/Finetuning-WhisperSmall-LoRA-Swahili)
 
 ## Objectives
-To develop a highly efficient fine-tuning pipeline utilizing the ongoing enrichment of audio datasets by the [Mozilla Foundation](https://commonvoice.mozilla.org/en), eventually having Automatic Speech Recognition (ASR) for African languages just as good as other non-African languages.
+To develop a quick-to-use fine-tuning adn deployment pipeline utilizing audio datasets by the [Mozilla Foundation](https://commonvoice.mozilla.org/en), eventually having Automatic Speech Recognition (ASR) for African languages just as good as other non-African languages.
 
+## Features
+
+1. Fine-tune a version of [whisper](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013) on any dataset from [Mozilla's](https://huggingface.co/mozilla-foundation) Common Voice datasets.
+
+2. View your training run metrics on [Wandb](https://wandb.ai/).
+
+3. Test your fine-tuned model using Gradio UI.
+
+4. Deploy a REST API endpoint fro transcription of Audio files.
+
+5. Containerize your REST API endpoint and push to DockerHub.
+
+
+## Prerequisites
+
+- Sign up to HuggingFace and get your token keys use this [guide](https://huggingface.co/docs/hub/en/security-tokens).
+
+- Sign up ro wandb and get your token keys use this [guide](https://app.wandb.ai/login?signup=true)
 
 ## Usage on a Notebook
 
 ```python
 !pip install africanwhisper
 # restart the runtime/session: because of an issue with the latest transformers package version
+```
 
-
+```python
 from training.data_prep import DataPrep
 from training.model_trainer import Trainer
 from training.gradio_inference import WhisperDemo
-
-# refer the setuup and installation section to know more about these parameters
+```
+```python
+# refer to the Usage on VM section below to know more about these parameters
 huggingface_read_token = " "
 huggingface_write_token = " "
 dataset_name = "mozilla-foundation/common_voice_16_1"
-language_abbr= "af" # choose a small dataset so as to not run out of memory
+# choose a small dataset so as to not run out of memory, see abbreviations here https://huggingface.co/datasets/mozilla-foundation/common_voice_16_1
+language_abbr= "af" 
 model_id= "openai/whisper-small"
-processing_task= "transcribe" 
+processing_task= "automatic-speech-recognition" 
 wandb_api_key = " "
 use_peft = True
+```
 
+```python
 # Downloading the model, tokenizer, feature extractor and processor
 process = DataPrep(huggingface_read_token, dataset_name,language_abbr,model_id, processing_task, use_peft)
 tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
+```
 
+```python
 # Preprocessing the Dataset
 processed_dataset = process.load_dataset(feature_extractor, tokenizer, feature_processor) 
+```
 
+```python
 # Training the model
 trainer = Trainer(huggingface_write_token, model_id, processed_dataset, model, feature_processor, feature_extractor, tokenizer, language_abbr, wandb_api_key, use_peft)
 trainer.train()
+```
 
+```python
 # Generate demo
 model_name = " " # Your finetuned model name on huggingface hub e.g ""KevinKibe/whisper-small-af"
 demo = WhisperDemo(model_name, huggingface_read_token)
@@ -88,6 +120,10 @@ source venv/bin/activate
 - Install dependencies by running this command
 ```
 pip install -r requirements.txt
+```
+- Navigate to
+```
+cd src
 ```
 
 - To start the training , use the following command:
@@ -146,13 +182,9 @@ scoop install ffmpeg
 ```
 python -m training.gradio_demo \
     --model_name YOUR_FINETUNED-MODEL \
-    --language_abbr LANGUAGE_ABBREVIATION \
-    --tokenizer OPENAI_MODEL_ID \
     --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE \
 ```
 - **--model_name**: Name of the fine-tuned model to use in your huggingfacehub repo. This should match the model's identifier on the Hugging Face Model Hub.
-- **--language_abbr**: The abbreviation of the language for the dataset you're using. Example: 'sw' for Swahili. This is used to specify the language variant of the dataset if it supports multiple languages.
-- **--tokenizer**: Whisper model version you used to fine-tune your model e.g openai/whisper-tiny, openai/whisper-base, openai/whisper-small, openai/whisper-medium, openai/whisper-large, openai/whisper-large-v2.
 - **--huggingface_read_token**: Your Hugging Face authentication token for read access. It allows you to download datasets and models from Hugging Face.
 
 
