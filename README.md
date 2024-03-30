@@ -38,6 +38,8 @@ To develop a highly efficient fine-tuning pipeline utilizing the ongoing enrichm
 
 ```python
 !pip install africanwhisper
+# restart the runtime/session: because of an issue with the latest transformers package version
+
 
 from training.data_prep import DataPrep
 from training.model_trainer import Trainer
@@ -58,7 +60,7 @@ process = DataPrep(huggingface_read_token, dataset_name,language_abbr,model_id, 
 tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
 
 # Preprocessing the Dataset
-processed_dataset = process.load_dataset(feature_extractor, tokenizer) #if you get an error, restart kernel and run again
+processed_dataset = process.load_dataset(feature_extractor, tokenizer, feature_processor) 
 
 # Training the model
 trainer = Trainer(huggingface_write_token, model_id, processed_dataset, model, feature_processor, feature_extractor, tokenizer, language_abbr, wandb_api_key, use_peft)
