@@ -20,7 +20,7 @@ class WhisperDemo:
         )
 
     def transcribe(self, inputs, task):
-        if input is None:
+        if inputs is None:
             raise gr.Error("No audio file submitted! Please upload or record an audio file before submitting your request.")
         BATCH_SIZE = 8
         text = self.pipe(inputs, batch_size=BATCH_SIZE, generate_kwargs={"task": task}, return_timestamps=True)["text"]
@@ -28,6 +28,7 @@ class WhisperDemo:
 
     def generate_demo(self):
         self.initialize_pipeline()
+
         mf_transcribe = gr.Interface(
             fn=self.transcribe,
             inputs=[
