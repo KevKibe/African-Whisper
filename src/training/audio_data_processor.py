@@ -1,5 +1,6 @@
 from datasets import DatasetDict
 from transformers import PreTrainedTokenizer
+from typing import Dict, Any
 
 class AudioDataProcessor:
     """
@@ -23,7 +24,16 @@ class AudioDataProcessor:
         self.tokenizer = tokenizer
         self.processor = feature_processor
     
-    def prepare_dataset(self, batch):
+    def prepare_dataset(self, batch: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Prepares a batch of data for model training.
+
+        Parameters:
+        batch (Dict[str, Any]): A batch of data containing 'audio' and 'sentence' keys.
+
+        Returns:
+        Dict[str, Any]: The prepared batch with 'input_features' and 'labels' added.
+        """
         audio = batch["audio"]
         batch["input_features"] = self.processor.feature_extractor(audio["array"], sampling_rate=audio["sampling_rate"]).input_features[0]
         batch["input_length"] = len(audio["array"]) / audio["sampling_rate"]

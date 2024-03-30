@@ -117,10 +117,9 @@ class Trainer:
         )
         training_args = Seq2SeqTrainingArguments(
             output_dir=f"./{self.model_id}-{self.language_abbr}",
-            per_device_train_batch_size=64,
+            per_device_train_batch_size=32,
             gradient_accumulation_steps=1,
             learning_rate=1e-5,
-            # warmup_steps=100,
             max_steps=100,
             gradient_checkpointing=True,
             fp16=False,
@@ -141,7 +140,7 @@ class Trainer:
             remove_unused_columns=False,
             ignore_data_skip=True,
         )
-
+    
         # eval_dataset = self.test_dataset.map(self.compute_spectrograms)
         eval_dataset = self.dataset["test"]
 
@@ -161,8 +160,6 @@ class Trainer:
         )
         tokenizer = model_prep.initialize_tokenizer()
         tokenizer.save_pretrained(training_args.output_dir)
-
-        # trainer.add_callback(PushToHubCallback(output_dir=training_args.output_dir, tokenizer=tokenizer, hub_token = training_args.hub_token))
 
         # progress_callback = WandbProgressResultsCallback(
         #     trainer, eval_dataset, tokenizer
