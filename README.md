@@ -68,7 +68,7 @@ trainer.train()
 
 # Generate demo
 model_name = " " # Your finetuned model name on huggingface hub e.g ""KevinKibe/whisper-small-af"
-demo = WhisperDemo(model_name, language_abbr, model_id, huggingface_read_token)
+demo = WhisperDemo(model_name, huggingface_read_token)
 demo.generate_demo()
 ```
 
