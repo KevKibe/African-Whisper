@@ -1,14 +1,11 @@
 import torch
 import gradio as gr
-import pytube as pt
-from transformers import pipeline, WhisperTokenizer
-import os
+from transformers import pipeline
 
 
 class WhisperDemo:
     def __init__(self, model_name, huggingface_read_token):
         self.model_name = model_name
-        # self.tokenizer = tokenizer
         self.huggingface_read_token = huggingface_read_token
         self.pipe = None
 
@@ -18,7 +15,6 @@ class WhisperDemo:
             task="automatic-speech-recognition",
             model=self.model_name,
             token=self.huggingface_read_token,
-            # tokenizer=self.tokenizer,
             chunk_length_s=30,
             device=device,
         )

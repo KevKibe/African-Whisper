@@ -1,4 +1,4 @@
-from .demo_inference import WhisperDemo
+from .gradio_inference import WhisperDemo
 import argparse
 
 
