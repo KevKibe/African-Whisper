@@ -10,6 +10,7 @@ class WhisperDemo:
         self.model_name = model_name
         self.huggingface_read_token = huggingface_read_token
         self.pipe = None
+        os.environ["HF_TOKEN"] = huggingface_read_token
 
     def initialize_pipeline(self):
         device = 0 if torch.cuda.is_available() else "cpu"
@@ -64,6 +65,6 @@ class WhisperDemo:
 
         demo = gr.TabbedInterface(
             [mf_transcribe, file_transcribe],
-            ["Transcribe Audio", "Transcribe YouTube"],
+            ["Transcribe Audio", "Transcribe mp3 File"],
         )
         demo.launch(share=True)
