@@ -6,11 +6,11 @@ import os
 
 
 class WhisperDemo:
-    def __init__(self, model_name, huggingface_read_token):
+    def __init__(self, model_name, huggingface_read_token, tokenizer):
         self.model_name = model_name
+        self.tokenizer = tokenizer
         self.huggingface_read_token = huggingface_read_token
         self.pipe = None
-        os.environ["HF_TOKEN"] = huggingface_read_token
 
     def initialize_pipeline(self):
         device = 0 if torch.cuda.is_available() else "cpu"
@@ -18,6 +18,7 @@ class WhisperDemo:
             task="automatic-speech-recognition",
             model=self.model_name,
             token=self.huggingface_read_token,
+            tokenizer=self.tokenizer,
             chunk_length_s=30,
             device=device,
         )
