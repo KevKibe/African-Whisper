@@ -43,7 +43,7 @@ To develop a highly efficient fine-tuning pipeline utilizing the ongoing enrichm
 
 from training.data_prep import DataPrep
 from training.model_trainer import Trainer
-from training.demo_inference import WhisperDemo
+from training.gradio_inference import WhisperDemo
 
 # refer the setuup and installation section to know more about these parameters
 huggingface_read_token = " "
