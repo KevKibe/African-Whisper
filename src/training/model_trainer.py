@@ -9,7 +9,9 @@ from transformers.trainer_pt_utils import IterableDatasetShard
 from torch.utils.data import IterableDataset
 from transformers import TrainerCallback
 from .whisper_model_prep import WhisperModelPrep
+import warnings
 
+warnings.filterwarnings("ignore")
 
 class ShuffleCallback(TrainerCallback):
     def on_epoch_begin(self, args, state, control, train_dataloader, **kwargs):
@@ -119,7 +121,7 @@ class Trainer:
 
         # Set fp16 and fp16_full_eval to True/False based on GPU availability
         fp16 = use_gpu
-        fp16_full_eval = use_gpu
+        # fp16_full_eval = use_gpu
 
         data_collator = DataCollatorSpeechSeq2SeqWithPadding(
             processor=self.feature_processor
@@ -132,7 +134,7 @@ class Trainer:
             max_steps=100,
             gradient_checkpointing=True,
             fp16=fp16,
-            fp16_full_eval = fp16_full_eval,
+            # fp16_full_eval = fp16_full_eval,
             optim="adamw_bnb_8bit",
             evaluation_strategy="steps",
             per_device_eval_batch_size=64,

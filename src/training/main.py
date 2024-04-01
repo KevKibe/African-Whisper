@@ -1,7 +1,9 @@
 import argparse
 from .data_prep import DataPrep
 from .model_trainer import Trainer
+import warnings
 
+warnings.filterwarnings("ignore")
 
 def parse_args():
     parser = argparse.ArgumentParser(
