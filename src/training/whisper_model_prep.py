@@ -2,7 +2,9 @@ from transformers import WhisperFeatureExtractor, WhisperTokenizer, WhisperProce
 from transformers import WhisperForConditionalGeneration
 from peft import prepare_model_for_kbit_training
 from peft import LoraConfig, get_peft_model
+import warnings
 
+warnings.filterwarnings("ignore")
 
 class WhisperModelPrep:
     """Facilitates the preparation of datasets for fine-tuning with the Whisper model,
@@ -88,6 +90,7 @@ class WhisperModelPrep:
             WhisperForConditionalGeneration: The configured Whisper model ready for conditional generation tasks.
 
         """
+
         if self.use_peft:
             model = WhisperForConditionalGeneration.from_pretrained(
                 self.model_id,
