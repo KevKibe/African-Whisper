@@ -9,7 +9,8 @@ from .whisper_model_prep import WhisperModelPrep
 from .audio_data_processor import AudioDataProcessor
 from datasets import DatasetDict, Audio, IterableDatasetDict
 from typing import Tuple
-
+import warnings
+warnings.filterwarnings("ignore")
 
 class DataPrep:
     """
@@ -97,6 +98,7 @@ class DataPrep:
                         processed to include only the necessary features for model input.
         """
         dataset = IterableDatasetDict()
+        # dataset= {}
         dataset["train"] = self.data_loader.load_streaming_dataset(split = "train")
         dataset["test"] = self.data_loader.load_streaming_dataset(split = "test")
         print(f"Training Dataset Size: {self.data_loader.count_examples(dataset['train'])}")
@@ -104,5 +106,12 @@ class DataPrep:
         dataset = dataset.cast_column("audio", Audio(sampling_rate=16000))
         processor = AudioDataProcessor(dataset, feature_extractor, tokenizer, processor)
         processed_datasets = dataset.map(processor.prepare_dataset, remove_columns=list(next(iter(dataset.values())).features)).with_format("torch")
+        #TODO: Feaature in testing
+        # processed_datasets = {}
+        # for key, value in dataset.items():
+        #     processed_datasets[key] = value.map(processor.prepare_dataset, remove_columns=list(value.features)).with_format("torch")
+
+        # print(f"dataset : {processed_datasets}")
+        # print(f"dataset : {processed_datasets['train']}")
         return processed_datasets
 
