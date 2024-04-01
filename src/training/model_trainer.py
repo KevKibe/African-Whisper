@@ -2,6 +2,7 @@ import os
 from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer
 from .collator import DataCollatorSpeechSeq2SeqWithPadding
 import evaluate
+import torch
 from datasets import DatasetDict, Dataset
 # from .wandb_callback import WandbProgressResultsCallback
 from transformers.trainer_pt_utils import IterableDatasetShard
@@ -113,6 +114,13 @@ class Trainer:
         Conducts the training process using the specified model, dataset, and training configurations.
 
         """
+        # Checks if GPU is available
+        use_gpu = torch.cuda.is_available()
+
+        # Set fp16 and fp16_full_eval to True/False based on GPU availability
+        fp16 = use_gpu
+        fp16_full_eval = use_gpu
+
         data_collator = DataCollatorSpeechSeq2SeqWithPadding(
             processor=self.feature_processor
         )
@@ -123,7 +131,8 @@ class Trainer:
             learning_rate=1e-5,
             max_steps=100,
             gradient_checkpointing=True,
-            fp16=True,
+            fp16=fp16,
+            fp16_full_eval = fp16_full_eval,
             optim="adamw_bnb_8bit",
             evaluation_strategy="steps",
             per_device_eval_batch_size=64,
