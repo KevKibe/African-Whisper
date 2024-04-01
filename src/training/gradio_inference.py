@@ -1,7 +1,9 @@
 import torch
 import gradio as gr
 from transformers import pipeline
+import warnings
 
+warnings.filterwarnings("ignore")
 
 class WhisperDemo:
     def __init__(self, model_name, huggingface_read_token):
