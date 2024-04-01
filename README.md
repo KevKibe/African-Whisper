@@ -1,12 +1,18 @@
 <h1 align="center">African Whisper: ASR for African Languages</h1>
 
 <p align="center">
+  <a href="https://twitter.com/AfriWhisper">
+    <img src="https://img.shields.io/twitter/follow/AfriWhisper?style=social" alt="Twitter">
+  </a>
   <a href="https://github.com/KevKibe/African-Whisper/commits/">
-    <img src="https://img.shields.io/github/last-commit/KevKibe/African-Whisper?style=flat-square" alt="Last commit">
+    <img src="https://img.shields.io/github/last-commit/KevKibe/African-Whisper?" alt="Last commit">
   </a>
   <a href="https://github.com/KevKibe/African-Whisper/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/KevKibe/African-Whisper?style=flat-square&color=blue" alt="License">
+    <img src="https://img.shields.io/github/license/KevKibe/African-Whisper?" alt="License">
   </a>
+
+  
+
 </p>
 
 <p align="center">
@@ -53,7 +59,7 @@ To develop a quick-to-use fine-tuning adn deployment pipeline utilizing audio da
 
 - Sign up to HuggingFace and get your token keys use this [guide](https://huggingface.co/docs/hub/en/security-tokens).
 
-- Sign up ro wandb and get your token keys use this [guide](https://app.wandb.ai/login?signup=true)
+- Sign up for wandb and get your token keys use this [guide](https://app.wandb.ai/login?signup=true)
 
 ## Usage on a Notebook
 
