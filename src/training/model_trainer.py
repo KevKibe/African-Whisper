@@ -3,11 +3,12 @@ from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer
 from .collator import DataCollatorSpeechSeq2SeqWithPadding
 import evaluate
 from datasets import DatasetDict, Dataset
-# from .wandb_callback import WandbProgressResultsCallback
+from .wandb_callback import WandbProgressResultsCallback
 from transformers.trainer_pt_utils import IterableDatasetShard
 from torch.utils.data import IterableDataset
 from transformers import TrainerCallback
 from .whisper_model_prep import WhisperModelPrep
+from torch.utils.data import DataLoader
 
 
 class ShuffleCallback(TrainerCallback):
@@ -96,7 +97,8 @@ class Trainer:
         return sample_dataset
     
     def compute_spectrograms(self, example) -> dict:
-        waveform = example["audio"]["array"]
+        print(f"example of :{example}")
+        waveform = example["input_features"]
         model_prep = WhisperModelPrep(
             self.model_id, self.language_abbr, "transcribe", self.use_peft
         )
@@ -117,15 +119,15 @@ class Trainer:
         )
         training_args = Seq2SeqTrainingArguments(
             output_dir=f"./{self.model_id}-{self.language_abbr}",
-            per_device_train_batch_size=32,
+            per_device_train_batch_size=96,
             gradient_accumulation_steps=1,
             learning_rate=1e-5,
             max_steps=100,
             gradient_checkpointing=True,
-            fp16=False,
+            fp16=True,
             optim="adamw_bnb_8bit",
             evaluation_strategy="steps",
-            per_device_eval_batch_size=32,
+            per_device_eval_batch_size=64,
             predict_with_generate=True,
             generation_max_length=225,
             save_steps=25,
@@ -140,8 +142,9 @@ class Trainer:
             remove_unused_columns=False,
             ignore_data_skip=True,
         )
-    
-        # eval_dataset = self.test_dataset.map(self.compute_spectrograms)
+
+
+        # eval_dataset = self.load_samples_dataset(self.dataset["test"].map(self.compute_spectrograms))
         eval_dataset = self.dataset["test"]
 
         trainer = Seq2SeqTrainer(
