@@ -83,6 +83,7 @@ language_abbr= "af"
 model_id= "openai/whisper-small"
 processing_task= "automatic-speech-recognition" 
 wandb_api_key = " "
+# Note: PEFT only works on a notbeook with GPU-support.
 use_peft = True
 ```
 
@@ -109,6 +110,12 @@ model_name = " " # Your finetuned model name on huggingface hub e.g ""KevinKibe/
 demo = WhisperDemo(model_name, huggingface_read_token)
 demo.generate_demo()
 ```
+
+![Video Title](video.mp4)
+<video width="320" height="240" controls>
+  <source src="demo.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 ## Usage on a Virtual Machine
 
@@ -160,7 +167,7 @@ Here's a short description of each argument used in the command:
 
 - **--wandb_api_key**: Your Weights & Biases (W&B) API key. This is used for logging and tracking the training process if you're using W&B for experiment tracking.
 
-- **--use_peft**: Add this flag to fine-tune using PEFT method and omit it to do full fine-tuning.
+- **--use_peft**: Add this flag to fine-tune using PEFT method and omit it to do full fine-tuning. PEFT only works on a notebook/VM with GPU-support. 
 
 ## Inference
 
