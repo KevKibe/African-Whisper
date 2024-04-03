@@ -111,12 +111,6 @@ demo = WhisperDemo(model_name, huggingface_read_token)
 demo.generate_demo()
 ```
 
-![Video Title](video.mp4)
-<video width="320" height="240" controls>
-  <source src="demo.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
 ## Usage on a Virtual Machine
 
 - Clone the Repository: Clone or download the application code to your local machine.
@@ -134,7 +128,7 @@ source venv/bin/activate
 ```
 pip install -r requirements.txt
 ```
-- Navigate to
+- Navigate to:
 ```
 cd src
 ```
@@ -167,7 +161,7 @@ Here's a short description of each argument used in the command:
 
 - **--wandb_api_key**: Your Weights & Biases (W&B) API key. This is used for logging and tracking the training process if you're using W&B for experiment tracking.
 
-- **--use_peft**: Add this flag to fine-tune using PEFT method and omit it to do full fine-tuning. PEFT only works on a notebook/VM with GPU-support. 
+- **--use_peft**: Add this flag to fine-tune using PEFT method and omit it to do full fine-tuning. PEFT only works on a notbeook with GPU-support.
 
 ## Inference
 
