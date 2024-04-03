@@ -1,5 +1,4 @@
-from datasets import load_dataset, DatasetDict, interleave_datasets
-from typing import Optional
+from datasets import load_dataset, DatasetDict, IterableDataset
 
 
 class Dataset:
@@ -25,8 +24,8 @@ class Dataset:
         self.dataset_name = dataset_name
         self.language_abbr = language_abbr
 
-    
-    def load_streaming_dataset(self, split: Optional[str] = 'train', **kwargs) -> DatasetDict:
+
+    def load_dataset(self) -> DatasetDict:
         """
         Load the streaming dataset.
 
@@ -37,20 +36,21 @@ class Dataset:
         Returns:
             DatasetDict: The loaded streaming dataset.
         """
-        if "+" in split:
-            dataset_splits = [load_dataset(self.dataset_name, self.language_abbr, split=split_name, streaming=True, token = self.huggingface_token, **kwargs) for split_name in split.split("+")]
-            interleaved_dataset = interleave_datasets(dataset_splits)
-            return interleaved_dataset
-        else:
-            dataset = load_dataset(self.dataset_name, self.language_abbr, split=split, streaming=True,token = self.huggingface_token, **kwargs)
-            return dataset
+        dataset = DatasetDict()
+        dataset['test'] = load_dataset(self.dataset_name, self.language_abbr, split="test", 
+                                            token=self.huggingface_token, streaming=True, 
+                                            trust_remote_code=True)
+        dataset['train'] = load_dataset(self.dataset_name, self.language_abbr, split="train", 
+                                            token=self.huggingface_token, streaming=True, 
+                                            trust_remote_code=True)
+        return dataset
         
-    def count_examples(self, dataset: DatasetDict) -> int:
+    def count_examples(self, dataset: IterableDataset) -> int:
         """
         Count the number of examples in the dataset.
 
         Args:
-            dataset (DatasetDict): The dataset to count examples from.
+            dataset (IterableDataset): The dataset to count examples from.
 
         Returns:
             int: The number of examples in the dataset.
@@ -58,5 +58,4 @@ class Dataset:
         count = 0
         for _ in dataset:
             count += 1
-        return count    
-    
+        return count
