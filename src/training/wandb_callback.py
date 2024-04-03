@@ -8,8 +8,10 @@ import tempfile
 import numbers
 from pathlib import Path
 from io import StringIO
+import warnings
 import holoviews as hv
 hv.extension("bokeh", logo=False)
+warnings.filterwarnings("ignore")
 
 
 class RecordAnalyzer:
