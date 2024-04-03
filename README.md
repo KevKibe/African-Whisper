@@ -131,7 +131,7 @@ trainer.train(max_steps=100,
 #     per_device_train_batch_size (int): The batch size per GPU for training (default is 96).
 #     per_device_eval_batch_size (int): The batch size per GPU for evaluation (default is 64).
 #     optim (str): The optimizer used for training (default is "adamw_bnb_8bit")
-# Find the docs here https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Seq2SeqTrainingArguments
+
 ```
 
 ```python
