@@ -80,7 +80,7 @@ To develop a quick-to-use fine-tuning and deployment pipeline utilizing audio da
 
 <details>
 
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/qj48Chu4i4k?si=K7gTgOsDbfoBQ1AI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qj48Chu4i4k?si=K7gTgOsDbfoBQ1AI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 </details>
 
