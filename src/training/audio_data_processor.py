@@ -1,6 +1,7 @@
 from datasets import DatasetDict
 from transformers import PreTrainedTokenizer
 from typing import Dict, Any
+import librosa
 
 class AudioDataProcessor:
     """
@@ -24,19 +25,28 @@ class AudioDataProcessor:
         self.tokenizer = tokenizer
         self.processor = feature_processor
     
-    def prepare_dataset(self, batch: Dict[str, Any]) -> Dict[str, Any]:
+    
+    def resampled_dataset(self, sample: Dict[str, Any]) -> DatasetDict:
         """
-        Prepares a batch of data for model training.
+        Resamples the audio data to the required sampling rate and extracts features using the feature extractor.
 
         Parameters:
-        batch (Dict[str, Any]): A batch of data containing 'audio' and 'sentence' keys.
+            example (dict): A single sample from the dataset, containing 'audio' and 'sentence' keys.
 
         Returns:
-        Dict[str, Any]: The prepared batch with 'input_features' and 'labels' added.
+            dict: The updated sample resampled to 16000kHz.
         """
-        audio = batch["audio"]
-        batch["input_features"] = self.processor.feature_extractor(audio["array"], sampling_rate=audio["sampling_rate"]).input_features[0]
-        batch["input_length"] = len(audio["array"]) / audio["sampling_rate"]
-        transcription = batch["sentence"]
-        batch["labels"] = self.processor.tokenizer(transcription).input_ids
-        return batch
+        resampled_audio = librosa.resample(sample["audio"]["array"], orig_sr=sample["audio"]["sampling_rate"], target_sr=16000)
+
+        sample["audio"]["array"] = resampled_audio
+        sample["audio"]["sampling_rate"] = 16000
+
+        audio_features = self.feature_extractor(resampled_audio, sampling_rate=16000).input_features[0]
+
+        tokenized_sentence = self.tokenizer(sample["sentence"]).input_ids
+
+        sample["input_features"] = audio_features
+        sample["labels"] = tokenized_sentence
+
+        return sample
+    

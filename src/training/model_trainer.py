@@ -3,12 +3,13 @@ from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer
 from .collator import DataCollatorSpeechSeq2SeqWithPadding
 import evaluate
 import torch
-from datasets import DatasetDict, Dataset
-# from .wandb_callback import WandbProgressResultsCallback
+from datasets import DatasetDict
+from .wandb_callback import WandbProgressResultsCallback
 from transformers.trainer_pt_utils import IterableDatasetShard
 from torch.utils.data import IterableDataset
 from transformers import TrainerCallback
 from .whisper_model_prep import WhisperModelPrep
+from typing import Dict, Any
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -88,19 +89,21 @@ class Trainer:
         wer = 100 * metric.compute(predictions=pred_str, references=label_str)
         return {"wer": wer}
     
-    def load_samples_dataset(dataset, num_samples=100):
-        samples = []
-        for i, item in enumerate(dataset):
-            samples.append(item)
-            if i == (num_samples-1):
-                break
-        sample_dataset = Dataset.from_list(samples)
 
-        return sample_dataset
-    
-    def compute_spectrograms(self, example) -> dict:
-        print(f"example of :{example}")
-        waveform = example["input_features"]
+    def compute_spectrograms(self, example: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Computes spectrograms from audio waveform.
+
+        Args:
+            example (dict): A dictionary containing audio waveform data.
+
+        Returns:
+            dict: A dictionary containing computed spectrogram data.
+
+        Raises:
+            KeyError: If the input example does not contain the required keys.
+        """
+        waveform = example["audio"]["array"]
         model_prep = WhisperModelPrep(
             self.model_id, self.language_abbr, "transcribe", self.use_peft
         )
@@ -110,34 +113,42 @@ class Trainer:
         ).input_features[0]
         return {"spectrogram": specs}
 
-    def train(self):
+    def train(self,
+          max_steps: int = 100,
+          learning_rate: float = 1e-5,
+          per_device_train_batch_size: int = 96,
+          per_device_eval_batch_size: int = 64,
+          optim: str = "adamw_bnb_8bit"):
         """
-
         Conducts the training process using the specified model, dataset, and training configurations.
 
+        Args:
+            max_steps (int, optional): Maximum number of training steps. Defaults to 100.
+            learning_rate (float, optional): Learning rate for training. Defaults to 1e-5.
+            per_device_train_batch_size (int, optional): Batch size per GPU for training. Defaults to 96.
+            per_device_eval_batch_size (int, optional): Batch size per GPU for evaluation. Defaults to 64.
+            optim (str, optional): Optimizer to use for training. Defaults to "adamw_bnb_8bit".
         """
         # Checks if GPU is available
         use_gpu = torch.cuda.is_available()
 
-        # Set fp16 and fp16_full_eval to True/False based on GPU availability
+        # Set fp16 to True/False based on GPU availability
         fp16 = use_gpu
-        # fp16_full_eval = use_gpu
 
         data_collator = DataCollatorSpeechSeq2SeqWithPadding(
             processor=self.feature_processor
         )
         training_args = Seq2SeqTrainingArguments(
             output_dir=f"./{self.model_id}-{self.language_abbr}",
-            per_device_train_batch_size=96,
+            per_device_train_batch_size=per_device_train_batch_size,
             gradient_accumulation_steps=1,
-            learning_rate=1e-5,
-            max_steps=100,
+            learning_rate=learning_rate,
+            max_steps=max_steps,
             gradient_checkpointing=True,
             fp16=fp16,
-            # fp16_full_eval = fp16_full_eval,
-            optim="adamw_bnb_8bit",
+            optim=optim,
             evaluation_strategy="steps",
-            per_device_eval_batch_size=64,
+            per_device_eval_batch_size=per_device_eval_batch_size,
             predict_with_generate=True,
             generation_max_length=225,
             save_steps=25,
@@ -153,9 +164,7 @@ class Trainer:
             ignore_data_skip=True,
         )
 
-
-        # eval_dataset = self.load_samples_dataset(self.dataset["test"].map(self.compute_spectrograms))
-        eval_dataset = self.dataset["test"]
+        eval_dataset = self.dataset["test"].map(self.compute_spectrograms)
 
         trainer = Seq2SeqTrainer(
             args=training_args,
@@ -174,8 +183,8 @@ class Trainer:
         tokenizer = model_prep.initialize_tokenizer()
         tokenizer.save_pretrained(training_args.output_dir)
 
-        # progress_callback = WandbProgressResultsCallback(
-        #     trainer, eval_dataset, tokenizer
-        # )
-        # trainer.add_callback(progress_callback)
+        progress_callback = WandbProgressResultsCallback(
+            trainer, eval_dataset, tokenizer
+        )
+        trainer.add_callback(progress_callback)
         trainer.train()
