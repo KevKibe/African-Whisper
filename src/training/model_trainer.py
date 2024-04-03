@@ -113,7 +113,7 @@ class Trainer:
         ).input_features[0]
         return {"spectrogram": specs}
 
-    def train(self):
+    def train(self, max_steps: int = 100, learning_rate: float = 1e-5, per_device_train_batch_size: int = 96, per_device_eval_batch_size: int = 64, optim: str = "adamw_bnb_8bit"):
         """
 
         Conducts the training process using the specified model, dataset, and training configurations.
@@ -130,15 +130,15 @@ class Trainer:
         )
         training_args = Seq2SeqTrainingArguments(
             output_dir=f"./{self.model_id}-{self.language_abbr}",
-            per_device_train_batch_size=96,
+            per_device_train_batch_size=per_device_train_batch_size,
             gradient_accumulation_steps=1,
-            learning_rate=1e-5,
-            max_steps=100,
+            learning_rate=learning_rate,
+            max_steps=max_steps,
             gradient_checkpointing=True,
             fp16=fp16,
-            optim="adamw_bnb_8bit",
+            optim=optim,
             evaluation_strategy="steps",
-            per_device_eval_batch_size=64,
+            per_device_eval_batch_size=per_device_eval_batch_size,
             predict_with_generate=True,
             generation_max_length=225,
             save_steps=25,
