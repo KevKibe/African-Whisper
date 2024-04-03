@@ -7,7 +7,7 @@ from transformers import (
 from .load_data import Dataset
 from .whisper_model_prep import WhisperModelPrep
 from .audio_data_processor import AudioDataProcessor
-from datasets import DatasetDict, Audio, IterableDatasetDict
+from datasets import DatasetDict
 from typing import Tuple
 import warnings
 warnings.filterwarnings("ignore")
@@ -82,7 +82,7 @@ class DataPrep:
             self.model,
         )
 
-    def load_dataset(self, feature_extractor, tokenizer, processor) -> DatasetDict:
+    def load_dataset(self, feature_extractor: WhisperFeatureExtractor, tokenizer: WhisperTokenizer, processor: WhisperProcessor) -> DatasetDict:
         """
         Retrieves and preprocesses the specified dataset for model training and evaluation.
 
@@ -97,21 +97,12 @@ class DataPrep:
                         ready for use in model training and evaluation. Each split has been cleaned and
                         processed to include only the necessary features for model input.
         """
-        dataset = IterableDatasetDict()
-        # dataset= {}
-        dataset["train"] = self.data_loader.load_streaming_dataset(split = "train")
-        dataset["test"] = self.data_loader.load_streaming_dataset(split = "test")
-        print(f"Training Dataset Size: {self.data_loader.count_examples(dataset['train'])}")
-        print(f"Testing Dataset Size: {self.data_loader.count_examples(dataset['test'])}")
-        dataset = dataset.cast_column("audio", Audio(sampling_rate=16000))
+        
+        dataset = self.data_loader.load_dataset()
+        # print(f"Training dataset size: {self.data_loader.count_examples(dataset['train']['dataset'])}")
+        # print(f"Test dataset size: {self.data_loader.count_examples(dataset['test']['dataset'])}")
         processor = AudioDataProcessor(dataset, feature_extractor, tokenizer, processor)
-        processed_datasets = dataset.map(processor.prepare_dataset, remove_columns=list(next(iter(dataset.values())).features)).with_format("torch")
-        #TODO: Feaature in testing
-        # processed_datasets = {}
-        # for key, value in dataset.items():
-        #     processed_datasets[key] = value.map(processor.prepare_dataset, remove_columns=list(value.features)).with_format("torch")
-
-        # print(f"dataset : {processed_datasets}")
-        # print(f"dataset : {processed_datasets['train']}")
-        return processed_datasets
+        dataset['train']= dataset['train'].map(processor.resampled_dataset, remove_columns=list(next(iter(dataset['train'])).keys()))
+        dataset['test']= dataset['test'].map(processor.resampled_dataset)
+        return dataset
 
