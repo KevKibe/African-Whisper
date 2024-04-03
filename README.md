@@ -76,13 +76,6 @@ To develop a quick-to-use fine-tuning and deployment pipeline utilizing audio da
 
 - Sign up for wandb and get your token keys use this [guide](https://app.wandb.ai/login?signup=true)
 
-## Demo Video
-
-<details>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/qj48Chu4i4k?si=K7gTgOsDbfoBQ1AI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-</details>
 
 ## Usage on a Notebook
 
@@ -126,8 +119,11 @@ processed_dataset = process.load_dataset(feature_extractor, tokenizer, feature_p
 ```python
 # Training the model
 trainer = Trainer(huggingface_write_token, model_id, processed_dataset, model, feature_processor, feature_extractor, tokenizer, language_abbr, wandb_api_key, use_peft)
-
-trainer.train(max_steps=100, learning_rate=1e-5, per_device_train_batch_size=96, per_device_eval_batch_size=64, optim="adamw_bnb_8bit")
+trainer.train(max_steps=100, 
+              learning_rate=1e-5, 
+              per_device_train_batch_size=96,  
+              per_device_eval_batch_size=64, 
+              optim="adamw_bnb_8bit")
 
 # Optional parameters for training:
 #     max_steps (int): The maximum number of training steps (default is 100).
