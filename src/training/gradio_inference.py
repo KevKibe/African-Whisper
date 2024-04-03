@@ -145,4 +145,4 @@ class WhisperDemo:
             [mf_transcribe, file_transcribe, yt_transcribe],
             ["Transcribe Audio", "Transcribe mp3 File", "Transcribe YouTube Video"],
         )
-        demo.launch(share=True)
+        demo.launch(share=True, debug=True)
