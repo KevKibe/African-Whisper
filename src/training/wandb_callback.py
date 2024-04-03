@@ -33,7 +33,7 @@ class RecordAnalyzer:
         """
         audio_array = np.array(sample_record["audio"]["array"])
         audio_sr = sample_record["audio"]["sampling_rate"]
-        audio_data = sample_record["audio"]
+        audio_data = sample_record['audio']
         audio_duration = len(audio_data) / 16000
         audio_spectrogram = np.array(sample_record["spectrogram"])
 
@@ -86,7 +86,7 @@ class RecordAnalyzer:
         records = []
         for item in dataset:
             record = {}
-            audio_data = item["audio"]
+            audio_data = item['input_features']
             audio_duration = len(audio_data) / 16000
             record["audio_with_spec"] = wandb.Html(self.record_to_html(item))
             record["sentence"] = item["sentence"]
