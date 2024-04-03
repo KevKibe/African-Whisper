@@ -39,18 +39,7 @@ Here’s why Whisper stands out:
 
 </details>
 
-## Demo Video
-<details>
 
-  <object width="425" height="350">
-    <param name="movie" value="https://youtu.be/qj48Chu4i4k?si=P490BYA7lsveef3X" />
-    <param name="wmode" value="transparent" />
-    <embed src="https://youtu.be/qj48Chu4i4k?si=P490BYA7lsveef3X"
-          type="application/x-shockwave-flash"
-          wmode="transparent" width="425" height="350" />
-  </object>
-
-</details>
 
 ## Proof of Concept
 <details>
@@ -86,6 +75,14 @@ To develop a quick-to-use fine-tuning and deployment pipeline utilizing audio da
 - Sign up to HuggingFace and get your token keys use this [guide](https://huggingface.co/docs/hub/en/security-tokens).
 
 - Sign up for wandb and get your token keys use this [guide](https://app.wandb.ai/login?signup=true)
+
+## Demo Video
+
+<details>
+
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/qj48Chu4i4k?si=K7gTgOsDbfoBQ1AI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+</details>
 
 ## Usage on a Notebook
 
