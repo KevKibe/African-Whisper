@@ -113,11 +113,21 @@ class Trainer:
         ).input_features[0]
         return {"spectrogram": specs}
 
-    def train(self, max_steps: int = 100, learning_rate: float = 1e-5, per_device_train_batch_size: int = 96, per_device_eval_batch_size: int = 64, optim: str = "adamw_bnb_8bit"):
+    def train(self,
+          max_steps: int = 100,
+          learning_rate: float = 1e-5,
+          per_device_train_batch_size: int = 96,
+          per_device_eval_batch_size: int = 64,
+          optim: str = "adamw_bnb_8bit"):
         """
-
         Conducts the training process using the specified model, dataset, and training configurations.
 
+        Args:
+            max_steps (int, optional): Maximum number of training steps. Defaults to 100.
+            learning_rate (float, optional): Learning rate for training. Defaults to 1e-5.
+            per_device_train_batch_size (int, optional): Batch size per GPU for training. Defaults to 96.
+            per_device_eval_batch_size (int, optional): Batch size per GPU for evaluation. Defaults to 64.
+            optim (str, optional): Optimizer to use for training. Defaults to "adamw_bnb_8bit".
         """
         # Checks if GPU is available
         use_gpu = torch.cuda.is_available()
