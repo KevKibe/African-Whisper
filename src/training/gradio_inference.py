@@ -19,15 +19,10 @@ class WhisperDemo:
     def initialize_pipeline(self):
         device = 0 if torch.cuda.is_available() else "cpu"
         if torch.cuda.is_available() and torch.cuda.is_bf16_supported():
-            print("fp16 available and enabled")
             dtype = torch.bfloat16
         else:
-            print("fp16 available and enabled")
             dtype = None
-        if torch.cuda.is_available() and torch.cuda.get_device_properties(device).supports_float16:
-            print("Your device supports float16 computations.")
-        else:
-            print("Your device does not support float16 computations.")
+
         self.pipe = pipeline(
             task="automatic-speech-recognition",
             model=self.model_name,
