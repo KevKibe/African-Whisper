@@ -19,7 +19,7 @@
     <img src= "image.png" width="100">
 </p>
 
-## Description
+# Description
 African Whisper is an open-source project aimed at enhancing Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages. 
 This is done by developing a package to allow seamless fine-tuning and deployment of the Whisper ASR model developed by OpenAI to better recognize and transcribe African languages for all developers.
 
@@ -77,53 +77,83 @@ To develop a quick-to-use fine-tuning and deployment pipeline utilizing audio da
 - Sign up for wandb and get your token keys use this [guide](https://app.wandb.ai/login?signup=true)
 
 
-## Usage on a Notebook
+# A Guide to Usage on a Notebook
+
+## Step 1: Installation
 
 ```python
 !pip install africanwhisper
-# Restart the runtime/session: because of an issue with the latest transformers package version
+# If you're on Colab, restart the session due to issue with numpy installation on colab.
 ```
 
-```python
-from training.data_prep import DataPrep
-from training.model_trainer import Trainer
-from training.gradio_inference import WhisperDemo
-```
+## Step 2: Set Parameters
 
 ```python
-# refer to the Usage on VM section below to know more about these parameters
+# Set the parameters (refer to the 'Usage on VM' section for more details)
 huggingface_read_token = " "
 huggingface_write_token = " "
-dataset_name = "mozilla-foundation/common_voice_16_1"
-# choose a small dataset so as to not run out of memory, see abbreviations here https://huggingface.co/datasets/mozilla-foundation/common_voice_16_1
-language_abbr= "af" 
-model_id= "openai/whisper-small"
+dataset_name = "mozilla-foundation/common_voice_16_1" 
+language_abbr= " " # Example 'af', 'sw'. see abbreviations here https://huggingface.co/datasets/mozilla-foundation/common_voice_16_1. 
+                    # Note: choose a small dataset so as to not run out of memory,
+model_id= "model-id" # Example openai/whisper-small, openai/whisper-medium
 processing_task= "automatic-speech-recognition" 
 wandb_api_key = " "
-# Note: PEFT only works on a notbeook with GPU-support.
-use_peft = True
+use_peft = True  # Note: PEFT only works on a notebook with GPU-support.
+
 ```
 
+## Step 3: Prepare the Model
 ```python
-# Downloading the model, tokenizer, feature extractor and processor
-process = DataPrep(huggingface_read_token, dataset_name,language_abbr,model_id, processing_task, use_peft)
+from training.data_prep import DataPrep
 
+# Initialize the DataPrep class and prepare the model
+process = DataPrep(
+    huggingface_read_token,
+    dataset_name,
+    language_abbr,
+    model_id,
+    processing_task,
+    use_peft
+)
 tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
+
 ```
 
+## Step 4: Preprocess the Dataset
 ```python
-# Preprocessing the Dataset
-processed_dataset = process.load_dataset(feature_extractor, tokenizer, feature_processor) 
+# Load and preprocess the dataset
+processed_dataset = process.load_dataset(
+    feature_extractor=feature_extractor,
+    tokenizer=tokenizer,
+    feature_processor=feature_processor
+)
 ```
 
+## Step 5: Train the Model
+
 ```python
-# Training the model
-trainer = Trainer(huggingface_write_token, model_id, processed_dataset, model, feature_processor, feature_extractor, tokenizer, language_abbr, wandb_api_key, use_peft)
-trainer.train(max_steps=100, 
-              learning_rate=1e-5, 
-              per_device_train_batch_size=96,  
-              per_device_eval_batch_size=64, 
-              optim="adamw_bnb_8bit")
+from training.model_trainer import Trainer
+
+# Initialize the Trainer class and train the model
+trainer = Trainer(
+    huggingface_write_token,
+    model_id,
+    processed_dataset,
+    model,
+    feature_processor,
+    feature_extractor,
+    tokenizer,
+    language_abbr,
+    wandb_api_key,
+    use_peft
+)
+trainer.train(
+    max_steps=100,
+    learning_rate=1e-5,
+    per_device_train_batch_size=96,
+    per_device_eval_batch_size=64,
+    optim="adamw_bnb_8bit"
+)
 
 # Optional parameters for training:
 #     max_steps (int): The maximum number of training steps (default is 100).
@@ -134,11 +164,37 @@ trainer.train(max_steps=100,
 
 ```
 
+## Step 6: Generate a Demo using GradioUI
 ```python
-# Generate demo
-model_name = " " # Your finetuned model name on huggingface hub e.g "KevinKibe/whisper-small-af"
+from training.gradio_inference import WhisperDemo
+
+# Generate a demo
+model_name = "your-finetuned-model-name-on-huggingface-hub" # e.g., "KevinKibe/whisper-small-af"
 demo = WhisperDemo(model_name, huggingface_read_token)
 demo.generate_demo()
+```
+
+## Step 7: Test Model using Audio File
+
+```python
+from deployment.speech_inference import SpeechInference
+
+model_name = "your-finetuned-model-name-on-huggingface-hub"  # e.g., "KevinKibe/whisper-small-af"
+huggingface_read_token = " "
+task = "desired-task"  # either 'translate' or 'transcribe'
+audiofile_dir = "location-of-audio-file"  # filetype should be .mp3 or .wav
+
+# Initialize the SpeechInference class and run inference
+inference = SpeechInference(model_name, huggingface_read_token)
+pipeline = inference.pipe_initialization()
+transcription = inference.output(pipeline, audiofile_dir, task)
+
+# Access different parts of the output
+transcription.text  # The entire text transcription.
+transcription.chunks  # List of individual text chunks with timestamps.
+transcription.timestamps  # List of timestamps for each chunk.
+transcription.chunk_texts  # List of texts for each chunk.
+
 ```
 
 ## Usage on a Virtual Machine

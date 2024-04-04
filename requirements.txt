@@ -7,7 +7,6 @@ jiwer==3.0.3
 bitsandbytes==0.43.0
 accelerate==0.27.2
 peft==0.9.0
-python-dotenv==1.0.1
 numpy==1.26.4
 wandb==0.16.5
 holoviews==1.18.3
@@ -19,3 +18,5 @@ keras==3.1.1
 scipy==1.12.0
 tensorflow-probability==0.24.0
 yt-dlp==2023.11.14
+torch==2.2.1
+
