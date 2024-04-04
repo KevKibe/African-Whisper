@@ -2,6 +2,8 @@ from datasets import DatasetDict
 from transformers import PreTrainedTokenizer
 from typing import Dict, Any
 import librosa
+import warnings
+warnings.filterwarnings("ignore")
 
 class AudioDataProcessor:
     """

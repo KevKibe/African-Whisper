@@ -1,5 +1,7 @@
 from datasets import load_dataset, DatasetDict, IterableDataset
+import warnings
 
+warnings.filterwarnings("ignore")
 
 class Dataset:
     """
