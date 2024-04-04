@@ -125,7 +125,7 @@ tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
 processed_dataset = process.load_dataset(
     feature_extractor=feature_extractor,
     tokenizer=tokenizer,
-    feature_processor=feature_processor
+    processor=feature_processor
 )
 ```
 
