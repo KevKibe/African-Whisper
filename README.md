@@ -81,7 +81,7 @@ To develop a quick-to-use fine-tuning and deployment pipeline utilizing audio da
 
 ```python
 !pip install africanwhisper
-# Restart the runtime/session: because of an issue with the latest transformers package version
+# If you're on Colab, restart the session: this is an issue with numpy installation on colab.
 ```
 
 ```python
@@ -119,11 +119,13 @@ processed_dataset = process.load_dataset(feature_extractor, tokenizer, feature_p
 ```python
 # Training the model
 trainer = Trainer(huggingface_write_token, model_id, processed_dataset, model, feature_processor, feature_extractor, tokenizer, language_abbr, wandb_api_key, use_peft)
-trainer.train(max_steps=100, 
+trainer.train(
+              max_steps=100, 
               learning_rate=1e-5, 
               per_device_train_batch_size=96,  
               per_device_eval_batch_size=64, 
-              optim="adamw_bnb_8bit")
+              optim="adamw_bnb_8bit"
+              )
 
 # Optional parameters for training:
 #     max_steps (int): The maximum number of training steps (default is 100).
@@ -136,9 +138,36 @@ trainer.train(max_steps=100,
 
 ```python
 # Generate demo
-model_name = " " # Your finetuned model name on huggingface hub e.g "KevinKibe/whisper-small-af"
+model_name = "your-finetuned-model-name-on-huggingface-hub" #e.g "KevinKibe/whisper-small-af"
 demo = WhisperDemo(model_name, huggingface_read_token)
 demo.generate_demo()
+```
+## Or
+
+```python
+
+from deployment.speech_inference import SpeechInference
+
+# example: "KevinKibe/whisper-small-af"
+model_name = "your-finetuned-model-name-on-huggingface-hub" 
+
+huggingface_read_token = "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"
+
+# either translate or transcribe
+task = "desired-task" 
+
+# filetype should be .mp3 or .wav
+audiofile_dir = "location-of-audio-file"
+
+inference = SpeechInference(model_name, huggingface_read_token)
+pipeline = inference.pipe_initialization()
+transcription = inference.output(pipeline, audiofile_dir, task)
+
+# modify the output
+transcription.text # The entire text transcription.
+transcription.chunks # List of individual text chunks with timestamps
+transcription.time_stamps # List of timestamps for each chunk
+transcription.chunk_texts # List of texts for each chunk
 ```
 
 ## Usage on a Virtual Machine
