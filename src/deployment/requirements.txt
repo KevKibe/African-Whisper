@@ -1,5 +1,5 @@
 fastapi[all]
 uvicorn[standard]
-transformers==4.38.2
-pytube==15.0.0
+transformers==4.39.1
 pydantic==2.6.4
+torch==2.2.1
