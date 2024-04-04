@@ -18,19 +18,31 @@ class WhisperDemo:
 
     def initialize_pipeline(self):
         device = 0 if torch.cuda.is_available() else "cpu"
+        if torch.cuda.is_available() and torch.cuda.is_bf16_supported():
+            print("fp16 available and enabled")
+            dtype = torch.bfloat16
+        else:
+            dtype = None
+
         self.pipe = pipeline(
             task="automatic-speech-recognition",
             model=self.model_name,
             token=self.huggingface_read_token,
-            chunk_length_s=30,
             device=device,
+            torch_dtype=dtype
         )
+
 
     def transcribe(self, inputs, task):
         if inputs is None:
             raise gr.Error("No audio file submitted! Please upload or record an audio file before submitting your request.")
-        BATCH_SIZE = 8
-        text = self.pipe(inputs, batch_size=BATCH_SIZE, generate_kwargs={"task": task}, return_timestamps=True)["text"]
+        text = self.pipe(
+                        inputs,
+                        chunk_length_s=30,
+                        batch_size=24, 
+                        return_timestamps=True,
+                        generate_kwargs={"task": task}
+                        )["text"]
         return  text
     
     def _return_yt_html_embed(self, yt_url):
