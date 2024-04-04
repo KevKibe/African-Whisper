@@ -86,16 +86,7 @@ To develop a quick-to-use fine-tuning and deployment pipeline utilizing audio da
 # If you're on Colab, restart the session due to issue with numpy installation on colab.
 ```
 
-## Step 2: Import Required Modules
-
-```python
-from training.data_prep import DataPrep
-from training.model_trainer import Trainer
-from training.gradio_inference import WhisperDemo
-from deployment.speech_inference import SpeechInference
-```
-
-## Step 3: Set Parameters
+## Step 2: Set Parameters
 
 ```python
 # Set the parameters (refer to the 'Usage on VM' section for more details)
@@ -111,8 +102,10 @@ use_peft = True  # Note: PEFT only works on a notebook with GPU-support.
 
 ```
 
-## Step 4: Prepare the Model
+## Step 3: Prepare the Model
 ```python
+from training.data_prep import DataPrep
+
 # Initialize the DataPrep class and prepare the model
 process = DataPrep(
     huggingface_read_token,
@@ -126,7 +119,7 @@ tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
 
 ```
 
-## Step 5: Preprocess the Dataset
+## Step 4: Preprocess the Dataset
 ```python
 # Load and preprocess the dataset
 processed_dataset = process.load_dataset(
@@ -136,8 +129,11 @@ processed_dataset = process.load_dataset(
 )
 ```
 
-## Step 6: Train the Model
+## Step 5: Train the Model
+
 ```python
+from training.model_trainer import Trainer
+
 # Initialize the Trainer class and train the model
 trainer = Trainer(
     huggingface_write_token,
@@ -168,17 +164,21 @@ trainer.train(
 
 ```
 
-## Step 7: Generate a Demo using GradioUI
+## Step 6: Generate a Demo using GradioUI
 ```python
+from training.gradio_inference import WhisperDemo
+
 # Generate a demo
 model_name = "your-finetuned-model-name-on-huggingface-hub" # e.g., "KevinKibe/whisper-small-af"
 demo = WhisperDemo(model_name, huggingface_read_token)
 demo.generate_demo()
 ```
 
-## Step 8: Test Model using Audio File
+## Step 7: Test Model using Audio File
 
 ```python
+from deployment.speech_inference import SpeechInference
+
 model_name = "your-finetuned-model-name-on-huggingface-hub"  # e.g., "KevinKibe/whisper-small-af"
 huggingface_read_token = " "
 task = "desired-task"  # either 'translate' or 'transcribe'
@@ -192,7 +192,7 @@ transcription = inference.output(pipeline, audiofile_dir, task)
 # Access different parts of the output
 transcription.text  # The entire text transcription.
 transcription.chunks  # List of individual text chunks with timestamps.
-transcription.time_stamps  # List of timestamps for each chunk.
+transcription.timestamps  # List of timestamps for each chunk.
 transcription.chunk_texts  # List of texts for each chunk.
 
 ```
