@@ -190,10 +190,10 @@ pipeline = inference.pipe_initialization()
 transcription = inference.output(pipeline, audiofile_dir, task)
 
 # Access different parts of the output
-transcription.text  # The entire text transcription.
-transcription.chunks  # List of individual text chunks with timestamps.
-transcription.timestamps  # List of timestamps for each chunk.
-transcription.chunk_texts  # List of texts for each chunk.
+print(transcription.text)  # The entire text transcription.
+print(transcription.chunks)  # List of individual text chunks with timestamps.
+print(transcription.timestamps)  # List of timestamps for each chunk.
+print(transcription.chunk_texts)  # List of texts for each chunk.
 
 ```
 
