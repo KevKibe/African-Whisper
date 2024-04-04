@@ -4,7 +4,7 @@ datasets==2.18.0
 librosa==0.10.1
 evaluate==0.4.1
 jiwer==3.0.3
-bitsandbytes==0.43.0
+bitsandbytes==0.42.0
 accelerate==0.27.2
 peft==0.9.0
 numpy==1.26.4
@@ -18,5 +18,4 @@ keras==3.1.1
 scipy==1.12.0
 tensorflow-probability==0.24.0
 yt-dlp==2023.11.14
-torch==2.2.1
 
