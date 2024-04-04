@@ -1,5 +1,7 @@
 import evaluate
+import warnings
 
+warnings.filterwarnings("ignore")
 
 class MetricComputer:
     """
