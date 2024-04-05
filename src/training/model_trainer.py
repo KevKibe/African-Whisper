@@ -180,6 +180,8 @@ class Trainer:
         model_prep = WhisperModelPrep(
             self.model_id, self.language_abbr, "transcribe", self.use_peft
         )
+        self.model.save_pretrained(training_args.output_dir)
+        
         tokenizer = model_prep.initialize_tokenizer()
         tokenizer.save_pretrained(training_args.output_dir)
 
