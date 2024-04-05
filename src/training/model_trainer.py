@@ -10,6 +10,7 @@ from torch.utils.data import IterableDataset
 from transformers import TrainerCallback
 from .whisper_model_prep import WhisperModelPrep
 from typing import Dict, Any
+from transformers import CONFIG_NAME
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -181,7 +182,7 @@ class Trainer:
             self.model_id, self.language_abbr, "transcribe", self.use_peft
         )
         self.model.save_pretrained(training_args.output_dir)
-        
+
         tokenizer = model_prep.initialize_tokenizer()
         tokenizer.save_pretrained(training_args.output_dir)
 
@@ -190,3 +191,6 @@ class Trainer:
         )
         trainer.add_callback(progress_callback)
         trainer.train()
+        config_file_path = os.path.join(training_args.output_dir, "adapter_config.json")
+        if os.path.exists(config_file_path):
+            os.rename(config_file_path, os.path.join(training_args.output_dir, CONFIG_NAME))
