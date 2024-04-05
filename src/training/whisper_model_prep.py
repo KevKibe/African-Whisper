@@ -100,8 +100,7 @@ class WhisperModelPrep:
             )
             model.config.forced_decoder_ids = None
             model.config.suppress_tokens = []
-            model.generation_config.language = "en"
-            model.generation_config.task = "transcribe"
+            model.generation_config.task = "automatic-speech-recognition"
             model = prepare_model_for_kbit_training(model)
             config = LoraConfig(
                 r=32,
@@ -119,7 +118,5 @@ class WhisperModelPrep:
             )
             model.config.forced_decoder_ids = None
             model.config.suppress_tokens = []
-            model.generation_config.language = "en"
-            model.generation_config.task = "transcribe"
-
+            model.generation_config.task = "automatic-speech-recognition"
         return model
