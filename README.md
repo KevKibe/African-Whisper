@@ -80,7 +80,10 @@ To develop a quick-to-use fine-tuning and deployment pipeline utilizing audio da
 
 # A Guide to Usage on a Notebook
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/qj48Chu4i4k?si=TFR7hCX5mDNI0bkw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+Click to watch the Demo
+
+[![Watch the Demo](screenshot.png)](https://youtu.be/qj48Chu4i4k?si=Vwv-6-qI7GJF7AMd)
+
 
 
 ## Step 1: Installation
