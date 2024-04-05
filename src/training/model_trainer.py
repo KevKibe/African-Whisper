@@ -1,5 +1,5 @@
 import os
-from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer
+from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer, AutoModelForCausalLM, GenerationConfig
 from .collator import DataCollatorSpeechSeq2SeqWithPadding
 import evaluate
 import torch
@@ -10,7 +10,6 @@ from torch.utils.data import IterableDataset
 from transformers import TrainerCallback
 from .whisper_model_prep import WhisperModelPrep
 from typing import Dict, Any
-from transformers import CONFIG_NAME
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -186,8 +185,7 @@ class Trainer:
         processor = model_prep.initialize_processor()
         tokenizer.save_pretrained(training_args.output_dir)
         processor.save_pretrained(training_args.output_dir)
-        self.model.save_pretrained(training_args.output_dir)
-
+        torch.save(self.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bin")
         progress_callback = WandbProgressResultsCallback(
             trainer, eval_dataset, tokenizer
         )
