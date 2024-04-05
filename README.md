@@ -152,7 +152,7 @@ trainer = Trainer(
 )
 trainer.train(
     max_steps=100,
-    learning_rate=1e-5,
+    learning_rate=1e-3,
     per_device_train_batch_size=96,
     per_device_eval_batch_size=64,
     optim="adamw_bnb_8bit"
