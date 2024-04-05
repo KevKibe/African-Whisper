@@ -140,7 +140,7 @@ class Trainer:
             processor=self.feature_processor
         )
         training_args = Seq2SeqTrainingArguments(
-            output_dir=f"./{self.model_id}-{self.language_abbr}",
+            output_dir=f"../{self.model_id}-{self.language_abbr}",
             per_device_train_batch_size=per_device_train_batch_size,
             gradient_accumulation_steps=1,
             learning_rate=learning_rate,
@@ -181,16 +181,15 @@ class Trainer:
         model_prep = WhisperModelPrep(
             self.model_id, self.language_abbr, "transcribe", self.use_peft
         )
-        self.model.save_pretrained(training_args.output_dir)
 
         tokenizer = model_prep.initialize_tokenizer()
+        processor = model_prep.initialize_processor()
         tokenizer.save_pretrained(training_args.output_dir)
+        processor.save_pretrained(training_args.output_dir)
+        self.model.save_pretrained(training_args.output_dir)
 
         progress_callback = WandbProgressResultsCallback(
             trainer, eval_dataset, tokenizer
         )
         trainer.add_callback(progress_callback)
         trainer.train()
-        config_file_path = os.path.join(training_args.output_dir, "adapter_config.json")
-        if os.path.exists(config_file_path):
-            os.rename(config_file_path, os.path.join(training_args.output_dir, CONFIG_NAME))
