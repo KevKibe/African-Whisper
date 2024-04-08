@@ -11,9 +11,6 @@
     <img src="https://img.shields.io/github/license/KevKibe/African-Whisper?" alt="License">
   </a>
 
-
-  
-
 </p>
 
 <p align="center">
@@ -21,8 +18,20 @@
 </p>
 
 # Description
-African Whisper is an open-source project aimed at enhancing Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages. 
-This is done by developing a package to allow seamless fine-tuning and deployment of the Whisper ASR model developed by OpenAI to better recognize and transcribe African languages for all developers.
+
+African Whisper is an open-source project aimed at enhancing Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages by providing *seamless fine-tuning and deploying pipelines of the Whisper model for translation and transcription of African languages*.
+
+## Features
+  
+- Fine-tune a version of [whisper](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013) on any audio dataset from  Huggingface e.g [Mozilla's](https://huggingface.co/mozilla-foundation) Common Voice datasets.
+
+- View your training run metrics on [Wandb](https://wandb.ai/).
+
+- Test your fine-tuned model using Gradio UI or directly on an audio file( .mp3 or .wav).
+
+- Deploy a REST API endpoint for transcription or translation of Audio files.
+
+- Containerize your REST API endpoint applicationand push to DockerHub.
 
 ## Why Whisper?
 
@@ -49,38 +58,16 @@ Here’s why Whisper stands out:
 
 </details>
 
-## Objectives
-<details>
 
-To develop a quick-to-use fine-tuning and deployment pipeline utilizing audio datasets by the [Mozilla Foundation](https://commonvoice.mozilla.org/en), eventually having Automatic Speech Recognition (ASR) for African languages just as good as other non-African languages.
-
-</details>
-
-## Features
-
-<details>
-  
-  1. Fine-tune a version of [whisper](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013) on any dataset from [Mozilla's](https://huggingface.co/mozilla-foundation) Common Voice datasets.
-
-  2. View your training run metrics on [Wandb](https://wandb.ai/).
-
-  3. Test your fine-tuned model using Gradio UI.
-
-  4. Deploy a REST API endpoint fro transcription of Audio files.
-
-  5. Containerize your REST API endpoint and push to DockerHub.
-</details>
+# Getting Started
 
 ## Prerequisites
 
 - Sign up to HuggingFace and get your token keys use this [guide](https://huggingface.co/docs/hub/en/security-tokens).
 
-- Sign up for wandb and get your token keys use this [guide](https://app.wandb.ai/login?signup=true)
+- Sign up to Weights and Biases and get your token keys use this [guide](https://app.wandb.ai/login?signup=true)
 
-
-# A Guide to Usage on a Notebook
-
-- Watch the Demo video [here](https://youtu.be/qj48Chu4i4k?si=Vwv-6-qI7GJF7AMd)
+![Alt Text]https://github.com/KevKibe/African-Whisper/releases/download/v0.3.0/whisper-demo-video.mp4
 
 ## Step 1: Installation
 
@@ -200,96 +187,101 @@ print(transcription.chunk_texts)  # List of texts for each chunk.
 
 ```
 
-## Usage on a Virtual Machine
+# Using the CLI
 
-<details>
+- Clone the Repository: Clone or download the application code to your local machine.
+```bash
+git clone https://github.com/KevKibe/African-Whisper.git
+```
 
-  - Clone the Repository: Clone or download the application code to your local machine.
-  ```
-  git clone https://github.com/KevKibe/African-Whisper.git
-  ```
+- Create a virtual environment for the project and activate it.
+```bash
+python3 -m venv env
+source venv/bin/activate
+```
 
-  - Create a virtual environment for the project and activate it.
-  ```
-  python3 -m venv env
-  source venv/bin/activate
-  ```
+- Install dependencies by running this command
+```bash
+pip install -r requirements.txt
+```
+- Navigate to:
+```bash
+cd src
+```
 
-  - Install dependencies by running this command
-  ```
-  pip install -r requirements.txt
-  ```
-  - Navigate to:
-  ```
-  cd src
-  ```
+- To start the training , use the following command:
+```bash
+python -m training.main --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE --huggingface_write_token YOUR_HUGGING_FACE_WRITE_TOKEN_HERE --dataset_name DATASET_NAME --language_abbr LANGUAGE_ABBREVIATION --model_id MODEL_ID --processing_task PROCESSING_TASK --wandb_api_key YOUR_WANDB_API_KEY_HERE --use_peft # leave this out to opt-out of using PEFT
+```
+Here's a short description of each argument used in the command:
 
-  - To start the training , use the following command:
-  ```
-  python -m training.main \
-      --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE \
-      --huggingface_write_token YOUR_HUGGING_FACE_WRITE_TOKEN_HERE \
-      --dataset_name DATASET_NAME \
-      --language_abbr LANGUAGE_ABBREVIATION \
-      --model_id MODEL_ID \
-      --processing_task PROCESSING_TASK \
-      --wandb_api_key YOUR_WANDB_API_KEY_HERE \
-      --use_peft 
-  ```
-  Here's a short description of each argument used in the command:
+- **--huggingface_read_token**: Your Hugging Face authentication token for read access. It allows you to download datasets and models from Hugging Face.
 
-  - **--huggingface_read_token**: Your Hugging Face authentication token for read access. It allows you to download datasets and models from Hugging Face.
+- **--huggingface_push_token**: Your Hugging Face authentication token for write access. It's used for uploading models to your Hugging Face account.
 
-  - **--huggingface_push_token**: Your Hugging Face authentication token for write access. It's used for uploading models to your Hugging Face account.
+- **--dataset_name**: The name of the dataset you wish to use for training. Example: 'mozilla-foundation/common_voice_16_1'. This should match the dataset's identifier on the Hugging Face Datasets Hub.
 
-  - **--dataset_name**: The name of the dataset you wish to use for training. Example: 'mozilla-foundation/common_voice_16_1'. This should match the dataset's identifier on the Hugging Face Datasets Hub.
+- **--language_abbr**: The abbreviation of the language for the dataset you're using. Example: 'sw' for Swahili. This is used to specify the language variant of the dataset if it supports multiple languages.
 
-  - **--language_abbr**: The abbreviation of the language for the dataset you're using. Example: 'sw' for Swahili. This is used to specify the language variant of the dataset if it supports multiple languages.
+- **--model_id**: Identifier for the pre-trained model you wish to fine-tune. Example: 'openai/whisper-small'. This should match the model's identifier on the Hugging Face Model Hub.
 
-  - **--model_id**: Identifier for the pre-trained model you wish to fine-tune. Example: 'openai/whisper-small'. This should match the model's identifier on the Hugging Face Model Hub.
+- **--processing_task**: Specifies the task for which the model is being trained. Example: 'transcribe'. This defines the objective of the model training, such as transcribing audio to text.
 
-  - **--processing_task**: Specifies the task for which the model is being trained. Example: 'transcribe'. This defines the objective of the model training, such as transcribing audio to text.
+- **--wandb_api_key**: Your Weights & Biases (W&B) API key. This is used for logging and tracking the training process if you're using W&B for experiment tracking.
 
-  - **--wandb_api_key**: Your Weights & Biases (W&B) API key. This is used for logging and tracking the training process if you're using W&B for experiment tracking.
+- **--use_peft**: Add this flag to fine-tune using PEFT method and omit it to do full fine-tuning. PEFT only works on a notbeook with GPU-support.
 
-  - **--use_peft**: Add this flag to fine-tune using PEFT method and omit it to do full fine-tuning. PEFT only works on a notbeook with GPU-support.
+### Inference
 
-  ## Inference
+- To get inference from your fine-tuned model, follow these steps:
 
-  - To get inference from your fine-tuned model, follow these steps:
+- Ensure that ffmpeg is installed by running the following commands:
 
-  - Ensure that ffmpeg is installed by running the following commands:
-  ```
-  # on Ubuntu or Debian
-  sudo apt update && sudo apt install ffmpeg
+```bash
+# on Ubuntu or Debian
+sudo apt update && sudo apt install ffmpeg
 
-  # on Arch Linux
-  sudo pacman -S ffmpeg
+# on Arch Linux
+sudo pacman -S ffmpeg
 
-  # on MacOS using Homebrew (https://brew.sh/)
-  brew install ffmpeg
+# on MacOS using Homebrew (https://brew.sh/)
+brew install ffmpeg
 
-  # on Windows using Chocolatey (https://chocolatey.org/)
-  choco install ffmpeg
+# on Windows using Chocolatey (https://chocolatey.org/)
+choco install ffmpeg
 
-  # on Windows using Scoop (https://scoop.sh/)
-  scoop install ffmpeg
-  ```
+# on Windows using Scoop (https://scoop.sh/)
+scoop install ffmpeg
+```
 
-  - To get the Gradio inference URL:
-  ```
-  python -m training.gradio_demo \
-      --model_name YOUR_FINETUNED-MODEL \
-      --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE \
-  ```
-  - **--model_name**: Name of the fine-tuned model to use in your huggingfacehub repo. This should match the model's identifier on the Hugging Face Model Hub.
-  - **--huggingface_read_token**: Your Hugging Face authentication token for read access. It allows you to download datasets and models from Hugging Face.
+- To get the Gradio inference URL:
+```bash
+python -m training.gradio_demo --model_name YOUR_FINETUNED-MODEL --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE 
+```
+- **--model_name**: Name of the fine-tuned model to use in your huggingfacehub repo. This should match the model's identifier on the Hugging Face Model Hub.
+- **--huggingface_read_token**: Your Hugging Face authentication token for read access. It allows you to download datasets and models from Hugging Face.
 
-</details>
+- To launch the REST API endpoint locally:
+
+```bash
+cd src/deployment
+```
+- Create a `.env` file using `nano .env` command and add these keys and save the file.
+```python
+MODEL_NAME = "your-finetuned-model"
+HUGGINGFACE_READ_TOKEN = "huggingface-read-token"
+```
+
+- Run this command to launch the endpoint:
+```bash
+uvicorn main:app --host 0.0.0.0 --port 8000
+```
+
+- Test it out by accessing the Swagger UI at `http://localhost:8000/docs` and uploading either an .mp3 file or a .wav file and a task either `transcribe` or `translate`. Alternatively, you can use Postman with the URL `http://localhost:8000/speechinference`.
 
 ## Deployment
 
-- To deploy your fine-tuned model (assuming it's on Hugging Face Hub) as a REST API endpoint, follow this [instructions](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/deployment.md).
+- To deploy your fine-tuned model (assuming it's on Hugging Face Hub) as a REST API endpoint, follow these [instructions](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/deployment.md).
 
 
 ## Contributing 
