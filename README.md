@@ -19,6 +19,8 @@
 
 
 *Enhancing Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages by providing seamless fine-tuning and deploying pipelines for Whisper Model*.
+![Alt text](image-1.png)
+![Alt text](diagram.png)
 
 ## Features
   
