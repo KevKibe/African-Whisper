@@ -21,7 +21,7 @@ We welcome suggestions for enhancements or new features. Please open a new issue
 We appreciate contributions via pull requests. Before submitting a pull request, please ensure that:
 
 <!-- - Your code follows our [code style guidelines](link-to-code-style-guidelines) -->
-- You have added appropriate tests (if applicable)
+- You have successfully replicated step 1 to 7 of the example on the [Getting Started section](https://github.com/KevKibe/African-Whisper/blob/master/README.md) 
 - Your pull request addresses a specific issue or feature request
 
 Please reference the relevant issue or feature request in your pull request description.
@@ -43,7 +43,7 @@ To get started with contributing to African Whisper, follow these steps:
 
 ## License
 
-By contributing to [Your Project Name], you agree to license your contributions under the [project's license](https://github.com/KevKibe/African-Whisper/blob/main/LICENSE).
+By contributing to African Whisper, you agree to license your contributions under the [project's license](https://github.com/KevKibe/African-Whisper/blob/main/LICENSE).
 
 Thank you for your contributions!
 

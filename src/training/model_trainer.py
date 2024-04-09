@@ -139,7 +139,7 @@ class Trainer:
             processor=self.feature_processor
         )
         training_args = Seq2SeqTrainingArguments(
-            output_dir=f"./{self.model_id}-{self.language_abbr}",
+            output_dir=f"../{self.model_id}-{self.language_abbr}",
             per_device_train_batch_size=per_device_train_batch_size,
             gradient_accumulation_steps=1,
             learning_rate=learning_rate,
@@ -180,9 +180,12 @@ class Trainer:
         model_prep = WhisperModelPrep(
             self.model_id, self.language_abbr, "transcribe", self.use_peft
         )
-        tokenizer = model_prep.initialize_tokenizer()
-        tokenizer.save_pretrained(training_args.output_dir)
 
+        tokenizer = model_prep.initialize_tokenizer()
+        processor = model_prep.initialize_processor()
+        tokenizer.save_pretrained(training_args.output_dir)
+        processor.save_pretrained(training_args.output_dir)
+        torch.save(self.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bin")
         progress_callback = WandbProgressResultsCallback(
             trainer, eval_dataset, tokenizer
         )
