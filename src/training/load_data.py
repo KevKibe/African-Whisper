@@ -1,5 +1,6 @@
 from datasets import load_dataset, DatasetDict, IterableDataset, interleave_datasets
 import warnings
+from typing import List
 
 warnings.filterwarnings("ignore")
 
@@ -13,7 +14,7 @@ class Dataset:
         language_abbr (str): Abbreviation of the language for the dataset.
     """
 
-    def __init__(self, huggingface_token: str, dataset_name: str, language_abbr: str):
+    def __init__(self, huggingface_token: str, dataset_name: str, language_abbr: List[str]):
         """
         Initializes the DatasetManager with necessary details for dataset operations.
 
@@ -65,12 +66,34 @@ class Dataset:
                                     trust_remote_code=True)
 
         # Load Swahili dataset
-        dataset_yi= load_dataset(self.dataset_name, "yi", 
+        dataset_yi= load_dataset(self.dataset_name, "af", 
                                     token=self.huggingface_token, streaming=True, 
                                     trust_remote_code=True)
         dataset['train'] = interleave_datasets([dataset_ti['train'], dataset_yi['train']])
         dataset['test'] = interleave_datasets([dataset_ti['test'], dataset_yi['test']])
-        return dataset
+    #     return dataset
+    
+    # def load_dataset(self) -> DatasetDict:
+    #     """
+    #     Load the streaming dataset for the specified language(s).
+
+    #     Returns:
+    #         DatasetDict: The loaded streaming dataset.
+    #     """
+    #     dataset = DatasetDict()
+
+    #     for lang in self.language_abbr:
+    #         lang_dataset = load_dataset(self.dataset_name, lang,
+    #                                     token=self.huggingface_token, streaming=True,
+    #                                     trust_remote_code=True)
+    #         if 'train' not in dataset:
+    #             dataset['train'] = lang_dataset['train']
+    #             dataset['test'] = lang_dataset['test']
+    #         else:
+    #             dataset['train'] = interleave_datasets([dataset['train'], lang_dataset['train']])
+    #             dataset['test'] = interleave_datasets([dataset['test'], lang_dataset['test']])
+
+    #     return dataset
         
     def count_examples(self, dataset: IterableDataset) -> int:
         """
