@@ -1,5 +1,5 @@
 import os
-from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer, AutoModelForCausalLM, GenerationConfig
+from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer
 from .collator import DataCollatorSpeechSeq2SeqWithPadding
 import evaluate
 import torch
