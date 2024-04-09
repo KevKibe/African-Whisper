@@ -19,3 +19,5 @@ scipy==1.12.0
 tensorflow-probability==0.24.0
 yt-dlp==2023.11.14
 ctranslate2==4.1.0
+fastapi[all]
+uvicorn[standard]
