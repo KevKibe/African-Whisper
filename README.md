@@ -19,7 +19,8 @@
 
 
 *Enhancing Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages by providing seamless fine-tuning and deploying pipelines for Whisper Model*.
-
+<br>
+![Diagram](diagram-1.png)
 ## Features
   
 - 🔧 Fine-tune the [Whisper](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013) model on any audio dataset from Huggingface, e.g., [Mozilla's](https://huggingface.co/mozilla-foundation) Common Voice datasets.
