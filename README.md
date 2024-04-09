@@ -67,7 +67,7 @@ Here’s why Whisper stands out:
 
 - Sign up to Weights and Biases and get your token keys use this [guide](https://app.wandb.ai/login?signup=true)
 
-![Alt Text]https://github.com/KevKibe/African-Whisper/releases/download/v0.3.0/whisper-demo-video.mp4
+- Demo video [here](https://youtu.be/qj48Chu4i4k?si=Vwv-6-qI7GJF7AMd)
 
 ## Step 1: Installation
 
