@@ -17,49 +17,36 @@
     <img src= "image.png" width="100">
 </p>
 
-# Description
 
-African Whisper is an open-source project aimed at enhancing Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages by providing *seamless fine-tuning and deploying pipelines of the Whisper model for translation and transcription of African languages*.
+*Enhancing Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages by providing seamless fine-tuning and deploying pipelines for Whisper Model*.
 
 ## Features
   
-- Fine-tune a version of [whisper](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013) on any audio dataset from  Huggingface e.g [Mozilla's](https://huggingface.co/mozilla-foundation) Common Voice datasets.
+- 🔧 Fine-tune the [Whisper](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013) model on any audio dataset from Huggingface, e.g., [Mozilla's](https://huggingface.co/mozilla-foundation) Common Voice datasets.
 
-- View your training run metrics on [Wandb](https://wandb.ai/).
+- 📊 View training run metrics on [Wandb](https://wandb.ai/).
 
-- Test your fine-tuned model using Gradio UI or directly on an audio file( .mp3 or .wav).
+- 🎙️ Test your fine-tuned model using Gradio UI or directly on an audio file (.mp3 or .wav).
 
-- Deploy a REST API endpoint for transcription or translation of Audio files.
+- 🚀 Deploy an API endpoint for audio file transcription or translation.
 
-- Containerize your REST API endpoint applicationand push to DockerHub.
+- 🐳 Containerize your API endpoint application and push to DockerHub.
 
-## Why Whisper?
+## Why Whisper? 🤔
 
-Whisper is an open-source Automatic Speech Recognition (ASR) system developed by OpenAI.<br> 
-Here’s why Whisper stands out:
-<details>
 
-  - **Extensive Training Data**: Trained on 680,000 hours of multilingual and multitask(translation and transcription) supervised data from the web.
+- 🌐 **Extensive Training Data**: Trained on 680,000 hours of multilingual and multitask(translation and transcription) supervised data from the web.
 
-  - **Sequence-based Understanding**: Unlike Word2Vec, which lacks sequential context, Whisper considers the full sequence of spoken words, ensuring accurate context and nuance recognition.
+- 🗣️ **Sequence-based Understanding**: Whisper considers the full sequence of spoken words, ensuring accurate context recognition, unlike Word2Vec.
 
-  - **Simplification for Developers**: Using Whisper, developers can deploy one model for transcribing a multitude of languages, including underrepresented ones, without sacrificing quality or context.
+- 💻 **Simplification for Applications**: Deploy one model for transcribing and translating a multitude of languages, without sacrificing quality or context.
 
-  For more details, you can refer to the [Whisper ASR model paper](https://cdn.openai.com/papers/whisper.pdf).
-
-</details>
+For more details, you can refer to the [Whisper ASR model paper](https://cdn.openai.com/papers/whisper.pdf).<br>
+Want proof, check this [repo](https://github.com/KevKibe/Finetuning-WhisperSmall-LoRA-Swahili)
 
 
 
-## Proof of Concept
-<details>
-
-  A successful proof of concept has been achieved by fine-tuning the Whisper-small model using a Google Colab Notebook and tested on an audiofile to test the performance. The results were promising, indicating the potential of this approach for ASR in African languages. You can explore the process and results in detail in the [repository](https://github.com/KevKibe/Finetuning-WhisperSmall-LoRA-Swahili)
-
-</details>
-
-
-# Getting Started
+# 🚀 Getting Started
 
 ## Prerequisites
 
@@ -68,6 +55,8 @@ Here’s why Whisper stands out:
 - Sign up to Weights and Biases and get your token keys use this [guide](https://app.wandb.ai/login?signup=true)
 
 - Demo video [here](https://youtu.be/qj48Chu4i4k?si=Vwv-6-qI7GJF7AMd)
+
+[![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/16r4cxP-dSFplRTfgPLbzGXYRzBIUqpx9?usp=sharing)
 
 ## Step 1: Installation
 
@@ -83,12 +72,12 @@ Here’s why Whisper stands out:
 huggingface_read_token = " "
 huggingface_write_token = " "
 dataset_name = "mozilla-foundation/common_voice_16_1" 
-language_abbr= " " # Example 'af', 'sw'. see abbreviations here https://huggingface.co/datasets/mozilla-foundation/common_voice_16_1. 
-                    # Note: choose a small dataset so as to not run out of memory,
-model_id= "model-id" # Example openai/whisper-small, openai/whisper-medium
+language_abbr= " "                                    # Example 'af', 'sw'. see abbreviations here https://huggingface.co/datasets/mozilla-foundation/common_voice_16_1. 
+                                                      # Note: choose a small dataset so as to not run out of memory,
+model_id= "model-id"                                  # Example openai/whisper-small, openai/whisper-medium
 processing_task= "automatic-speech-recognition" 
 wandb_api_key = " "
-use_peft = True  # Note: PEFT only works on a notebook with GPU-support.
+use_peft = True                                       # Note: PEFT only works on a notebook with GPU-support.
 
 ```
 
@@ -159,7 +148,7 @@ trainer.train(
 from training.gradio_inference import WhisperDemo
 
 # Generate a demo
-model_name = "your-finetuned-model-name-on-huggingface-hub" # e.g., "KevinKibe/whisper-small-af"
+model_name = "your-finetuned-model-name-on-huggingface-hub"     # e.g., "KevinKibe/whisper-small-af"
 demo = WhisperDemo(model_name, huggingface_read_token)
 demo.generate_demo()
 ```
@@ -169,10 +158,10 @@ demo.generate_demo()
 ```python
 from deployment.speech_inference import SpeechInference
 
-model_name = "your-finetuned-model-name-on-huggingface-hub"  # e.g., "KevinKibe/whisper-small-af"
+model_name = "your-finetuned-model-name-on-huggingface-hub"   # e.g., "KevinKibe/whisper-small-af"
 huggingface_read_token = " "
-task = "desired-task"  # either 'translate' or 'transcribe'
-audiofile_dir = "location-of-audio-file"  # filetype should be .mp3 or .wav
+task = "desired-task"                                         # either 'translate' or 'transcribe'
+audiofile_dir = "location-of-audio-file"                      # filetype should be .mp3 or .wav
 
 # Initialize the SpeechInference class and run inference
 inference = SpeechInference(model_name, huggingface_read_token)
@@ -180,14 +169,14 @@ pipeline = inference.pipe_initialization()
 transcription = inference.output(pipeline, audiofile_dir, task)
 
 # Access different parts of the output
-print(transcription.text)  # The entire text transcription.
-print(transcription.chunks)  # List of individual text chunks with timestamps.
-print(transcription.timestamps)  # List of timestamps for each chunk.
-print(transcription.chunk_texts)  # List of texts for each chunk.
+print(transcription.text)                                       # The entire text transcription.
+print(transcription.chunks)                                     # List of individual text chunks with timestamps.
+print(transcription.timestamps)                                 # List of timestamps for each chunk.
+print(transcription.chunk_texts)                                # List of texts for each chunk.
 
 ```
 
-# Using the CLI
+# 🖥️ Using the CLI
 
 - Clone the Repository: Clone or download the application code to your local machine.
 ```bash
@@ -211,25 +200,9 @@ cd src
 
 - To start the training , use the following command:
 ```bash
-python -m training.main --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE --huggingface_write_token YOUR_HUGGING_FACE_WRITE_TOKEN_HERE --dataset_name DATASET_NAME --language_abbr LANGUAGE_ABBREVIATION --model_id MODEL_ID --processing_task PROCESSING_TASK --wandb_api_key YOUR_WANDB_API_KEY_HERE --use_peft # leave this out to opt-out of using PEFT
+python -m training.main --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE --huggingface_write_token YOUR_HUGGING_FACE_WRITE_TOKEN_HERE --dataset_name AUDIO_DATASET_NAME --language_abbr LANGUAGE_ABBREVIATION --model_id MODEL_ID --processing_task PROCESSING_TASK --wandb_api_key YOUR_WANDB_API_KEY_HERE --use_peft # leave this out to opt-out of using PEFT
 ```
-Here's a short description of each argument used in the command:
-
-- **--huggingface_read_token**: Your Hugging Face authentication token for read access. It allows you to download datasets and models from Hugging Face.
-
-- **--huggingface_push_token**: Your Hugging Face authentication token for write access. It's used for uploading models to your Hugging Face account.
-
-- **--dataset_name**: The name of the dataset you wish to use for training. Example: 'mozilla-foundation/common_voice_16_1'. This should match the dataset's identifier on the Hugging Face Datasets Hub.
-
-- **--language_abbr**: The abbreviation of the language for the dataset you're using. Example: 'sw' for Swahili. This is used to specify the language variant of the dataset if it supports multiple languages.
-
-- **--model_id**: Identifier for the pre-trained model you wish to fine-tune. Example: 'openai/whisper-small'. This should match the model's identifier on the Hugging Face Model Hub.
-
-- **--processing_task**: Specifies the task for which the model is being trained. Example: 'transcribe'. This defines the objective of the model training, such as transcribing audio to text.
-
-- **--wandb_api_key**: Your Weights & Biases (W&B) API key. This is used for logging and tracking the training process if you're using W&B for experiment tracking.
-
-- **--use_peft**: Add this flag to fine-tune using PEFT method and omit it to do full fine-tuning. PEFT only works on a notbeook with GPU-support.
+- Find a description of these commands [here](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/PARAMETERS.md).
 
 ### Inference
 
@@ -281,7 +254,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 
 ## Deployment
 
-- To deploy your fine-tuned model (assuming it's on Hugging Face Hub) as a REST API endpoint, follow these [instructions](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/deployment.md).
+- To deploy your fine-tuned model (assuming it's on Hugging Face Hub) as a REST API endpoint, follow these [instructions](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/DEPLOYMENT.md).
 
 
 ## Contributing 
