@@ -255,7 +255,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 
 ## Deployment
 
-- To deploy your fine-tuned model (assuming it's on Hugging Face Hub) as a REST API endpoint, follow these [instructions](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/DEPLOYMENT.md).
+- To deploy your fine-tuned model (assuming it's on Hugging Face Hub) as a REST API endpoint, follow these [instructions](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/deployment.md).
 
 
 ## Contributing 
