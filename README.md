@@ -253,7 +253,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 
 - Test it out by accessing the Swagger UI at `http://localhost:8000/docs` and uploading either an .mp3 file or a .wav file and a task either `transcribe` or `translate`. Alternatively, you can use Postman with the URL `http://localhost:8000/speechinference`.
 
-## Deployment
+## 🛳️ Deployment
 
 - To deploy your fine-tuned model (assuming it's on Hugging Face Hub) as a REST API endpoint, follow these [instructions](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/DEPLOYMENT.md).
 
