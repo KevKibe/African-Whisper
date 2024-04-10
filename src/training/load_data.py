@@ -71,7 +71,7 @@ class Dataset:
                                     trust_remote_code=True)
         dataset['train'] = interleave_datasets([dataset_ti['train'], dataset_yi['train']])
         dataset['test'] = interleave_datasets([dataset_ti['test'], dataset_yi['test']])
-    #     return dataset
+        return dataset
     
     # def load_dataset(self) -> DatasetDict:
     #     """
