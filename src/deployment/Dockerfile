@@ -1,7 +1,8 @@
 FROM python:3.11-slim
 
-RUN apt-get update && apt-get install -y ffmpeg
-
+RUN apk --no-cache add ffmpeg && \
+    rm -rf /var/cache/apk/*
+    
 WORKDIR /app
 
 COPY . /app
