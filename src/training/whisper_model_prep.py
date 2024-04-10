@@ -50,7 +50,7 @@ class WhisperModelPrep:
 
         """
         return WhisperFeatureExtractor.from_pretrained(
-            self.model_id, cache_dir=f"./{self.language_abbr}/feature-extractor"
+            self.model_id
         )
 
     def initialize_tokenizer(self) -> WhisperTokenizer:
@@ -62,7 +62,7 @@ class WhisperModelPrep:
 
         """
         return WhisperTokenizer.from_pretrained(
-            self.model_id, cache_dir=f"./{self.language_abbr}/tokenizer"
+            self.model_id
         )
 
     def initialize_processor(self) -> WhisperProcessor:
@@ -94,7 +94,7 @@ class WhisperModelPrep:
         if self.use_peft:
             model = WhisperForConditionalGeneration.from_pretrained(
                 self.model_id,
-                cache_dir=f"./{self.language_abbr}/model",
+                # cache_dir="./whisper-model/model",
                 load_in_8bit=True,
                 device_map="auto",
             )
@@ -115,7 +115,7 @@ class WhisperModelPrep:
         else:
             print("PEFT optimization is not enabled.")
             model = WhisperForConditionalGeneration.from_pretrained(
-                self.model_id, cache_dir=f"./{self.language_abbr}/model"
+                self.model_id
             )
             model.config.forced_decoder_ids = None
             model.config.suppress_tokens = []
