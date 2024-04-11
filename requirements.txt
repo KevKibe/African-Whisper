@@ -22,4 +22,3 @@ ctranslate2==4.1.0
 fastapi[all]
 uvicorn[standard]
 python-dotenv==1.0.1
-logging==0.4.9.6
