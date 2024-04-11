@@ -22,7 +22,7 @@ class WhisperModelPrep:
     def __init__(
         self,
         model_id: str,
-        language_abbr: str,
+        # language_abbr: str,
         processing_task: str,
         use_peft: bool,
     ):
@@ -37,7 +37,7 @@ class WhisperModelPrep:
 
         """
         self.model_id = model_id
-        self.language_abbr = language_abbr
+        # self.language_abbr = language_abbr
         self.processing_task = processing_task
         self.use_peft = use_peft
 
@@ -75,7 +75,7 @@ class WhisperModelPrep:
 
         """
         return WhisperProcessor.from_pretrained(
-            self.model_id, self.language_abbr, self.processing_task
+            self.model_id, self.processing_task
         )
 
     def initialize_model(self) -> WhisperForConditionalGeneration:
@@ -94,7 +94,6 @@ class WhisperModelPrep:
         if self.use_peft:
             model = WhisperForConditionalGeneration.from_pretrained(
                 self.model_id,
-                # cache_dir="./whisper-model/model",
                 load_in_8bit=True,
                 device_map="auto",
             )

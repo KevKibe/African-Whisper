@@ -1,4 +1,4 @@
-from datasets import load_dataset, DatasetDict, IterableDataset
+from datasets import load_dataset, IterableDataset, concatenate_datasets
 import warnings
 from typing import List
 
@@ -26,27 +26,27 @@ class Dataset:
         self.huggingface_token = huggingface_token
         self.dataset_name = dataset_name
         self.language_abbr = language_abbr
-
-
-    def load_dataset(self) -> DatasetDict:
-        """
-        Load the streaming dataset.
-
-        Args:
-            split (Optional[str]): The dataset split to load. Defaults to 'train'.
-            **kwargs: Additional keyword arguments.
+    
+    def load_dataset(self):
+        """Load datasets for each language abbreviation and concatenate train/test splits.
 
         Returns:
-            DatasetDict: The loaded streaming dataset.
+            dict: A dictionary containing concatenated train and test splits for each language.
         """
-        dataset = DatasetDict()
-        dataset['test'] = load_dataset(self.dataset_name, self.language_abbr, split="test", 
-                                            token=self.huggingface_token, streaming=True, 
-                                            trust_remote_code=True)
-        dataset['train'] = load_dataset(self.dataset_name, self.language_abbr, split="train", 
-                                            token=self.huggingface_token, streaming=True, 
-                                            trust_remote_code=True)
-        return dataset
+        data = {}
+        for lang in self.language_abbr:
+            dataset = load_dataset(self.dataset_name, lang, streaming=True, token=self.huggingface_token, trust_remote_code=True, disable_progress_bar=True, disable_metadata=True)
+            train_split = dataset['train']
+            test_split = dataset['test']
+            if "train" in data:
+                data["train"] = concatenate_datasets([data["train"], train_split])
+            else:
+                data["train"] = train_split
+            if "test" in data:
+                data["test"] = concatenate_datasets([data["test"], test_split])
+            else:
+                data["test"] = test_split
+        return data
         
     def count_examples(self, dataset: IterableDataset) -> int:
         """
