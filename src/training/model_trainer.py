@@ -38,7 +38,7 @@ class Trainer:
         feature_processor,
         feature_extractor,
         tokenizer,
-        language_abbr: str,
+        # language_abbr: str,
         wandb_api_key: str,
         use_peft: bool,
     ):
@@ -63,8 +63,14 @@ class Trainer:
         self.feature_processor = feature_processor
         self.feature_extractor = feature_extractor
         self.huggingface_write_token = huggingface_write_token
-        self.language_abbr = language_abbr
+        # self.language_abbr = language_abbr
         self.use_peft = use_peft
+        self.model_prep = WhisperModelPrep(
+            self.model_id, 
+            # self.language_abbr,
+            "transcribe", 
+            self.use_peft
+        )
 
     def compute_metrics(self, pred) -> dict:
         """
@@ -104,10 +110,7 @@ class Trainer:
             KeyError: If the input example does not contain the required keys.
         """
         waveform = example["audio"]["array"]
-        model_prep = WhisperModelPrep(
-            self.model_id, self.language_abbr, "transcribe", self.use_peft
-        )
-        feature_extractor = model_prep.initialize_feature_extractor()
+        feature_extractor = self.model_prep.initialize_feature_extractor()
         specs = feature_extractor(
             waveform, sampling_rate=16000, padding="do_not_pad"
         ).input_features[0]
@@ -129,17 +132,13 @@ class Trainer:
             per_device_eval_batch_size (int, optional): Batch size per GPU for evaluation. Defaults to 64.
             optim (str, optional): Optimizer to use for training. Defaults to "adamw_bnb_8bit".
         """
-        # Checks if GPU is available
-        use_gpu = torch.cuda.is_available()
-
-        # Set fp16 to True/False based on GPU availability
-        fp16 = use_gpu
-
+        # Checks if GPU is available: returns Boolean
+        fp16 = torch.cuda.is_available()
         data_collator = DataCollatorSpeechSeq2SeqWithPadding(
             processor=self.feature_processor
         )
         training_args = Seq2SeqTrainingArguments(
-            output_dir=f"../{self.model_id}-{self.language_abbr}",
+            output_dir=f"../{self.model_id}-finetuned",
             per_device_train_batch_size=per_device_train_batch_size,
             gradient_accumulation_steps=1,
             learning_rate=learning_rate,
@@ -176,13 +175,8 @@ class Trainer:
             tokenizer=self.feature_processor.feature_extractor,
             callbacks=[ShuffleCallback()],
         )
-
-        model_prep = WhisperModelPrep(
-            self.model_id, self.language_abbr, "transcribe", self.use_peft
-        )
-
-        tokenizer = model_prep.initialize_tokenizer()
-        processor = model_prep.initialize_processor()
+        tokenizer = self.model_prep.initialize_tokenizer()
+        processor = self.model_prep.initialize_processor()
         tokenizer.save_pretrained(training_args.output_dir)
         processor.save_pretrained(training_args.output_dir)
         torch.save(self.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bin")
