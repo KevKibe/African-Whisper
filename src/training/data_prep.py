@@ -46,7 +46,7 @@ class DataPrep:
         self.use_peft = use_peft
         self.model_prep = WhisperModelPrep(
             self.model_id,
-            self.language_abbr,
+            # self.language_abbr,
             self.processing_task,
             self.use_peft,
         )
