@@ -35,7 +35,7 @@ class Dataset:
         """
         data = {}
         for lang in self.language_abbr:
-            dataset = load_dataset(self.dataset_name, lang, streaming=True, token=self.huggingface_token, trust_remote_code=True, disable_progress_bar=True, disable_metadata=True)
+            dataset = load_dataset(self.dataset_name, lang, streaming=True, token=self.huggingface_token, trust_remote_code=True)
             train_split = dataset['train']
             test_split = dataset['test']
             if "train" in data:
