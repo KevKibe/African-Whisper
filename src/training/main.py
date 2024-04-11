@@ -80,7 +80,6 @@ if __name__ == "__main__":
         feature_processor=feature_processor,
         feature_extractor=feature_extractor,
         tokenizer=tokenizer,
-        # language_abbr=args.language_abbr,
         wandb_api_key=args.wandb_api_key,
         use_peft=args.use_peft,
     )
