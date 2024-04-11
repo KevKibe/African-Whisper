@@ -38,7 +38,6 @@ class Trainer:
         feature_processor,
         feature_extractor,
         tokenizer,
-        # language_abbr: str,
         wandb_api_key: str,
         use_peft: bool,
     ):
@@ -63,11 +62,9 @@ class Trainer:
         self.feature_processor = feature_processor
         self.feature_extractor = feature_extractor
         self.huggingface_write_token = huggingface_write_token
-        # self.language_abbr = language_abbr
         self.use_peft = use_peft
         self.model_prep = WhisperModelPrep(
             self.model_id, 
-            # self.language_abbr,
             "transcribe", 
             self.use_peft
         )
