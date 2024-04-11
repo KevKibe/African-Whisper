@@ -30,7 +30,6 @@ def parse_args():
     parser.add_argument(
         "--language_abbr",
         type=str,
-        default="sw",
         help="Abbreviation of the language for the dataset.",
     )
     parser.add_argument(
@@ -80,7 +79,7 @@ if __name__ == "__main__":
         feature_processor=feature_processor,
         feature_extractor=feature_extractor,
         tokenizer=tokenizer,
-        language_abbr=args.language_abbr,
+        # language_abbr=args.language_abbr,
         wandb_api_key=args.wandb_api_key,
         use_peft=args.use_peft,
     )
