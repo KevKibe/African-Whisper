@@ -1,5 +1,5 @@
 import torch
-from transformers import pipeline, AutomaticSpeechRecognitionPipeline, AutoModelForSpeechSeq2Seq, AutoProcessor
+from transformers import pipeline, AutomaticSpeechRecognitionPipeline
 from typing import List, Tuple, Any, Dict
 from pydantic import BaseModel, Field
 
@@ -67,20 +67,16 @@ class SpeechInference:
             print("No audio file submitted! Please upload or record an audio file before submitting your request.")
         else:
             device = 0 if torch.cuda.is_available() else "cpu"
-            torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
-        model = AutoModelForSpeechSeq2Seq.from_pretrained(
-        self.model_name , torch_dtype=torch_dtype, low_cpu_mem_usage=True, use_safetensors=True
-        )
-        model.to(device)
-        processor = AutoProcessor.from_pretrained(self.model_name)
+            if torch.cuda.is_available() and torch.cuda.is_bf16_supported():
+                dtype = torch.bfloat16
+            else:
+                dtype = None
         pipe = pipeline(
-                        task="automatic-speech-recognition",
-                        model=model,
-                        tokenizer=processor.tokenizer,
-                        feature_extractor=processor.feature_extractor,
-                        token=self.huggingface_read_token,
-                        device=device,
-                        torch_dtype=torch_dtype
+                            task="automatic-speech-recognition",
+                            model=self.model_name,
+                            token=self.huggingface_read_token,
+                            device=device,
+                            torch_dtype=dtype
                         )
         return pipe
     
@@ -103,10 +99,5 @@ class SpeechInference:
                 return_timestamps=True,
                 generate_kwargs={"task": task}
             )
-        # transcription = Transcription(**transcription)
+        transcription = Transcription(**transcription)
         return transcription
-
-
-
-
-
