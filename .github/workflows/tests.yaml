@@ -24,4 +24,5 @@ jobs:
         run: cd src
 
       - name: Run Unit Tests
-        run: python3 -m unittest discover -s tests
+        run: python -m unittest -v tests.test
+        
