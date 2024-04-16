@@ -15,19 +15,12 @@ HUGGINGFACE_READ_TOKEN = "your-token"
 
 2. Run it locally by executing the command:
 ```bash
-uvicorn main:app --host 0.0.0.0 --port 8000
+docker compose up
 ```
 
 3. Test it out by accessing the Swagger UI at `http://localhost:8000/docs` and uploading either an .mp3 file or a .wav file and a task either `transcribe` or `translate`. Alternatively, you can use Postman with the URL `http://localhost:8000/speechinference`.
 
-4. Containerize your application using the command:
+4. You can login to Grafana and build a dashboard `http://localhost:3000`, visualize prometheus graphs at `http://localhost:9090`.
 
-```bash
-docker build -t your-docker-username/your-image-name: your-tag .
-```
 
-5. Push it to Dockerhub using the command:
-```bash
-docker push your-docker-username/your-image-name: your-tag
-```
 
