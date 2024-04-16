@@ -1,4 +1,6 @@
+torch
 fastapi[all]
 uvicorn[standard]
 transformers==4.39.1
 pydantic==2.6.4
+prometheus-client==0.20.0
