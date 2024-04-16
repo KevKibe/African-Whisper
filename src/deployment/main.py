@@ -4,19 +4,20 @@ from pydantic import BaseModel
 import tempfile
 from speech_inference import SpeechInference
 import logging
-import time
 from dotenv import load_dotenv
-load_dotenv()
-from prometheus_client import Histogram, Summary, generate_latest
 import uvicorn
 import time
 import prometheus_client
+from prometheus_client import Histogram, Counter
+load_dotenv()
 
 app = FastAPI(debug=True)
 
 request_time = Histogram('request_processing_seconds', 'Time spent processing request')
-
 request_count = prometheus_client.Counter("request_count", "number_of_requests")
+errors_counter = Counter('app_errors_total', 'Total number of errors in the application')
+successful_requests_counter = Counter('app_successful_requests_total', 'Total number of successful requests in the application')
+
 model_name = os.getenv("MODEL_NAME")
 huggingface_read_token = os.getenv("HUGGINGFACE_READ_TOKEN")
 inference = SpeechInference(model_name, huggingface_read_token)
@@ -57,9 +58,11 @@ async def speechinference(file: UploadFile, task: str):
             raise HTTPException(status_code=400, detail="Unsupported file format")
 
         logger.info("File processed successfully")
+        successful_requests_counter.inc()
         return result
     except Exception as e:
         logger.error(f"Error processing file: {str(e)}")
+        errors_counter.inc()
         raise HTTPException(status_code=500, detail=f"Error processing file: {str(e)}")
 
 
