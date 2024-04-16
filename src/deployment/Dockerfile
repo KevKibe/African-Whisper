@@ -1,12 +1,17 @@
-FROM python:3.11-slim
+FROM python:3.10-slim
 
-RUN apk --no-cache add ffmpeg && \
-    rm -rf /var/cache/apk/*
+RUN apt-get update && \
+    apt-get install -y ffmpeg && \
+    rm -rf /var/lib/apt/lists/* && \
+    pip install --upgrade pip
+
     
 WORKDIR /app
 
-COPY . /app
-
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["uvicorn", "--host", "0.0.0.0", "main:app"]
+COPY . .
+
+
+CMD ["python", "main.py"]
