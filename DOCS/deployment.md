@@ -24,7 +24,7 @@
 
 ### Testing
 
-3. Test the application by accessing the Swagger UI at `http://localhost:8000/docs`. Upload either an `.mp3` or `.wav` file and specify a task as either `transcribe` or `translate`. Alternatively, you can use Postman with the URL `http://localhost:8000/speechinference`.
+3. Test the application by accessing the Swagger UI at `http://localhost:8000/docs`. Upload an `.mp3` file and specify a task as either `transcribe` or `translate`. Alternatively, you can use Postman with the URL `http://localhost:8000/speechinference`.
 
 ### Visualization
 
