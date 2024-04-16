@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, UploadFile, HTTPException
+from fastapi import FastAPI, UploadFile, HTTPException, Response
 from pydantic import BaseModel
 import tempfile
 from speech_inference import SpeechInference
@@ -7,10 +7,16 @@ import logging
 import time
 from dotenv import load_dotenv
 load_dotenv()
+from prometheus_client import Histogram, Summary, generate_latest
+import uvicorn
+import time
+import prometheus_client
 
-app = FastAPI()
+app = FastAPI(debug=True)
 
+request_time = Histogram('request_processing_seconds', 'Time spent processing request')
 
+request_count = prometheus_client.Counter("request_count", "number_of_requests")
 model_name = os.getenv("MODEL_NAME")
 huggingface_read_token = os.getenv("HUGGINGFACE_READ_TOKEN")
 inference = SpeechInference(model_name, huggingface_read_token)
@@ -21,10 +27,9 @@ class AudioTranscriptionRequest(BaseModel):
     file: UploadFile
     task: str
 
-
-
 @app.post("/speech_inference")
 async def speechinference(file: UploadFile, task: str):
+    request_count.inc()
     logger = logging.getLogger(__name__)
     logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s', filename='app.log', level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S')
     if file is None:
@@ -41,7 +46,9 @@ async def speechinference(file: UploadFile, task: str):
             start_time = time.time()
             result = inference.output(pipeline, tmp_file_path, task)
             end_time = time.time()
-            logger.info(f"Time taken for inference: {end_time - start_time} seconds")
+            duration = end_time - start_time
+            request_time.observe(duration)
+            logger.info(f"Time taken for inference: {duration} seconds")
         elif file.filename.endswith(".wav"):
             logger.info("Processing wav file")
             pass
@@ -56,3 +63,10 @@ async def speechinference(file: UploadFile, task: str):
         raise HTTPException(status_code=500, detail=f"Error processing file: {str(e)}")
 
 
+@app.get("/metrics")
+def metrics():
+    return Response(
+        content = prometheus_client.generate_latest())
+
+if __name__ == "__main__":
+    uvicorn.run(app, host = "0.0.0.0", port = 8000)
