@@ -24,7 +24,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "ediqlr1p02cjkc"
+          "uid": " "
         },
         "description": "Displays a time series graph showing the count of requests made to the speech inference endpoint over time. ",
         "fieldConfig": {
@@ -365,7 +365,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "fdin6cvcjp6gwe"
+          "uid": " "
         },
         "description": "Percentage of Successful Requests",
         "fieldConfig": {
