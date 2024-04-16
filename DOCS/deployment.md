@@ -1,11 +1,12 @@
-# Deployment
+# Deployment and Instrumentation
 
 - To deploy your fine-tuned model (assuming it's on Hugging Face Hub) as a REST API endpoint, follow these instructions:
-
+<br>
+![Alt text](image.png)
 ### Setting up Environment Variables
 
 1. Navigate to `src/deployment` and set up environment variables by creating a `.env` file with the following content:
-
+ 
     ```python
     MODEL_NAME = "your-model-name"
     HUGGINGFACE_READ_TOKEN = "your-token"
