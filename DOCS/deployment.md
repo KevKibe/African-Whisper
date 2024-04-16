@@ -1,26 +1,31 @@
-## Deployment
+# Deployment
 
 - To deploy your fine-tuned model (assuming it's on Hugging Face Hub) as a REST API endpoint, follow these instructions:
 
+### Setting up Environment Variables
 
-1. Navigate to `src/deployment` and set up environment variables by creating a `.env` file and add your variables like this:
-```python
-MODEL_NAME = "your-model-name"
-HUGGINGFACE_READ_TOKEN = "your-token"
+1. Navigate to `src/deployment` and set up environment variables by creating a `.env` file with the following content:
 
-```
- - `model_name` = Name of the fine-tuned model to use in your huggingfacehub repo
- - `huggingface_read_token` = Your Hugging Face authentication token for read access
+    ```python
+    MODEL_NAME = "your-model-name"
+    HUGGINGFACE_READ_TOKEN = "your-token"
+    ```
 
+   - `MODEL_NAME`: Name of the fine-tuned model to use in your Hugging Face Hub repository.
+   - `HUGGINGFACE_READ_TOKEN`: Your Hugging Face authentication token for read access.
 
-2. Run it locally by executing the command:
-```bash
-docker compose up
-```
+### Running Locally
 
-3. Test it out by accessing the Swagger UI at `http://localhost:8000/docs` and uploading either an .mp3 file or a .wav file and a task either `transcribe` or `translate`. Alternatively, you can use Postman with the URL `http://localhost:8000/speechinference`.
+2. Run the application locally by executing the following command:
 
-4. You can login to Grafana and build a dashboard `http://localhost:3000`, visualize prometheus graphs at `http://localhost:9090`.
+    ```bash
+    docker compose up
+    ```
 
+### Testing
 
+3. Test the application by accessing the Swagger UI at `http://localhost:8000/docs`. Upload either an `.mp3` or `.wav` file and specify a task as either `transcribe` or `translate`. Alternatively, you can use Postman with the URL `http://localhost:8000/speechinference`.
 
+### Visualization
+
+4. Visualize Prometheus graphs in Grafana by logging in to Grafana at `http://localhost:3000`. You can access Prometheus graphs at `http://localhost:9090`.
