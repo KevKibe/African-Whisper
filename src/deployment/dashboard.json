@@ -365,7 +365,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "fdin6cvcjp6gwe"
+          "uid": " "
         },
         "description": "Percentage of Successful Requests",
         "fieldConfig": {
