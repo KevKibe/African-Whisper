@@ -1,44 +1,53 @@
 import unittest
-from training.load_data import Dataset
+from training.whisper_model_prep import WhisperModelPrep
+from transformers import WhisperFeatureExtractor, WhisperTokenizer, WhisperProcessor, WhisperForConditionalGeneration
 
 class TestDatasetManager(unittest.TestCase):
+    """Test cases for the WhisperModelPrep class."""
+    
     def setUp(self):
-        self.dataset_manager = Dataset(
-            huggingface_token="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",
-            dataset_name="mozilla-foundation/common_voice_16_1",
-            language_abbr=["yi","ti"]
+        """Initialize the test setup with an instance of WhisperModelPrep."""
+        self.model_prep = WhisperModelPrep(
+            model_id="openai/whisper-small",
+            processing_task="transcribe",
+            use_peft=False
         )
 
-    def test_load_dataset(self):
-        # Arrange
-        # Act
-        data = self.dataset_manager.load_dataset()
-        # Assert
-        self.assertIsNotNone(data)
-        self.assertTrue("train" in data)
-        self.assertTrue("test" in data)
+    def test_initialize_feature_extractor(self):
+        """Test initialization of feature extractor."""
+        extractor = self.model_prep.initialize_feature_extractor()
+        self.assertIsInstance(
+            extractor,
+            WhisperFeatureExtractor,
+            "The initialized feature extractor should be an instance of WhisperFeatureExtractor."
+        )
 
-    def test_count_examples(self):
-        # Arrange
-        class MockDataset:
-            def __iter__(self):
-                return iter(range(10))
-        # Act
-        count = self.dataset_manager.count_examples(MockDataset())
-        # Assert
-        self.assertEqual(count, 10)
+    def test_initialize_tokenizer(self):
+        """Test initialization of tokenizer."""
+        tokenizer = self.model_prep.initialize_tokenizer()
+        self.assertIsInstance(
+            tokenizer,
+            WhisperTokenizer,
+            "The initialized tokenizer should be an instance of WhisperTokenizer."
+        )
 
-    def test_dataset_structure(self):
-        # Arrange
-        expected_features = ['client_id', 'path', 'audio', 'sentence', 'up_votes', 'down_votes', 'age', 'gender', 'accent', 'locale', 'segment', 'variant']
-        # Act
-        dataset = self.dataset_manager.load_dataset()
-        # Assert
-        train_features = list(dataset['train'].features.keys())
-        self.assertEqual(train_features, expected_features)
+    def test_initialize_processor(self):
+        """Test initialization of processor."""
+        processor = self.model_prep.initialize_processor()
+        self.assertIsInstance(
+            processor,
+            WhisperProcessor,
+            "The initialized processor should be an instance of WhisperProcessor."
+        )
 
-        test_features = list(dataset['test'].features.keys())
-        self.assertEqual(test_features, expected_features)
+    def test_initialize_model(self):
+        """Test initialization of the model."""
+        model = self.model_prep.initialize_model()
+        self.assertIsInstance(
+            model,
+            WhisperForConditionalGeneration,
+            "The initialized model should be an instance of WhisperForConditionalGeneration."
+        )
 
 if __name__ == '__main__':
     unittest.main()
