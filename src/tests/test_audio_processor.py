@@ -15,7 +15,7 @@ class TestAudioDataProcessor(unittest.TestCase):
         """
         # Load dataset
         self.data_loader = Dataset(
-            huggingface_read_token="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",
+            huggingface_token="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",
             dataset_name="mozilla-foundation/common_voice_16_1",
             language_abbr=["yi", "ti"]
         )
