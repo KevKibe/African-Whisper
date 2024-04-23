@@ -22,3 +22,7 @@ ctranslate2==4.1.0
 fastapi[all]
 uvicorn[standard]
 python-dotenv==1.0.1
+faster-whisper==1.0.0
+pyannote.audio==3.1.1
+nltk==3.8.1
+torchvisison==0.17.2
