@@ -72,11 +72,11 @@ class SpeechInference:
             else:
                 dtype = None
         pipe = pipeline(
-                            task="automatic-speech-recognition",
-                            model=self.model_name,
-                            token=self.huggingface_read_token,
-                            device=device,
-                            torch_dtype=dtype
+                        task="automatic-speech-recognition",
+                        model=self.model_name,
+                        token=self.huggingface_read_token,
+                        device=device,
+                        torch_dtype=dtype
                         )
         return pipe
     
