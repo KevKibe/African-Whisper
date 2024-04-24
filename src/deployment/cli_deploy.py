@@ -14,14 +14,15 @@ import torch
 
 load_dotenv()
 
-# Load environment variables
+# Retrieve the Hugging Face read token and model name from environment variables
 huggingface_read_token = os.getenv("HUGGINGFACE_READ_TOKEN")
 model = os.getenv("MODEL_NAME")
+output_dir = model
 
 # Convert the model if necessary
-if model is None:
+if not os.path.exists(output_dir):
     conv = TransformersConverter(model_name_or_path=model)
-    conv.convert(output_dir=model)
+    conv.convert(output_dir=output_dir)
 
 # ASR options
 asr_options = {
