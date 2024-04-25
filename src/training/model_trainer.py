@@ -64,8 +64,8 @@ class Trainer:
         self.huggingface_write_token = huggingface_write_token
         self.use_peft = use_peft
         self.model_prep = WhisperModelPrep(
-            self.model_id, 
-            "transcribe", 
+            self.model_id,
+            "transcribe",
             self.use_peft
         )
 
@@ -91,7 +91,7 @@ class Trainer:
         metric = evaluate.load("wer")
         wer = 100 * metric.compute(predictions=pred_str, references=label_str)
         return {"wer": wer}
-    
+
 
     def compute_spectrograms(self, example: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -155,6 +155,9 @@ class Trainer:
             greater_is_better=False,
             push_to_hub=True,
             hub_token=self.huggingface_write_token,
+            hub_strategy = "checkpoint",
+            save_safetensors = False,
+            resume_from_checkpoint  = "last-checkpoint",
             report_to="wandb",
             remove_unused_columns=False,
             ignore_data_skip=True,
