@@ -57,7 +57,7 @@ class RecordAnalyzer:
 
         time = np.linspace(0, audio_duration, num=len(audio_array))
         line_plot_hv = (
-            hv.Curve((time, audio_array), ["Time (s)", "amplitude"]).opts(
+        hv.Curve((time, audio_array), kdims=["Time (s)"], vdims=["amplitude"]).opts(
                 width=500, height=150, axiswise=True
             )
             * line_audio
