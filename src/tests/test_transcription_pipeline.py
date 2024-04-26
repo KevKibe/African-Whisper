@@ -1,5 +1,5 @@
 import unittest
-from deployment.speech_inference_pipeline import SpeechTranscriptionPipeline, ModelOptimization
+from deployment.speech_inference import SpeechTranscriptionPipeline, ModelOptimization
 import torch
 import os
 from dotenv import load_dotenv
