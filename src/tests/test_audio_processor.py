@@ -2,7 +2,9 @@ import unittest
 from training.audio_data_processor import AudioDataProcessor
 from training.whisper_model_prep import WhisperModelPrep
 from training.load_data import Dataset
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 class TestAudioDataProcessor(unittest.TestCase):
     """
@@ -15,7 +17,7 @@ class TestAudioDataProcessor(unittest.TestCase):
         """
         # Load dataset
         self.data_loader = Dataset(
-            huggingface_token="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",
+            huggingface_token=os.environ.get('HUGGINGFACE_READ_API_KEY'),
             dataset_name="mozilla-foundation/common_voice_16_1",
             language_abbr=["yi", "ti"]
         )
