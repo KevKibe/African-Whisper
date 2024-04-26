@@ -1,8 +1,8 @@
 import unittest
-from deployment.transcription_pipeline import ModelOptimization 
-import torch
 import os
+from deployment.transcription_pipeline import ModelOptimization
 from deployment.faster_whisper.asr import FasterWhisperPipeline
+import torch
 
 class TestModelOptimizationManager(unittest.TestCase):
     """Test cases for the ModelOptimization class.
@@ -32,6 +32,14 @@ class TestModelOptimizationManager(unittest.TestCase):
         """
         model = self.model_initialization.load_transcription_model()
         self.assertIsInstance(model, FasterWhisperPipeline, "The loaded model should be an instance of FasterWhisperPipeline.")
+
+    def tearDown(self):
+        """Clean up the model directory after each test case."""
+        if os.path.exists(self.model):
+            os.rmdir(self.model)
+        self.model = None
+        self.device = None
+        self.model_initialization = None
 
 if __name__ == '__main__':
     unittest.main()
