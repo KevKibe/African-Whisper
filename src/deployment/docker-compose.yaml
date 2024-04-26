@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    #IF THE IMAGE IS READY COMMENT OUT THE BUILD SPECIFICATIONS
+    # image: DOCKER-USERNAME/DOCKER-IMAGE:TAG
     restart: 'on-failure'
     ports:
       - 8000:8000
