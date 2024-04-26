@@ -2,7 +2,7 @@ import os
 from fastapi import FastAPI, UploadFile, HTTPException, Response
 from pydantic import BaseModel
 import tempfile
-from speech_inference import SpeechInference
+from deployment.speech_inference import SpeechInference
 import logging
 from dotenv import load_dotenv
 import uvicorn

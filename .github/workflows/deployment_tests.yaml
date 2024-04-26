@@ -1,12 +1,12 @@
-name: Tests
+name: Test Deployment Modules
 
 on: [pull_request]
 
 jobs:
   test:
-      runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
             
-      steps:
+    steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
               
@@ -20,7 +20,10 @@ jobs:
           pip install -r requirements.txt --no-cache-dir
           pip install pytest einops lion-pytorch
 
-      - name: Test with pytest
+      - name: Install FFmpeg
         run: |
-          pytest
-        
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Run tests
+        run: pytest src/tests/test_model_optimization.py src/tests/test_transcription_pipeline.py

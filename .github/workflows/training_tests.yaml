@@ -1,0 +1,29 @@
+name: Test Training Modules
+
+on: [pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt --no-cache-dir
+          pip install pytest einops lion-pytorch
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Run tests
+        run: pytest src/tests/test_audio_processor.py src/tests/test_data_prep.py src/tests/test_load_dataset.py src/tests/test_model_prep.py

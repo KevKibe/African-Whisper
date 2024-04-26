@@ -2,7 +2,9 @@ import unittest
 from training.audio_data_processor import AudioDataProcessor
 from training.whisper_model_prep import WhisperModelPrep
 from training.load_data import Dataset
-
+# import os
+from dotenv import load_dotenv
+load_dotenv()
 
 class TestAudioDataProcessor(unittest.TestCase):
     """

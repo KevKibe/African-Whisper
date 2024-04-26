@@ -12,7 +12,7 @@ class AudioDataProcessor:
     """
 
     def __init__(
-        self, dataset: DatasetDict, feature_extractor, tokenizer: PreTrainedTokenizer, feature_processor 
+        self, dataset: DatasetDict, feature_extractor, tokenizer: PreTrainedTokenizer, feature_processor
     ):
         """
         Initializes the DatasetProcessor with the dataset, feature extractor, and tokenizer.
@@ -26,8 +26,8 @@ class AudioDataProcessor:
         self.feature_extractor = feature_extractor
         self.tokenizer = tokenizer
         self.processor = feature_processor
-    
-    
+
+
     def resampled_dataset(self, sample: Dict[str, Any]) -> DatasetDict:
         """
         Resamples the audio data to the required sampling rate and extracts features using the feature extractor.
@@ -51,4 +51,4 @@ class AudioDataProcessor:
         sample["labels"] = tokenized_sentence
 
         return sample
-    
+

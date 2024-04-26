@@ -1,5 +1,8 @@
 import unittest
 from training.load_data import Dataset
+# import os
+from dotenv import load_dotenv
+load_dotenv()
 
 class TestDatasetManager(unittest.TestCase):
     """Test cases for the Dataset class."""
