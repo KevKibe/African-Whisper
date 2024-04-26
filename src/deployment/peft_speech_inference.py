@@ -72,11 +72,11 @@ class SpeechInference:
             else:
                 dtype = None
         pipe = pipeline(
-                        task="automatic-speech-recognition",
-                        model=self.model_name,
-                        token=self.huggingface_read_token,
-                        device=device,
-                        torch_dtype=dtype
+                            task="automatic-speech-recognition",
+                            model=self.model_name,
+                            token=self.huggingface_read_token,
+                            device=device,
+                            torch_dtype=dtype
                         )
         return pipe
     
@@ -96,7 +96,7 @@ class SpeechInference:
                 input,
                 chunk_length_s=30,
                 batch_size=24,
-                return_timestamps=True,
+                return_timestamps="word",
                 generate_kwargs={"task": task}
             )
         transcription = Transcription(**transcription)
