@@ -1,6 +1,6 @@
 import os
 import argparse
-from deployment.transcription_pipeline import SpeechTranscriptionPipeline, ModelOptimization
+from deployment.speech_inference import SpeechTranscriptionPipeline, ModelOptimization
 
 def main():
     parser = argparse.ArgumentParser(description="Speech inference using ASR and optional alignment and diarization.")
