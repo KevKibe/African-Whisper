@@ -1,5 +1,5 @@
 import unittest
-from deployment.transcription_pipeline import ModelOptimization 
+from deployment.speech_inference import ModelOptimization 
 import torch
 import os
 from deployment.faster_whisper.asr import FasterWhisperPipeline

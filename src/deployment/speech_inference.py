@@ -1,103 +1,207 @@
 import torch
-from transformers import pipeline, AutomaticSpeechRecognitionPipeline
-from typing import List, Tuple, Any, Dict
-from pydantic import BaseModel, Field
+import os
+from .faster_whisper.load_asr_model import load_asr_model
+from .faster_whisper.audio import load_audio
+from .faster_whisper.diarize import DiarizationPipeline, assign_word_speakers
+from .faster_whisper.alignment import align, load_align_model
+from ctranslate2.converters import TransformersConverter
+from dotenv import load_dotenv
+from .faster_whisper.utils import get_writer
+from typing import Dict
+load_dotenv()
 
-
-
-class Chunk(BaseModel):
+class ModelOptimization:
     """
-    Represents a chunk of text with associated timestamps.
-    """
-    timestamp: Tuple[float, float] = Field(..., description="The timestamp range for the chunk of text.")
-    text: str = Field(..., description="The text content of the chunk.")
+    Handles the conversion of models to optimized formats and loading of ASR models.
 
-class Transcription(BaseModel):
+    Attributes:
+        model_name (str): Name of the model to be converted or loaded.
     """
-    Represents the transcription output, consisting of text and chunks.
-    """
-    text: str = Field(..., description="The entire text transcription.")
-    chunks: List[Chunk] = Field(..., description="List of individual text chunks with timestamps.")
 
-    @property
-    def timestamps(self) -> List[Tuple[float, float]]:
+    def __init__(self, model_name: str):
         """
-        Get the list of timestamps for each chunk.
-
-        Returns:
-            List[Tuple[float, float]]: List of timestamps for each chunk.
-        """
-        return [chunk.timestamp for chunk in self.chunks]
-
-    @property
-    def chunk_texts(self) -> List[str]:
-        """
-        Get the list of texts for each chunk.
-
-        Returns:
-            List[str]: List of texts for each chunk.
-        """
-        return [chunk.text for chunk in self.chunks]
-
-
-class SpeechInference:
-    """
-    Class for transcribing speech using the Hugging Face Transformers library.
-    """
-
-    def __init__(self, model_name: str, huggingface_read_token: str) -> None:
-        """
-        Initialize the SpeechTranscriber instance.
+        Initializes the ModelOptimization class.
 
         Args:
-            model_name (str): The name of the Hugging Face model to use for transcription.
-            huggingface_read_token (str): The Hugging Face API token for model access.
+            model_name (str): Name of the model to be converted or loaded.
         """
         self.model_name = model_name
-        self.huggingface_read_token = huggingface_read_token
-    
-    def pipe_initialization(self) -> AutomaticSpeechRecognitionPipeline:
+        self.device =  0 if torch.cuda.is_available() else "cpu"
+
+    def convert_model_to_optimized_format(self) -> None:
         """
-        Initialize the pipeline for speech transcription.
+        Converts the specified model to CTranslate2 format if not already in that format.
+        """
+        output_dir = self.model_name
+        if not os.path.exists(output_dir):
+            print(f"Converting {self.model_name} model to CTranslate2 format")
+            conv = TransformersConverter(model_name_or_path=self.model_name)
+            conv.convert(output_dir=output_dir)
+        else:
+            print(f"Model {self.model_name} is already in CTranslate2 format")
+
+    def load_transcription_model(self) -> object:
+        """
+        Loads the ASR model for transcription.
 
         Returns:
-            Any: The initialized pipeline object.
+            object: Loaded ASR model.
         """
-        if input is None:
-            print("No audio file submitted! Please upload or record an audio file before submitting your request.")
-        else:
-            device = 0 if torch.cuda.is_available() else "cpu"
-            if torch.cuda.is_available() and torch.cuda.is_bf16_supported():
-                dtype = torch.bfloat16
-            else:
-                dtype = None
-        pipe = pipeline(
-                        task="automatic-speech-recognition",
-                        model=self.model_name,
-                        token=self.huggingface_read_token,
-                        device=device,
-                        torch_dtype=dtype
-                        )
-        return pipe
-    
-    def output(self, pipe: AutomaticSpeechRecognitionPipeline, input: Any, task: str) -> Dict:
+        asr_options = {
+            "beam_size": 5,
+            "patience": 1.0,
+            "length_penalty": 1.0,
+            "temperatures": 0,
+            "compression_ratio_threshold": 2.4,
+            "log_prob_threshold": 1.0,
+            "no_speech_threshold": 0.6,
+            "condition_on_previous_text": False,
+            "initial_prompt": None,
+            "suppress_tokens": [-1],
+            "suppress_numerals": True,
+        }
+        model_dir = None
+        compute_type = "bfloat16" if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else "float32"
+        model = load_asr_model(
+            self.model_name,
+            device=self.device,
+            device_index=0,
+            download_root=model_dir,
+            compute_type=compute_type,
+            language=None,
+            asr_options=asr_options,
+            vad_options={"vad_onset": 0.500, "vad_offset": 0.363},
+            threads=8
+        )
+        return model
+
+
+
+class SpeechTranscriptionPipeline:
+    """
+    Class for handling speech transcription, alignment, and diarization tasks.
+
+    Attributes:
+        audio (AudioFile): Loaded audio file for processing.
+        task (str): Task type (e.g. "transcription").
+        device (str or int): Device identifier, either 'cpu' or GPU device index.
+        batch_size (int): Number of audio segments to process per batch.
+        chunk_size (int): Duration of each audio chunk for processing.
+        huggingface_read_token (str): Read token for accessing Huggingface API.
+        model_name (str): Name of the model to be used for transcription.
+    """
+    def __init__(self,
+                 audio_file_path: str,
+                 task: str,
+                 huggingface_read_token: str,
+                 batch_size: int = 32,
+                 chunk_size: int = 30) -> None:
+        self.audio = load_audio(audio_file_path)
+        self.task = task
+        self.device = 0 if torch.cuda.is_available() else "cpu"
+        self.batch_size = batch_size
+        self.chunk_size = chunk_size
+        self.huggingface_read_token = huggingface_read_token
+
+
+    def transcribe_audio(self, model) -> Dict:
         """
-        Perform speech transcription.
+        Transcribes the loaded audio file using the specified model.
 
         Args:
-            pipe (Any): The initialized pipeline object.
-            input (Any): The input data to transcribe.
-            task (str): The speech task, e.g., "transcribe" or "translate".
+            model (object): The transcription model to be used.
 
         Returns:
-            Transcription: The transcription output.
+            Dict: Transcription result.
         """
-        transcription = pipe(
-                input,
-                chunk_length_s=30,
-                batch_size=24,
-                return_timestamps=True,
-                generate_kwargs={"task": task}
-            )
-        transcription = Transcription(**transcription)
-        return transcription
+        transcription_result = model.transcribe(
+            self.audio,
+            batch_size=self.batch_size,
+            chunk_size=self.chunk_size,
+            task=self.task,
+            print_progress=True
+        )
+        return transcription_result
+
+    def align_transcription(self, transcription_result: Dict) -> Dict:
+        """
+        Aligns the transcription result with the audio.
+
+        Args:
+            transcription_result (Dict): Transcription result to be aligned.
+
+        Returns:
+            Dict: Alignment result.
+        """
+        align_language = "en"
+        align_model, align_metadata = load_align_model(align_language, self.device)
+        
+        if align_model is not None and len(transcription_result["segments"]) > 0:
+            if transcription_result.get("language", "en") != align_metadata["language"]:
+                print(f"New language found ({transcription_result['language']})! Loading new alignment model for new language...")
+        
+        alignment_result = align(
+            transcription_result["segments"],
+            align_model,
+            align_metadata,
+            self.audio,
+            self.device,
+            interpolate_method="nearest",
+            return_char_alignments=True,
+            print_progress=True
+        )
+        return alignment_result
+
+    def diarize_audio(self,
+                      alignment_result: Dict,
+                      min_speakers: int = 1,
+                      max_speakers: int = 3) -> Dict:
+        """
+        Diarizes the audio and assigns speakers to each segment.
+
+        Args:
+            alignment_result (Dict): Alignment result to be diarized.
+            min_speakers (int, optional): Minimum number of speakers. Defaults to 1.
+            max_speakers (int, optional): Maximum number of speakers. Defaults to 3.
+
+        Returns:
+            Dict: Diarization result with speakers assigned to segments.
+        """
+        diarize_model = DiarizationPipeline(token=self.huggingface_read_token, device=self.device)
+        diarize_segments = diarize_model(self.audio, min_speakers=min_speakers, max_speakers=max_speakers)
+        diarization_result = assign_word_speakers(diarize_segments, alignment_result)
+        return diarization_result
+
+    def generate_subtitles(self,
+                           transcription_result: Dict,
+                           alignment_result: Dict,
+                           diarization_result: Dict,
+                           output_format: str = "srt",
+                           output_dir: str = ".") -> str:
+        """
+        Generates subtitle files from the results.
+
+        Args:
+            transcription_result (Dict): Transcription result.
+            alignment_result (Dict): Alignment result.
+            diarization_result (Dict): Diarization result.
+            output_format (str, optional): Subtitle file format. Defaults to "srt".
+            output_dir (str, optional): Output directory. Defaults to ".".
+
+        Returns:
+            str: File path of the generated subtitle file.
+        """
+        final_result = {**transcription_result, **alignment_result, **diarization_result}
+        writer = get_writer(output_format, output_dir)
+        writer_args = {
+            "highlight_words": True,
+            "max_line_count": None,
+            "max_line_width": None
+        }
+        srt_file_path = os.path.join(output_dir, "subtitle.srt")
+        writer(final_result, srt_file_path, writer_args)
+        print(f"Subtitle file saved to: {srt_file_path}")
+        return srt_file_path
+
+
+    

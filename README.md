@@ -234,6 +234,26 @@ python -m training.gradio_demo --model_name YOUR_FINETUNED-MODEL --huggingface_r
 - **--model_name**: Name of the fine-tuned model to use in your huggingfacehub repo. This should match the model's identifier on the Hugging Face Model Hub.
 - **--huggingface_read_token**: Your Hugging Face authentication token for read access. It allows you to download datasets and models from Hugging Face.
 
+
+```bash
+cd src/deployment
+```
+- Create a `.env` file using `nano .env` command and add these keys and save the file.
+```python
+MODEL_NAME = "your-finetuned-model"
+HUGGINGFACE_READ_TOKEN = "huggingface-read-token"
+```
+
+- To perform transcriptions and translations:
+
+```bash
+# If your model is peft finetuned
+python -m deployment.peft_speech_inference_cli --audio_file audio-filename --task 
+
+# If your model is fully finetuned
+python -m deployment.speech_inference_cli --audio_file audio-filename --task task --perform_diarization --perform_alignment
+```
+
 ## 🛳️ Deployment
 
 - To deploy your fine-tuned model as a REST API endpoint, follow these [instructions](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/deployment.md).
