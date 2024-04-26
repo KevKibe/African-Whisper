@@ -4,9 +4,9 @@ on: [pull_request]
 
 jobs:
   test:
-      runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
             
-      steps:
+    steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
               
@@ -20,7 +20,12 @@ jobs:
           pip install -r requirements.txt --no-cache-dir
           pip install pytest einops lion-pytorch
 
+      # Add a step to install FFmpeg
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
       - name: Test with pytest
         run: |
           pytest
-        
