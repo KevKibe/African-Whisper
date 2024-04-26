@@ -254,10 +254,9 @@ python -m deployment.peft_speech_inference_cli --audio_file audio-filename --tas
 python -m deployment.speech_inference_cli --audio_file audio-filename --task task --perform_diarization --perform_alignment
 ```
 
-
 ## 🛳️ Deployment
 
-- To deploy your fine-tuned model (assuming it's on Hugging Face Hub) as a REST API endpoint, follow these [instructions](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/deployment.md).
+- To deploy your fine-tuned model as a REST API endpoint, follow these [instructions](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/deployment.md).
 
 
 ## Contributing 
