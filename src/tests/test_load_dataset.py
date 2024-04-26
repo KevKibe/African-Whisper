@@ -1,5 +1,8 @@
 import unittest
 from training.load_data import Dataset
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 class TestDatasetManager(unittest.TestCase):
     """Test cases for the Dataset class."""
@@ -7,7 +10,7 @@ class TestDatasetManager(unittest.TestCase):
     def setUp(self):
         """Set up an instance of Dataset for testing."""
         self.dataset_manager = Dataset(
-            huggingface_token="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",
+            huggingface_token=os.environ.get('HUGGINGFACE_READ_API_KEY'),
             dataset_name="mozilla-foundation/common_voice_16_1",
             language_abbr=["yi", "ti"]
         )

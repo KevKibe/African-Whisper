@@ -3,6 +3,9 @@ from training.data_prep import DataPrep
 from training.load_data import Dataset
 from training.whisper_model_prep import WhisperModelPrep
 from datasets import IterableDataset
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 class TestDatasetManager(unittest.TestCase):
     """Test cases for the DatasetManager class."""
@@ -10,7 +13,7 @@ class TestDatasetManager(unittest.TestCase):
     def setUp(self):
         """Set up the testing environment."""
         self.data_prep = DataPrep(
-            huggingface_read_token="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",
+            huggingface_read_token=os.environ.get('HUGGINGFACE_READ_API_KEY'),
             dataset_name="mozilla-foundation/common_voice_16_1",
             language_abbr=["yi", "ti"],
             model_id="openai/whisper-small",
@@ -18,7 +21,7 @@ class TestDatasetManager(unittest.TestCase):
             use_peft=False,
         )
         self.model_prep=WhisperModelPrep("openai/whisper-small", "transcribe", False),
-        self.data_loader=Dataset("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", "mozilla-foundation/common_voice_16_1", ["yi", "ti"])
+        self.data_loader=Dataset(os.environ.get('HUGGINGFACE_READ_API_KEY'), "mozilla-foundation/common_voice_16_1", ["yi", "ti"])
 
     def test_load_dataset(self):
         """Test the load_dataset method."""
