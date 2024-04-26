@@ -17,9 +17,11 @@
    - `MODEL_NAME`: Name of the fine-tuned model to use in your Hugging Face Hub repository.
    - `HUGGINGFACE_READ_TOKEN`: Your Hugging Face authentication token for read access.
 
+2. Modify the `docker-compose.yaml` file according to whether your finetuned model is PEFT finetuned or fully finetuned.
+
 ### Running Locally
 
-2. Run the application locally by executing the following command:
+3. Run the application locally by executing the following command:
 
     ```bash
     docker compose up
@@ -27,8 +29,8 @@
 
 ### Testing
 
-3. Test the application by accessing the Swagger UI at `http://localhost:8000/docs`. Upload an `.mp3` file and specify a task as either `transcribe` or `translate`. Alternatively, you can use Postman with the URL `http://localhost:8000/speechinference`.
+4. Test the application by accessing the Swagger UI at `http://localhost:8000/docs`. Upload an `.mp3` file and specify a task as either `transcribe` or `translate`. Alternatively, you can use Postman with the URL `http://localhost:8000/speechinference`.
 
 ### Visualization
 
-4. Visualize Prometheus graphs in Grafana by logging in to Grafana at `http://localhost:3000`. You can access Prometheus graphs at `http://localhost:9090`.
+5. Visualize Prometheus graphs in Grafana by logging in to Grafana at `http://localhost:3000`. You can access Prometheus graphs at `http://localhost:9090`.
