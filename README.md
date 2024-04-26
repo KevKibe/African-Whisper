@@ -234,7 +234,6 @@ python -m training.gradio_demo --model_name YOUR_FINETUNED-MODEL --huggingface_r
 - **--model_name**: Name of the fine-tuned model to use in your huggingfacehub repo. This should match the model's identifier on the Hugging Face Model Hub.
 - **--huggingface_read_token**: Your Hugging Face authentication token for read access. It allows you to download datasets and models from Hugging Face.
 
-- To launch the REST API endpoint locally:
 
 ```bash
 cd src/deployment
@@ -245,12 +244,16 @@ MODEL_NAME = "your-finetuned-model"
 HUGGINGFACE_READ_TOKEN = "huggingface-read-token"
 ```
 
-- Run this command to launch the endpoint:
+- To perform transcriptions and translations:
+
 ```bash
-uvicorn main:app --host 0.0.0.0 --port 8000
+# If your model is peft finetuned
+python -m deployment.peft_speech_inference_cli --audio_file audio-filename --task 
+
+# If your model is fully finetuned
+python -m deployment.speech_inference_cli --audio_file audio-filename --task task --perform_diarization --perform_alignment
 ```
 
-- Test it out by accessing the Swagger UI at `http://localhost:8000/docs` and uploading either an .mp3 file or a .wav file and a task either `transcribe` or `translate`. Alternatively, you can use Postman with the URL `http://localhost:8000/speechinference`.
 
 ## 🛳️ Deployment
 

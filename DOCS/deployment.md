@@ -1,11 +1,35 @@
 # Deployment and Instrumentation
 
-- To deploy your fine-tuned model (assuming it's on Hugging Face Hub) as a REST API endpoint, follow these instructions:
-<br>
 
-![Alt text](DOCS/image.png)
+## To run locally:
 
-### Setting up Environment Variables
+### Set up Environment Variables
+```bash
+cd src/deployment
+```
+- Create a `.env` file using `nano .env` command and add these keys and save the file.
+```python
+MODEL_NAME = "your-finetuned-model"
+HUGGINGFACE_READ_TOKEN = "huggingface-read-token"
+```
+
+### Run Application
+
+- Run this command to launch the endpoint:
+```bash
+# If the model is peft finetuned
+python3 -m deployment.main
+
+# If the model is fully finetuned
+python3 -m deployment.app
+```
+
+- Test it out by accessing the Swagger UI at `http://localhost:8000/docs` and uploading either an .mp3 file or a .wav file and a task either `transcribe` or `translate`. 
+
+
+## To deploy to production:
+
+### Set up Environment Variables
 
 1. Navigate to `src/deployment` and set up environment variables by creating a `.env` file with the following content:
  
@@ -19,9 +43,9 @@
 
 2. Modify the `docker-compose.yaml` file according to whether your finetuned model is PEFT finetuned or fully finetuned.
 - `app.py` for fully finetuned models, `main.py` for peft-finetuned models.
-- update 'Dockerfile` accordingly.
+- update `Dockerfile` accordingly and `.dockerignore`.
 
-### Running Locally
+### Run Application
 
 3. Run the application locally by executing the following command:
 
@@ -29,10 +53,10 @@
     docker compose up
     ```
 
-### Testing
+### Test
 
-4. Test the application by accessing the Swagger UI at `http://localhost:8000/docs`. Upload an `.mp3` file and specify a task as either `transcribe` or `translate`. Alternatively, you can use Postman with the URL `http://localhost:8000/speechinference`.
+4. Test the application by accessing the Swagger UI at `http://localhost:8000/docs`. Upload an `.mp3` file and specify a task as either `transcribe` or `translate`. 
 
-### Visualization
+### Visualize
 
 5. Visualize Prometheus graphs in Grafana by logging in to Grafana at `http://localhost:3000`. You can access Prometheus graphs at `http://localhost:9090`.
