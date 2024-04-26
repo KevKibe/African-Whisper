@@ -13,7 +13,7 @@ class TestDatasetManager(unittest.TestCase):
     def setUp(self):
         """Set up the testing environment."""
         self.data_prep = DataPrep(
-            huggingface_read_token=os.environ.get('HUGGINGFACE_READ_API_KEY'),
+            huggingface_read_token="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",
             dataset_name="mozilla-foundation/common_voice_16_1",
             language_abbr=["yi", "ti"],
             model_id="openai/whisper-small",
