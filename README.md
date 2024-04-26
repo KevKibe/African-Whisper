@@ -281,11 +281,16 @@ HUGGINGFACE_READ_TOKEN = "huggingface-read-token"
 - To perform transcriptions and translations:
 
 ```bash
-# If your model is peft finetuned
-python -m deployment.peft_speech_inference_cli --audio_file audio-filename --task 
+# PEFT FINETUNED MODELS
+python -m deployment.peft_speech_inference_cli --input_file FILENAME --task TASK 
 
-# If your model is fully finetuned
-python -m deployment.speech_inference_cli --audio_file audio-filename --task task --perform_diarization --perform_alignment
+# FULLY FINETUNED MODELS
+python -m deployment.speech_inference_cli --audio_file FILENAME --task TASK --perform_diarization --perform_alignment
+
+Flags:
+# --perform_diarization: Optional flag to perform speaker diarization.
+# --perform_alignment: Optional flag to perform alignment.
+
 ```
 
 ## 🛳️ Deployment
