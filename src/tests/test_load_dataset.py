@@ -1,6 +1,6 @@
 import unittest
 from training.load_data import Dataset
-import os
+# import os
 from dotenv import load_dotenv
 load_dotenv()
 
