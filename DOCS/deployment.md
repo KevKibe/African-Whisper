@@ -19,6 +19,7 @@
 
 2. Modify the `docker-compose.yaml` file according to whether your finetuned model is PEFT finetuned or fully finetuned.
 - `app.py` for fully finetuned models, `main.py` for peft-finetuned models.
+- update 'Dockerfile` accordingly.
 
 ### Running Locally
 
