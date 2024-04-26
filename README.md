@@ -212,6 +212,8 @@ inference.generate_subtitles(transcription, alignment_result, diarization_result
 
 # 🖥️ Using the CLI
 
+## Step 1: Clone and Install Dependencies
+
 - Clone the Repository: Clone or download the application code to your local machine.
 ```bash
 git clone https://github.com/KevKibe/African-Whisper.git
@@ -232,14 +234,20 @@ pip install -r requirements.txt
 cd src
 ```
 
+## Step 2: Finetune the Model
+
 - To start the training , use the following command:
 ```bash
-python -m training.main --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE --huggingface_write_token YOUR_HUGGING_FACE_WRITE_TOKEN_HERE --dataset_name AUDIO_DATASET_NAME --language_abbr LANGUAGE_ABBREVIATION --model_id MODEL_ID --processing_task PROCESSING_TASK --wandb_api_key YOUR_WANDB_API_KEY_HERE --use_peft # leave this out to opt-out of using PEFT
+python -m training.main --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE --huggingface_write_token YOUR_HUGGING_FACE_WRITE_TOKEN_HERE --dataset_name AUDIO_DATASET_NAME --language_abbr LANGUAGE_ABBREVIATION LANGUAGE_ABBREVIATION --model_id MODEL_ID --processing_task PROCESSING_TASK --wandb_api_key YOUR_WANDB_API_KEY_HERE --use_peft
+
+Flags:
+# --use_peft: Optional flag to use PEFT finetuning. leave it out to perform full finetuning
 ```
 - Find a description of these commands [here](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/PARAMETERS.md).
 
-### Inference
+## Step 3: Get Inference
 
+### Install ffmpeg
 - To get inference from your fine-tuned model, follow these steps:
 
 - Ensure that ffmpeg is installed by running the following commands:
@@ -260,15 +268,16 @@ choco install ffmpeg
 # on Windows using Scoop (https://scoop.sh/)
 scoop install ffmpeg
 ```
+### To get inference on Gradio UI
 
-- To get the Gradio inference URL:
+- To get the Gradio UI URL:
 ```bash
 python -m training.gradio_demo --model_name YOUR_FINETUNED-MODEL --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE 
 ```
 - **--model_name**: Name of the fine-tuned model to use in your huggingfacehub repo. This should match the model's identifier on the Hugging Face Model Hub.
 - **--huggingface_read_token**: Your Hugging Face authentication token for read access. It allows you to download datasets and models from Hugging Face.
 
-
+### To get inference on CLI
 ```bash
 cd src/deployment
 ```
@@ -282,7 +291,7 @@ HUGGINGFACE_READ_TOKEN = "huggingface-read-token"
 
 ```bash
 # PEFT FINETUNED MODELS
-python -m deployment.peft_speech_inference_cli --input_file FILENAME --task TASK 
+python -m deployment.peft_speech_inference_cli --audio_file FILENAME --task TASK 
 
 # FULLY FINETUNED MODELS
 python -m deployment.speech_inference_cli --audio_file FILENAME --task TASK --perform_diarization --perform_alignment
@@ -293,7 +302,7 @@ Flags:
 
 ```
 
-## 🛳️ Deployment
+## 🛳️ Step 4: Deployment
 
 - To deploy your fine-tuned model as a REST API endpoint, follow these [instructions](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/deployment.md).
 
