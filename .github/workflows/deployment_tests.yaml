@@ -26,4 +26,4 @@ jobs:
           sudo apt-get install -y ffmpeg
 
       - name: Run tests
-        run: pytest test_model_optimization.py test_transcription_pipeline.py
+        run: pytest src/tests/test_model_optimization.py src/tests/test_transcription_pipeline.py

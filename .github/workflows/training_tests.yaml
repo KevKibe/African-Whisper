@@ -26,4 +26,4 @@ jobs:
           sudo apt-get install -y ffmpeg
 
       - name: Run tests
-        run: pytest test_audio_processor.py test_data_prep.py test_load_dataset.py test_model_prep.py
+        run: pytest src/tests/test_audio_processor.py src/tests/test_data_prep.py src/tests/test_load_dataset.py src/tests/test_model_prep.py
