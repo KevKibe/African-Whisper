@@ -156,7 +156,8 @@ demo.generate_demo()
 ## Step 7: Test Model using Audio File
 
 ```python
-from deployment.speech_inference import SpeechInference
+# Using a PEFT fine-tuned model
+from deployment.peft_speech_inference import SpeechInference
 
 model_name = "your-finetuned-model-name-on-huggingface-hub"   # e.g., "KevinKibe/whisper-small-af"
 huggingface_read_token = " "
@@ -174,6 +175,39 @@ print(transcription.chunks)                                     # List of indivi
 print(transcription.timestamps)                                 # List of timestamps for each chunk.
 print(transcription.chunk_texts)                                # List of texts for each chunk.
 
+```
+```python
+# Using a fully fine-tuned model
+from deployment.speech_inference import SpeechInference, ModelOptimization
+
+model_name = "your-finetuned-model-name-on-huggingface-hub"   # e.g., "KevinKibe/whisper-small-af"
+huggingface_read_token = " "
+task = "desired-task"                                         # either 'translate' or 'transcribe'
+audiofile_dir = "location-of-audio-file"                      # filetype should be .mp3 or .wav
+
+# Optimize model for better results
+model_optimizer = ModelOptimization(model_name=model_name)
+model_optimizer.convert_model_to_optimized_format()
+model = model_optimizer.load_transcription_model()
+
+# Initiate the transcription model
+inference = SpeechTranscriptionPipeline(
+        audio_file_path=audiofile_dir,
+        task=task,
+        huggingface_read_token=huggingface_read_token
+    )
+
+# To get transcriptions
+transcription = inference.transcribe_audio(model=model)
+print(transcription)
+
+# To get transcriptions with speaker labels
+alignment_result = inference.align_transcription(transcription)
+diarization_result = inference.diarize_audio(alignment_result)
+print(diarization_result)
+
+#To generate subtitles(.srt format), will be saved in root directory
+inference.generate_subtitles(transcription, alignment_result, diarization_result)
 ```
 
 # 🖥️ Using the CLI
