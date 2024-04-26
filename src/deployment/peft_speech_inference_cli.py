@@ -19,11 +19,8 @@ def main():
         print(f"Error: Input file '{args.input_file}' does not exist.")
         return
     
-    with open(args.input_file, "rb") as audio_file:
-        input_data = audio_file.read()
-    
-    transcription = speech_inference.output(pipe=pipe, input=input_data, task=args.task)
-    print(transcription)
+    transcription = speech_inference.output(pipe=pipe, input=args.input_file, task=args.task)
+    print(transcription.text)
 
 if __name__ == "__main__":
     main()
