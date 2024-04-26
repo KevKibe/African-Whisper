@@ -1,12 +1,12 @@
 import torch
 import os
-from deployment.faster_whisper.load_asr_model import load_asr_model
-from deployment.faster_whisper.audio import load_audio
-from deployment.faster_whisper.diarize import DiarizationPipeline, assign_word_speakers
-from deployment.faster_whisper.alignment import align, load_align_model
+from faster_whisper.load_asr_model import load_asr_model
+from faster_whisper.audio import load_audio
+from faster_whisper.diarize import DiarizationPipeline, assign_word_speakers
+from faster_whisper.alignment import align, load_align_model
 from ctranslate2.converters import TransformersConverter
 from dotenv import load_dotenv
-from deployment.faster_whisper.utils import get_writer
+from faster_whisper.utils import get_writer
 from typing import Dict
 load_dotenv()
 
