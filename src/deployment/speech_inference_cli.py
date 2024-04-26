@@ -4,8 +4,8 @@ from deployment.speech_inference import SpeechTranscriptionPipeline, ModelOptimi
 
 def main():
     parser = argparse.ArgumentParser(description="Speech inference using ASR and optional alignment and diarization.")
-    parser.add_argument("file", type=argparse.FileType("rb"), help="The audio file to transcribe")
-    parser.add_argument("task", choices=["transcribe", "translate"], help="Task to perform, e.g., 'transcribe' or 'translate'")
+    parser.add_argument("--audio_file", type=argparse.FileType("rb"), help="The audio file to transcribe")
+    parser.add_argument("--task", choices=["transcribe", "translate"], help="Task to perform, e.g., 'transcribe' or 'translate'")
     parser.add_argument("--batch_size", type=int, default=24, help="Batch size for transcription")
     parser.add_argument("--chunk_size", type=int, default=30, help="Chunk size for transcription")
     parser.add_argument("--perform_diarization", action="store_true", help="Perform diarization on the audio file")

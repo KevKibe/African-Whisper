@@ -4,7 +4,7 @@ from deployment.peft_speech_inference import SpeechInference
 
 def main():
     parser = argparse.ArgumentParser(description="CLI for speech inference using SpeechInference class.")
-    parser.add_argument("input_file", type=str, help="Path to the input audio file for transcription.")
+    parser.add_argument("--audio_file", type=str, help="Path to the input audio file for transcription.")
     parser.add_argument("--task", choices=["transcribe", "translate"], default="transcribe", help="Task to perform: transcribe or translate.")
     args = parser.parse_args()
 
