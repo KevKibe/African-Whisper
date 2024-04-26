@@ -12,6 +12,7 @@ from prometheus_client import Histogram, Counter
 load_dotenv()
 
 app = FastAPI(debug=True)
+# FOR PEFT FINETUNED MODELS
 
 request_time = Histogram('request_processing_seconds', 'Time spent processing request')
 request_count = prometheus_client.Counter("request_count", "number_of_requests")
