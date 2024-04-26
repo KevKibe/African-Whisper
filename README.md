@@ -234,27 +234,9 @@ python -m training.gradio_demo --model_name YOUR_FINETUNED-MODEL --huggingface_r
 - **--model_name**: Name of the fine-tuned model to use in your huggingfacehub repo. This should match the model's identifier on the Hugging Face Model Hub.
 - **--huggingface_read_token**: Your Hugging Face authentication token for read access. It allows you to download datasets and models from Hugging Face.
 
-- To launch the REST API endpoint locally:
-
-```bash
-cd src/deployment
-```
-- Create a `.env` file using `nano .env` command and add these keys and save the file.
-```python
-MODEL_NAME = "your-finetuned-model"
-HUGGINGFACE_READ_TOKEN = "huggingface-read-token"
-```
-
-- Run this command to launch the endpoint:
-```bash
-uvicorn main:app --host 0.0.0.0 --port 8000
-```
-
-- Test it out by accessing the Swagger UI at `http://localhost:8000/docs` and uploading either an .mp3 file or a .wav file and a task either `transcribe` or `translate`. Alternatively, you can use Postman with the URL `http://localhost:8000/speechinference`.
-
 ## 🛳️ Deployment
 
-- To deploy your fine-tuned model (assuming it's on Hugging Face Hub) as a REST API endpoint, follow these [instructions](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/deployment.md).
+- To deploy your fine-tuned model as a REST API endpoint, follow these [instructions](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/deployment.md).
 
 
 ## Contributing 
