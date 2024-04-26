@@ -49,7 +49,7 @@ def load_vad_model(device, vad_onset=0.500, vad_offset=0.363, use_auth_token=Non
         )
 
     vad_model = Model.from_pretrained(model_fp, use_auth_token=use_auth_token)
-    hyperparameters = {"onset": vad_onset, 
+    hyperparameters = {"onset": vad_onset,
                     "offset": vad_offset,
                     "min_duration_on": 0.1,
                     "min_duration_off": 0.1}
@@ -85,9 +85,9 @@ class Binarize:
     Gregory Gelly and Jean-Luc Gauvain. "Minimum Word Error Training of
     RNN-based Voice Activity Detection", InterSpeech 2015.
 
-    Modified by Max Bain to include WhisperX's min-cut operation 
+    Modified by Max Bain to include WhisperX's min-cut operation
     https://arxiv.org/abs/2303.00747
-    
+
     Pyannote-audio
     """
 
@@ -145,7 +145,7 @@ class Binarize:
             t = start
             for t, y in zip(timestamps[1:], k_scores[1:]):
                 # currently active
-                if is_active: 
+                if is_active:
                     curr_duration = t - start
                     if curr_duration > self.max_duration:
                         search_after = len(curr_scores) // 2
@@ -250,13 +250,13 @@ def merge_vad(vad_arr, pad_onset=0.0, pad_offset=0.0, min_duration_off=0.0, min_
 
     if pad_offset > 0.0 or pad_onset > 0.0 or min_duration_off > 0.0:
         active = active.support(collar=min_duration_off)
-    
+
     # remove tracks shorter than min_duration_on
     if min_duration_on > 0:
         for segment, track in list(active.itertracks()):
             if segment.duration < min_duration_on:
                     del active[segment, track]
-    
+
     active = active.for_json()
     active_segs = pd.DataFrame([x['segment'] for x in active['content']])
     return active_segs
@@ -303,9 +303,9 @@ def merge_chunks(
         seg_idxs.append((seg.start, seg.end))
         speaker_idxs.append(seg.speaker)
     # add final
-    merged_segments.append({ 
+    merged_segments.append({
                 "start": curr_start,
                 "end": curr_end,
                 "segments": seg_idxs,
-            })    
+            })
     return merged_segments

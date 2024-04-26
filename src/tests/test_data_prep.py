@@ -6,7 +6,7 @@ from datasets import IterableDataset
 
 class TestDatasetManager(unittest.TestCase):
     """Test cases for the DatasetManager class."""
-    
+
     def setUp(self):
         """Set up the testing environment."""
         self.data_prep = DataPrep(

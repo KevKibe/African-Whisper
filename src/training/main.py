@@ -29,7 +29,7 @@ def parse_args():
     )
     parser.add_argument(
         "--language_abbr",
-        nargs='+',  
+        nargs='+',
         required=True,
         help="Abbreviation(s) of the language(s) for the dataset.",
     )

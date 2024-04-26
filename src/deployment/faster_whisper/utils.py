@@ -378,14 +378,14 @@ class WriteAudacity(ResultWriter):
     Write a transcript to a text file that audacity can import as labels.
     The extension used is "aud" to distinguish it from the txt file produced by WriteTXT.
     Yet this is not an audacity project but only a label file!
-    
-    Please note : Audacity uses seconds in timestamps not ms! 
+
+    Please note : Audacity uses seconds in timestamps not ms!
     Also there is no header expected.
 
     If speaker is provided it is prepended to the text between double square brackets [[]].
     """
 
-    extension: str = "aud"    
+    extension: str = "aud"
 
     def write_result(self, result: dict, file: TextIO, options: dict):
         ARROW = "	"
@@ -394,7 +394,7 @@ class WriteAudacity(ResultWriter):
             print(segment["end"], file=file, end=ARROW)
             print( ( ("[[" + segment["speaker"] + "]]") if "speaker" in segment else "") + segment["text"].strip().replace("\t", " "), file=file, flush=True)
 
-            
+
 
 class WriteJSON(ResultWriter):
     extension: str = "json"
