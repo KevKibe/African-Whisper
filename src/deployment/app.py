@@ -8,7 +8,7 @@ from fastapi.responses import FileResponse, JSONResponse, Response
 from dotenv import load_dotenv
 import prometheus_client
 from prometheus_client import Histogram, Counter
-from deployment.transcription_pipeline import SpeechTranscriptionPipeline, ModelOptimization
+from deployment.speech_inference import SpeechTranscriptionPipeline, ModelOptimization
 load_dotenv()
 
 app = FastAPI()
