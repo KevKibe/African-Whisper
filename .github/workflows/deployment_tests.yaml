@@ -1,4 +1,4 @@
-name: Test Deployment Moduled
+name: Test Deployment Modules
 
 on: [pull_request]
 
@@ -20,16 +20,10 @@ jobs:
           pip install -r requirements.txt --no-cache-dir
           pip install pytest einops lion-pytorch
 
-      # Add a step to install FFmpeg
       - name: Install FFmpeg
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
-      
-      - name: Change Directory to tests.
-        run: |
-          cd src/tests
 
-      - name: Test with pytest
-        run: |
-          pytest test_model_optimization.py test_transcription_pipeline.py
+      - name: Run tests
+        run: pytest test_model_optimization.py test_transcription_pipeline.py

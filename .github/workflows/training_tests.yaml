@@ -1,35 +1,29 @@
-name: Test Training Moduled
+name: Test Training Modules
 
 on: [pull_request]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-            
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-              
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x' 
-                
+          python-version: '3.x'
+
       - name: Install dependencies
         run: |
           pip install -r requirements.txt --no-cache-dir
           pip install pytest einops lion-pytorch
 
-      # Add a step to install FFmpeg
       - name: Install FFmpeg
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
-      
-      - name: Change Directory to tests.
-        run: |
-          cd src/tests
 
-      - name: Test with pytest
-        run: |
-          pytest test_audio_processor.py test_data_prep.py test_load_dataset.py test_model_prep.py
+      - name: Run tests
+        run: pytest test_audio_processor.py test_data_prep.py test_load_dataset.py test_model_prep.py
