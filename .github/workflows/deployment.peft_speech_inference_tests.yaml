@@ -1,4 +1,4 @@
-name: Test Deployment Modules
+name: Test deployment.peft_speech_inference Module.
 
 on: [pull_request]
 
@@ -26,4 +26,4 @@ jobs:
           sudo apt-get install -y ffmpeg
 
       - name: Run tests
-        run: pytest src/tests/test_model_optimization.py src/tests/test_transcription_pipeline.py
+        run: pytest src/tests/test_peft_speech_inference.py
