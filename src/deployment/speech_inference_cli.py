@@ -2,9 +2,10 @@ import os
 import argparse
 from deployment.speech_inference import SpeechTranscriptionPipeline, ModelOptimization
 
+
 def main():
     parser = argparse.ArgumentParser(description="Speech inference using ASR and optional alignment and diarization.")
-    parser.add_argument("--audio_file", type=argparse.FileType("rb"), help="The audio file to transcribe")
+    parser.add_argument("--audio_file", type=str, help="Path to the input audio file for transcription.")
     parser.add_argument("--task", choices=["transcribe", "translate"], help="Task to perform, e.g., 'transcribe' or 'translate'")
     parser.add_argument("--batch_size", type=int, default=24, help="Batch size for transcription")
     parser.add_argument("--chunk_size", type=int, default=30, help="Chunk size for transcription")
@@ -23,7 +24,7 @@ def main():
 
     # Initialize the speech transcription pipeline
     inference = SpeechTranscriptionPipeline(
-        audio_file_path=args.file.name,
+        audio_file_path=args.audio_file,
         task=args.task,
         batch_size=args.batch_size,
         chunk_size=args.chunk_size,
