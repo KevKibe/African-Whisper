@@ -18,7 +18,7 @@ class TestDatasetManager(unittest.TestCase):
     def test_load_dataset(self):
         """Test loading the dataset and verifying its contents."""
         # Act
-        data = self.dataset_manager.load_dataset()
+        data = self.dataset_manager.load_dataset(num_samples=10)
 
         # Assert
         self.assertIsNotNone(data, "The loaded dataset should not be None.")
@@ -32,7 +32,6 @@ class TestDatasetManager(unittest.TestCase):
             """A mock dataset class to simulate iteration."""
             def __iter__(self):
                 return iter(range(10))
-
         # Act
         count = self.dataset_manager.count_examples(MockDataset())
 

@@ -105,8 +105,10 @@ tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
 processed_dataset = process.load_dataset(
     feature_extractor=feature_extractor,
     tokenizer=tokenizer,
-    processor=feature_processor
-)
+    processor=feature_processor,
+    num_samples = None # Number of samples to load from each dataset
+                       # Set None to load the entire dataset
+                       # Example: num_samples = 100 will load 100 samples from each dataset
 ```
 
 ## Step 5: Train the Model
