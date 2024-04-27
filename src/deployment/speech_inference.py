@@ -26,7 +26,7 @@ class ModelOptimization:
             model_name (str): Name of the model to be converted or loaded.
         """
         self.model_name = model_name
-        self.device =  0 if torch.cuda.is_available() else "cpu"
+        self.device =  "cuda" if torch.cuda.is_available() else "cpu"
 
     def convert_model_to_optimized_format(self) -> None:
         """
@@ -63,7 +63,7 @@ class ModelOptimization:
         model_dir = None
         compute_type = "bfloat16" if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else "float32"
         model = load_asr_model(
-            self.model_name,
+            whisper_arch = self.model_name,
             device=self.device,
             device_index=0,
             download_root=model_dir,
