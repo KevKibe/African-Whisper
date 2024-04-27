@@ -63,7 +63,7 @@ class ModelOptimization:
         model_dir = None
         compute_type = "bfloat16" if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else "float32"
         model = load_asr_model(
-            model_path = self.model_name,
+            model = self.model_name,
             device=self.device,
             device_index=0,
             download_root=model_dir,
