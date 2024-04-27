@@ -26,7 +26,7 @@ class ModelOptimization:
             model_name (str): Name of the model to be converted or loaded.
         """
         self.model_name = model_name
-        self.device =  0 if torch.cuda.is_available() else "cpu"
+        self.device =  "cuda" if torch.cuda.is_available() else "cpu"
 
     def convert_model_to_optimized_format(self) -> None:
         """
