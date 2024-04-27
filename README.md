@@ -105,8 +105,10 @@ tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
 processed_dataset = process.load_dataset(
     feature_extractor=feature_extractor,
     tokenizer=tokenizer,
-    processor=feature_processor
-)
+    processor=feature_processor,
+    num_samples = None # Number of samples to load from each dataset
+                       # Set None to load the entire dataset
+                       # Example: num_samples = 100 will load 100 samples from each dataset
 ```
 
 ## Step 5: Train the Model
@@ -156,7 +158,8 @@ demo.generate_demo()
 ## Step 7: Test Model using Audio File
 
 ```python
-from deployment.speech_inference import SpeechInference
+# Using a PEFT fine-tuned model
+from deployment.peft_speech_inference import SpeechInference
 
 model_name = "your-finetuned-model-name-on-huggingface-hub"   # e.g., "KevinKibe/whisper-small-af"
 huggingface_read_token = " "
@@ -175,8 +178,43 @@ print(transcription.timestamps)                                 # List of timest
 print(transcription.chunk_texts)                                # List of texts for each chunk.
 
 ```
+```python
+# Using a fully fine-tuned model
+from deployment.speech_inference import SpeechInference, ModelOptimization
+
+model_name = "your-finetuned-model-name-on-huggingface-hub"   # e.g., "KevinKibe/whisper-small-af"
+huggingface_read_token = " "
+task = "desired-task"                                         # either 'translate' or 'transcribe'
+audiofile_dir = "location-of-audio-file"                      # filetype should be .mp3 or .wav
+
+# Optimize model for better results
+model_optimizer = ModelOptimization(model_name=model_name)
+model_optimizer.convert_model_to_optimized_format()
+model = model_optimizer.load_transcription_model()
+
+# Initiate the transcription model
+inference = SpeechTranscriptionPipeline(
+        audio_file_path=audiofile_dir,
+        task=task,
+        huggingface_read_token=huggingface_read_token
+    )
+
+# To get transcriptions
+transcription = inference.transcribe_audio(model=model)
+print(transcription)
+
+# To get transcriptions with speaker labels
+alignment_result = inference.align_transcription(transcription)
+diarization_result = inference.diarize_audio(alignment_result)
+print(diarization_result)
+
+#To generate subtitles(.srt format), will be saved in root directory
+inference.generate_subtitles(transcription, alignment_result, diarization_result)
+```
 
 # 🖥️ Using the CLI
+
+## Step 1: Clone and Install Dependencies
 
 - Clone the Repository: Clone or download the application code to your local machine.
 ```bash
@@ -198,14 +236,20 @@ pip install -r requirements.txt
 cd src
 ```
 
+## Step 2: Finetune the Model
+
 - To start the training , use the following command:
 ```bash
-python -m training.main --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE --huggingface_write_token YOUR_HUGGING_FACE_WRITE_TOKEN_HERE --dataset_name AUDIO_DATASET_NAME --language_abbr LANGUAGE_ABBREVIATION --model_id MODEL_ID --processing_task PROCESSING_TASK --wandb_api_key YOUR_WANDB_API_KEY_HERE --use_peft # leave this out to opt-out of using PEFT
+python -m training.main --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE --huggingface_write_token YOUR_HUGGING_FACE_WRITE_TOKEN_HERE --dataset_name AUDIO_DATASET_NAME --language_abbr LANGUAGE_ABBREVIATION LANGUAGE_ABBREVIATION --model_id MODEL_ID --processing_task PROCESSING_TASK --wandb_api_key YOUR_WANDB_API_KEY_HERE --use_peft
+
+Flags:
+# --use_peft: Optional flag to use PEFT finetuning. leave it out to perform full finetuning
 ```
 - Find a description of these commands [here](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/PARAMETERS.md).
 
-### Inference
+## Step 3: Get Inference
 
+### Install ffmpeg
 - To get inference from your fine-tuned model, follow these steps:
 
 - Ensure that ffmpeg is installed by running the following commands:
@@ -226,15 +270,16 @@ choco install ffmpeg
 # on Windows using Scoop (https://scoop.sh/)
 scoop install ffmpeg
 ```
+### To get inference on Gradio UI
 
-- To get the Gradio inference URL:
+- To get the Gradio UI URL:
 ```bash
 python -m training.gradio_demo --model_name YOUR_FINETUNED-MODEL --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE 
 ```
 - **--model_name**: Name of the fine-tuned model to use in your huggingfacehub repo. This should match the model's identifier on the Hugging Face Model Hub.
 - **--huggingface_read_token**: Your Hugging Face authentication token for read access. It allows you to download datasets and models from Hugging Face.
 
-
+### To get inference on CLI
 ```bash
 cd src/deployment
 ```
@@ -247,14 +292,19 @@ HUGGINGFACE_READ_TOKEN = "huggingface-read-token"
 - To perform transcriptions and translations:
 
 ```bash
-# If your model is peft finetuned
-python -m deployment.peft_speech_inference_cli --audio_file audio-filename --task 
+# PEFT FINETUNED MODELS
+python -m deployment.peft_speech_inference_cli --audio_file FILENAME --task TASK 
 
-# If your model is fully finetuned
-python -m deployment.speech_inference_cli --audio_file audio-filename --task task --perform_diarization --perform_alignment
+# FULLY FINETUNED MODELS
+python -m deployment.speech_inference_cli --audio_file FILENAME --task TASK --perform_diarization --perform_alignment
+
+Flags:
+# --perform_diarization: Optional flag to perform speaker diarization.
+# --perform_alignment: Optional flag to perform alignment.
+
 ```
 
-## 🛳️ Deployment
+## 🛳️ Step 4: Deployment
 
 - To deploy your fine-tuned model as a REST API endpoint, follow these [instructions](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/deployment.md).
 
