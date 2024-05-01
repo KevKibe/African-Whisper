@@ -6,7 +6,10 @@ authors = ["Kevin Kibe <keviinkibe@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/KevKibe/African-Whisper"
-packages = [{include = "src"}]
+packages = [
+    { include = "deployment", from = "src" },
+    { include = "training", from = "src" }
+    ]
 include = ["src/deployment/faster_whisper/mel_filters.npz"]
 
 [tool.poetry.dependencies]
