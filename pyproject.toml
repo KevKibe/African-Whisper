@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "africanwhisper"
-version = "0.9.2"
+version = "0.10.0"
 description = "A package for fast fine-tuning and API endpoint deployment of the Whisper model, specifically developed to accelerate Automatic Speech Recognition (ASR) for African languages."
 authors = ["Kevin Kibe <keviinkibe@gmail.com>"]
 license = "MIT"
