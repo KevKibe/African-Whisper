@@ -5,7 +5,8 @@ from typing import Optional, Union
 import torch
 
 from .audio import load_audio, SAMPLE_RATE
-
+import warnings
+warnings.filterwarnings("ignore")
 
 class DiarizationPipeline:
     def __init__(

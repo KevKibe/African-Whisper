@@ -180,7 +180,7 @@ print(transcription.chunk_texts)                                # List of texts 
 ```
 ```python
 # Using a fully fine-tuned model
-from deployment.speech_inference import SpeechInference, ModelOptimization
+from deployment.speech_inference import SpeechTranscriptionPipeline, ModelOptimization
 
 model_name = "your-finetuned-model-name-on-huggingface-hub"   # e.g., "KevinKibe/whisper-small-af"
 huggingface_read_token = " "
