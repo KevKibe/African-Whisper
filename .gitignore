@@ -5,5 +5,18 @@ src/ti
 dist
 build
 africanwhisper.egg-info
-src/openai
 src/wandb
+src/yi
+src/transcribe
+src/tests/__pycache__
+src/training/__pycache__
+src/deployment/rustinference/target
+src/deployment/faster_whisper/__pycache__
+src/deployment/__pycache__
+src/openai
+zuckinterview-short.mp4
+swahili_audio.mp3
+taxi_song.mp3
+Mark Zuckerberg _ How to Build the Future.mp4
+ping.py
+common_voice_af_38086402.mp3
