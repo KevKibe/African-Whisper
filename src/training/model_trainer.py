@@ -118,7 +118,8 @@ class Trainer:
           learning_rate: float = 1e-5,
           per_device_train_batch_size: int = 96,
           per_device_eval_batch_size: int = 64,
-          optim: str = "adamw_bnb_8bit"):
+          optim: str = "adamw_bnb_8bit",
+          **kwargs):
         """
         Conducts the training process using the specified model, dataset, and training configurations.
 
@@ -161,6 +162,7 @@ class Trainer:
             report_to="wandb",
             remove_unused_columns=False,
             ignore_data_skip=True,
+            **kwargs
         )
 
         eval_dataset = self.dataset["test"].map(self.compute_spectrograms)
