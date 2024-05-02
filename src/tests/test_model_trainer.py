@@ -29,8 +29,7 @@ class TestTrainerManager(unittest.TestCase):
         return super().setUp()
     
     def test_train(self):
-        trainer = self.trainer()
-        trainer.train(max_steps = 20,
+        self.trainer.train(max_steps = 20,
             learning_rate = 1e-5,
             save_steps=10,
             output_dir=f"../test-{self.model_id}-finetuned"
