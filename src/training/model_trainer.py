@@ -114,54 +114,96 @@ class Trainer:
         return {"spectrogram": specs}
 
     def train(self,
-          max_steps: int = 100,
-          learning_rate: float = 1e-5,
-          per_device_train_batch_size: int = 96,
-          per_device_eval_batch_size: int = 64,
-          optim: str = "adamw_bnb_8bit",
-          **kwargs):
+        output_dir: str = None,
+        max_steps: int = 100,
+        learning_rate: float = 1e-5,
+        per_device_train_batch_size: int = 96,
+        per_device_eval_batch_size: int = 64,
+        optim: str = "adamw_bnb_8bit",
+        gradient_accumulation_steps: int =1,
+        gradient_checkpointing: bool = True,
+        fp16: bool = None,
+        evaluation_strategy: str = "steps",
+        predict_with_generate: bool = True,
+        generation_max_length: int = 225,
+        save_steps: int = 25,
+        eval_steps: int = 25,
+        logging_steps: int = 25,
+        load_best_model_at_end: bool = True,
+        metric_for_best_model: str = "wer",
+        greater_is_better: bool = False,
+        push_to_hub: bool = True,
+        hub_strategy: str = "checkpoint",
+        save_safetensors: bool = False,
+        resume_from_checkpoint: str = "last-checkpoint",
+        report_to: str = "wandb",
+        remove_unused_columns: bool = False,
+        ignore_data_skip: bool = True,
+        **kwargs):
         """
-        Conducts the training process using the specified model, dataset, and training configurations.
+        Trains the model using the specified configurations.
 
         Args:
-            max_steps (int, optional): Maximum number of training steps. Defaults to 100.
-            learning_rate (float, optional): Learning rate for training. Defaults to 1e-5.
-            per_device_train_batch_size (int, optional): Batch size per GPU for training. Defaults to 96.
-            per_device_eval_batch_size (int, optional): Batch size per GPU for evaluation. Defaults to 64.
-            optim (str, optional): Optimizer to use for training. Defaults to "adamw_bnb_8bit".
+            output_dir (str): The output directory where the model predictions and checkpoints will be written.
+            max_steps (int, optional): The maximum number of training steps. Defaults to 100.
+            learning_rate (float, optional): The learning rate for the training process. Defaults to 1e-5.
+            per_device_train_batch_size (int, optional): The batch size per GPU during training. Defaults to 96.
+            per_device_eval_batch_size (int, optional): The batch size per GPU during evaluation. Defaults to 64.
+            optim (str, optional): The optimizer to use for training. Defaults to "adamw_bnb_8bit".
+            gradient_accumulation_steps (int, optional): The number of steps to accumulate gradients before performing an optimization step. Defaults to 1.
+            gradient_checkpointing (bool, optional): Whether to use gradient checkpointing to save memory at the expense of slower backward pass. Defaults to True.
+            fp16 (bool, optional): Whether to use 16-bit (mixed) precision training instead of 32-bit training.
+            evaluation_strategy (str, optional): The evaluation strategy to adopt during training. "steps": Evaluate every `eval_steps`. Defaults to "steps".
+            predict_with_generate (bool, optional): Whether to use generate to calculate generative metrics (ROUGE, BLEU). Defaults to True.
+            generation_max_length (int, optional): The maximum length of the sequence to be generated. Defaults to 225.
+            save_steps (int, optional): The number of training steps before saving the model. Defaults to 25.
+            eval_steps (int, optional): The number of training steps before evaluating the model. Defaults to 25.
+            logging_steps (int, optional): The number of training steps before logging the training info. Defaults to 25.
+            load_best_model_at_end (bool, optional): Whether to load the best model found during training at the end of training. Defaults to True.
+            metric_for_best_model (str, optional): The metric to use to compare two different models. Defaults to "wer".
+            greater_is_better (bool, optional): Whether a larger metric value indicates a better model. Defaults to False.
+            push_to_hub (bool, optional): Whether to push the model to the Hugging Face model hub at the end of training. Defaults to True.
+            hub_strategy (str, optional): The hub strategy to use for model checkpointing. Defaults to "checkpoint".
+            save_safetensors (bool, optional): Whether to save tensors in a safe format. Defaults to False.
+            resume_from_checkpoint (str, optional): The path to a checkpoint from which to resume training. Defaults to "last-checkpoint".
+            report_to (str, optional): The list of integrations to report the results and logs to. Defaults to "wandb".
+            remove_unused_columns (bool, optional): Whether to remove columns not required by the model when using a dataset. Defaults to False.
+            ignore_data_skip (bool, optional): Whether to skip data loading issues when the dataset is being created. Defaults to True.
+            **kwargs: Additional keyword arguments to be passed to the `Seq2SeqTrainingArguments` constructor https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Seq2SeqTrainingArguments.
         """
         # Checks if GPU is available: returns Boolean
         fp16 = torch.cuda.is_available()
         data_collator = DataCollatorSpeechSeq2SeqWithPadding(
             processor=self.feature_processor
         )
+        output_dir = "../{self.model_id}-finetuned"
         training_args = Seq2SeqTrainingArguments(
-            output_dir=f"../{self.model_id}-finetuned",
+            output_dir=output_dir,
             per_device_train_batch_size=per_device_train_batch_size,
-            gradient_accumulation_steps=1,
+            gradient_accumulation_steps=gradient_accumulation_steps,
             learning_rate=learning_rate,
             max_steps=max_steps,
-            gradient_checkpointing=True,
+            gradient_checkpointing=gradient_checkpointing,
             fp16=fp16,
             optim=optim,
-            evaluation_strategy="steps",
+            evaluation_strategy=evaluation_strategy,
             per_device_eval_batch_size=per_device_eval_batch_size,
-            predict_with_generate=True,
-            generation_max_length=225,
-            save_steps=25,
-            eval_steps=25,
-            logging_steps=25,
-            load_best_model_at_end=True,
-            metric_for_best_model="wer",
-            greater_is_better=False,
-            push_to_hub=True,
+            predict_with_generate=predict_with_generate,
+            generation_max_length=generation_max_length,
+            save_steps=save_steps,
+            eval_steps=eval_steps,
+            logging_steps=logging_steps,
+            load_best_model_at_end=load_best_model_at_end,
+            metric_for_best_model=metric_for_best_model,
+            greater_is_better=greater_is_better,
+            push_to_hub=push_to_hub,
             hub_token=self.huggingface_write_token,
-            hub_strategy = "checkpoint",
-            save_safetensors = False,
-            resume_from_checkpoint  = "last-checkpoint",
-            report_to="wandb",
-            remove_unused_columns=False,
-            ignore_data_skip=True,
+            hub_strategy = hub_strategy,
+            save_safetensors = save_safetensors,
+            resume_from_checkpoint  = resume_from_checkpoint,
+            report_to=report_to,
+            remove_unused_columns=remove_unused_columns,
+            ignore_data_skip=ignore_data_skip,
             **kwargs
         )
 
