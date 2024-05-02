@@ -1,6 +1,7 @@
 import unittest
 from training.model_trainer import Trainer
 from training.data_prep import DataPrep
+import os
 
 class TestTrainerManager(unittest.TestCase):
     """Test cases for the Trainer class."""
@@ -33,8 +34,13 @@ class TestTrainerManager(unittest.TestCase):
         self.trainer.train(max_steps = 20,
             learning_rate = 1e-5,
             save_steps=10,
-            output_dir=f"../test-{self.model_id}-finetuned"
+            output_dir=f"../{self.model_id}-finetuned",
+            report_to = None,
+            push_to_hub = False
             )
+        assert os.path.exists("../{self.model_id}-finetuned/pytorch_model.bin")
+
+        
         
 if __name__ == '__main__':
     unittest.main()
