@@ -145,17 +145,7 @@ trainer.train(
 
 ```
 
-## Step 6: Generate a Demo using GradioUI
-```python
-from training.gradio_inference import WhisperDemo
-
-# Generate a demo
-model_name = "your-finetuned-model-name-on-huggingface-hub"     # e.g., "KevinKibe/whisper-small-af"
-demo = WhisperDemo(model_name, huggingface_read_token)
-demo.generate_demo()
-```
-
-## Step 7: Test Model using Audio File
+## Step 6: Test Model using an Audio File
 
 ```python
 # Using a PEFT fine-tuned model
@@ -270,16 +260,8 @@ choco install ffmpeg
 # on Windows using Scoop (https://scoop.sh/)
 scoop install ffmpeg
 ```
-### To get inference on Gradio UI
 
-- To get the Gradio UI URL:
-```bash
-python -m training.gradio_demo --model_name YOUR_FINETUNED-MODEL --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE 
-```
-- **--model_name**: Name of the fine-tuned model to use in your huggingfacehub repo. This should match the model's identifier on the Hugging Face Model Hub.
-- **--huggingface_read_token**: Your Hugging Face authentication token for read access. It allows you to download datasets and models from Hugging Face.
-
-### To get inference on CLI
+### To get inference on CLI Locally
 ```bash
 cd src/deployment
 ```

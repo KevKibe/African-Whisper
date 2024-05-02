@@ -27,7 +27,7 @@ class Dataset:
         self.dataset_name = dataset_name
         self.language_abbr = language_abbr
     
-    def load_dataset(self, num_samples: int = None):
+    def load_dataset(self, train_num_samples: int = None, test_num_samples: int = None):
         """Load datasets for each language abbreviation and concatenate train/test splits.
 
         Parameters:
@@ -39,8 +39,8 @@ class Dataset:
         data = {}
         for lang in self.language_abbr:
             dataset = load_dataset(self.dataset_name, lang, streaming=True, token=self.huggingface_token, trust_remote_code=True)
-            train_split = dataset['train'].take(num_samples)
-            test_split = dataset['test']
+            train_split = dataset['train'].take(train_num_samples)
+            test_split = dataset['test'].take(test_num_samples)
             if "train" in data:
                 data["train"] = concatenate_datasets([data["train"], train_split])
             else:
