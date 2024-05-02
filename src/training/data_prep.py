@@ -86,7 +86,8 @@ class DataPrep:
         feature_extractor: WhisperFeatureExtractor, 
         tokenizer: WhisperTokenizer, 
         processor: WhisperProcessor,
-        num_samples: int = None,) -> DatasetDict:
+        train_num_samples: int = None,
+        test_num_samples: int = None) -> DatasetDict:
         """
         Retrieves and preprocesses the specified dataset for model training and evaluation.
 
@@ -104,7 +105,8 @@ class DataPrep:
                         processed to include only the necessary features for model input.
         """
 
-        dataset = self.data_loader.load_dataset(num_samples = num_samples)
+        dataset = self.data_loader.load_dataset(train_num_samples = train_num_samples,
+                                                test_num_samples = test_num_samples)
         print(f"Training dataset size: {self.data_loader.count_examples(dataset['train'])}")
         print(f"Test dataset size: {self.data_loader.count_examples(dataset['test'])}")
         processor = AudioDataProcessor(dataset, feature_extractor, tokenizer, processor)
