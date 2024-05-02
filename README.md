@@ -106,9 +106,12 @@ processed_dataset = process.load_dataset(
     feature_extractor=feature_extractor,
     tokenizer=tokenizer,
     processor=feature_processor,
-    num_samples = None # Number of samples to load from each dataset
-                       # Set None to load the entire dataset
-                       # Example: num_samples = 100 will load 100 samples from each dataset
+    train_num_samples = None,     # Optional: int - Number of samples to load into training dataset, default the whole training set.
+    test_num_samples = None )     # Optional: int - Number of samples to load into test dataset, default the whole test set.
+                                  # Set None to load the entire dataset
+                                  # If dataset is more than on, train_num_samples/test_num_samples will apply to all e.g `language_abbr= ["af", "ti"]` will return 100 samples each. 
+                                 
+    
 ```
 
 ## Step 5: Train the Model
