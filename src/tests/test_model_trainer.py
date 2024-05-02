@@ -5,11 +5,12 @@ from training.data_prep import DataPrep
 class TestTrainerManager(unittest.TestCase):
     """Test cases for the Trainer class."""
     def setUp(self) -> None:
+        self.model_id="openai/whisper-tiny"
         process = DataPrep(
             huggingface_read_token="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 ",
             dataset_name="mozilla-foundation/common_voice_16_1",
             language_abbr=["ti"],
-            model_id="openai/whisper-tiny",
+            model_id=self.model_id,
             processing_task="automatic-speech-recognition",
             use_peft=False,
         )
@@ -17,7 +18,7 @@ class TestTrainerManager(unittest.TestCase):
         dataset = process.load_dataset(feature_extractor, tokenizer, feature_processor)
         self.trainer = Trainer(
             huggingface_write_token= "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",
-            model_id="openai/whisper-tiny",
+            model_id=self.model_id,
             dataset=dataset,
             model=model,
             feature_processor=feature_processor,
