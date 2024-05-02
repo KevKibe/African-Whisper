@@ -122,7 +122,7 @@ class Trainer:
         optim: str = "adamw_bnb_8bit",
         gradient_accumulation_steps: int =1,
         gradient_checkpointing: bool = True,
-        fp16: bool = None,
+        fp16: bool = torch.cuda.is_available(),
         evaluation_strategy: str = "steps",
         predict_with_generate: bool = True,
         generation_max_length: int = 225,
@@ -171,8 +171,6 @@ class Trainer:
             ignore_data_skip (bool, optional): Whether to skip data loading issues when the dataset is being created. Defaults to True.
             **kwargs: Additional keyword arguments to be passed to the `Seq2SeqTrainingArguments` constructor https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Seq2SeqTrainingArguments.
         """
-        # Checks if GPU is available: returns Boolean
-        fp16 = torch.cuda.is_available()
         data_collator = DataCollatorSpeechSeq2SeqWithPadding(
             processor=self.feature_processor
         )
