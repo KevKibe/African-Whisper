@@ -18,7 +18,7 @@ class TestDatasetManager(unittest.TestCase):
     def test_load_dataset(self):
         """Test loading the dataset and verifying its contents."""
         # Act
-        data = self.dataset_manager.load_dataset(num_samples=10)
+        data = self.dataset_manager.load_dataset(train_num_samples=10, test_num_samples = 10)
 
         # Assert
         self.assertIsNotNone(data, "The loaded dataset should not be None.")
