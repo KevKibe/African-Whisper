@@ -145,16 +145,6 @@ trainer.train(
 
 ```
 
-## Step 6: Generate a Demo using GradioUI
-```python
-from training.gradio_inference import WhisperDemo
-
-# Generate a demo
-model_name = "your-finetuned-model-name-on-huggingface-hub"     # e.g., "KevinKibe/whisper-small-af"
-demo = WhisperDemo(model_name, huggingface_read_token)
-demo.generate_demo()
-```
-
 ## Step 7: Test Model using Audio File
 
 ```python
