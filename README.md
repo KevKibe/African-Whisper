@@ -110,8 +110,6 @@ processed_dataset = process.load_dataset(
     test_num_samples = None )     # Optional: int - Number of samples to load into test dataset, default the whole test set.
                                   # Set None to load the entire dataset
                                   # If dataset is more than on, train_num_samples/test_num_samples will apply to all e.g `language_abbr= ["af", "ti"]` will return 100 samples each. 
-                                 
-    
 ```
 
 ## Step 5: Train the Model
@@ -145,7 +143,7 @@ trainer.train(
 #     per_device_train_batch_size (int): The batch size per GPU for training (default is 96).
 #     per_device_eval_batch_size (int): The batch size per GPU for evaluation (default is 64).
 #     optim (str): The optimizer used for training (default is "adamw_bnb_8bit")
-
+# See more configurable parameters https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Seq2SeqTrainingArguments
 ```
 
 ## Step 6: Test Model using an Audio File
