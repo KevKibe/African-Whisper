@@ -43,7 +43,7 @@ class TestTrainerManager(unittest.TestCase):
             use_cpu = True,
             optim = "adamw_hf"
             )
-        assert os.path.exists("../{self.model_id}-finetuned/pytorch_model.bin")
+        assert os.path.exists(f"../{self.model_id}-finetuned/pytorch_model.bin")
 
         
         

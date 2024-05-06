@@ -174,7 +174,7 @@ class Trainer:
         data_collator = DataCollatorSpeechSeq2SeqWithPadding(
             processor=self.feature_processor
         )
-        output_dir = "../{self.model_id}-finetuned"
+        output_dir = f"../{self.model_id}-finetuned"
         training_args = Seq2SeqTrainingArguments(
             output_dir=output_dir,
             per_device_train_batch_size=per_device_train_batch_size,

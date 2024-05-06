@@ -1,6 +1,7 @@
 import unittest
 from deployment.peft_speech_inference import SpeechInference, Transcription
 from transformers.pipelines import AutomaticSpeechRecognitionPipeline
+import os
 
 class TestPeftSpeechInferenceManager(unittest.TestCase):
     """Test cases for the SpeechInference class.
@@ -16,7 +17,7 @@ class TestPeftSpeechInferenceManager(unittest.TestCase):
         a Huggingface read token. It also sets the audio file path and task type for testing.
         """
         self.model_name = "KevinKibe/whisper-small-ti"
-        self.huggingface_read_token = "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"
+        self.huggingface_read_token = os.environ.get("HF_READ_TOKEN")
         self.speech_inference = SpeechInference(self.model_name, self.huggingface_read_token)
         self.audio_file_path = "src/tests/samples_jfk.wav"
         self.task = "transcribe"
