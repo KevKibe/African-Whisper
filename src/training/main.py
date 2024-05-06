@@ -29,15 +29,15 @@ def parse_args():
     )
     parser.add_argument(
         "--train_num_samples",
-        type=str,
+        type=int,
         default=None,
-        help="Name of the dataset to be downloaded from Hugging Face.",
+        help="Number of training samples in the dataset",
     )
     parser.add_argument(
         "--test_num_samples",
-        type=str,
+        type=int,
         default=None,
-        help="Name of the dataset to be downloaded from Hugging Face.",
+        help="Number of testing samples in the dataset",
     )
     parser.add_argument(
         "--language_abbr",
