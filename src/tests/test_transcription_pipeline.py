@@ -19,7 +19,7 @@ class TestSpeechTranscriptionPipelineManager(unittest.TestCase):
         speech transcription pipeline required for testing.
         """
         self.model_name = "openai/whisper-small"
-        self.huggingface_token = "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"
+        self.huggingface_token = os.environ.get("HF_READ_TOKEN")
         self.device = 0 if torch.cuda.is_available() else "cpu"
         
         self.model_initialization = ModelOptimization(model_name=self.model_name)
