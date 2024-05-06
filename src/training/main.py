@@ -28,6 +28,18 @@ def parse_args():
         help="Name of the dataset to be downloaded from Hugging Face.",
     )
     parser.add_argument(
+        "--train_num_samples",
+        type=str,
+        default=None,
+        help="Name of the dataset to be downloaded from Hugging Face.",
+    )
+    parser.add_argument(
+        "--test_num_samples",
+        type=str,
+        default=None,
+        help="Name of the dataset to be downloaded from Hugging Face.",
+    )
+    parser.add_argument(
         "--language_abbr",
         nargs='+',
         required=True,
@@ -71,7 +83,11 @@ if __name__ == "__main__":
     )
     tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
 
-    dataset = process.load_dataset(feature_extractor, tokenizer, feature_processor)
+    dataset = process.load_dataset(feature_extractor, 
+                                   tokenizer, 
+                                   feature_processor, 
+                                   train_num_samples = args.train_num_samples,
+                                   test_num_samples = args.test_num_samples)
     trainer = Trainer(
         huggingface_write_token=args.huggingface_write_token,
         model_id=args.model_id,
