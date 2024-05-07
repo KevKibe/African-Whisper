@@ -63,7 +63,7 @@ For more details, you can refer to the [Whisper ASR model paper](https://cdn.ope
 
 - [Usage Demo video ](https://youtu.be/qj48Chu4i4k?si=Vwv-6-qI7GJF7AMd)(v0.2.5)
 - [Deployment Demo video](https://www.youtube.com/watch?v=ulKJS_q3Emk)
-
+- [Generated subtitles on video clips in Swahili](https://youtu.be/mZnjlsFik7I?si=rMHQfuSC6ghMEpg8)
 [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/16r4cxP-dSFplRTfgPLbzGXYRzBIUqpx9?usp=sharing)
 
 ## Step 1: Installation
