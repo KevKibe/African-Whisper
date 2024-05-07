@@ -41,7 +41,8 @@
 <br>
 The framework implements the following papers:
 <br>
-1. [Robust Speech Recognition via Large-Scale Weak Supervision](https://arxiv.org/abs/2212.04356): Speech processing systems trained to predict large amounts of transcripts of audio on the internet scaled to 680,000 hours of multilingual and multitask supervision.
+
+1. [Robust Speech Recognition via Large-Scale Weak Supervision](https://arxiv.org/abs/2212.04356) : Speech processing systems trained to predict large amounts of transcripts of audio on the internet scaled to 680,000 hours of multilingual and multitask supervision.
 
 2. [WhisperX](https://arxiv.org/abs/2303.00747): Time-Accurate Speech Transcription of Long-Form Audio for time-accurate speech recognition with word-level timestamps. 
 
