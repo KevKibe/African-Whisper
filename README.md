@@ -23,21 +23,21 @@
 ![Diagram](diagram-1.png)
 ## Features
   
-- 🔧 Fine-Tuning: Fine-tune the [Whisper](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013) model on any audio dataset from Huggingface, e.g., [Mozilla's](https://huggingface.co/mozilla-foundation) Common Voice datasets.
+- 🔧 **Fine-Tuning**: Fine-tune the [Whisper](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013) model on any audio dataset from Huggingface, e.g., [Mozilla's](https://huggingface.co/mozilla-foundation) Common Voice datasets.
 
-- 📊 Metrics Monitoring: View training run metrics on [Wandb](https://wandb.ai/).
+- 📊 **Metrics Monitoring**: View training run metrics on [Wandb](https://wandb.ai/).
 
-- 🐳 Production Deployment: Seamlessly containerize and deploy the model inference endpoint for real-world applications.
+- 🐳 **Production Deployment**: Seamlessly containerize and deploy the model inference endpoint for real-world applications.
 
-- 🚀 Model Optimization: Utilize CTranslate2 for efficient model optimization, ensuring faster inference times.
+- 🚀 **Model Optimization**: Utilize CTranslate2 for efficient model optimization, ensuring faster inference times.
 
-- 📝 Word-Level Transcriptions: Produce detailed word-level transcriptions and translations, complete with timestamps.
+- 📝 **Word-Level Transcriptions**: Produce detailed word-level transcriptions and translations, complete with timestamps.
 
-- 🎙️ Multi-Speaker Diarization: Perform speaker identification and separation in multi-speaker audio using diarization techniques.
+- 🎙️ **Multi-Speaker Diarization**: Perform speaker identification and separation in multi-speaker audio using diarization techniques.
 
-- 🔍 Alignment Precision: Improve transcription and translation accuracy by aligning outputs with Wav2vec models.
+- 🔍 **Alignment Precision**: Improve transcription and translation accuracy by aligning outputs with Wav2vec models.
 
-- 🛡️ Reduced Hallucination: Leverage Voice Activity Detection (VAD) to minimize hallucination and improve transcription clarity.
+- 🛡️ **Reduced Hallucination**: Leverage Voice Activity Detection (VAD) to minimize hallucination and improve transcription clarity.
 <br>
 The framework implements the following papers:
 <br>
