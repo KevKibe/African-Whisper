@@ -1,13 +1,12 @@
 # Deployment and Instrumentation
 
-
 ## To run locally:
 
 ### Set up Environment Variables
 ```bash
 cd src/deployment
 ```
-- Create a `.env` file using `nano .env` command and add these keys and save the file.
+- Create a `.env` file using `nano .env` command or using `vim` and add these keys and save the file.
 ```python
 MODEL_NAME = "your-finetuned-model"
 HUGGINGFACE_READ_TOKEN = "huggingface-read-token"
@@ -27,7 +26,7 @@ python3 -m deployment.app
 - Test it out by accessing the Swagger UI at `http://localhost:8000/docs` and uploading either an .mp3 file or a .wav file and a task either `transcribe` or `translate`. 
 
 
-## To deploy to production:
+## To deploy to a production environment:
 
 ### Set up Environment Variables
 
@@ -41,9 +40,9 @@ python3 -m deployment.app
    - `MODEL_NAME`: Name of the fine-tuned model to use in your Hugging Face Hub repository.
    - `HUGGINGFACE_READ_TOKEN`: Your Hugging Face authentication token for read access.
 
-2. Modify the `docker-compose.yaml` file according to whether your finetuned model is PEFT finetuned or fully finetuned.
-- `app.py` for fully finetuned models, `main.py` for peft-finetuned models.
-- update `Dockerfile` accordingly and `.dockerignore`.
+2. Modify the `CMD` command in`src/deployment/Dockerfile` file according to whether your finetuned model is PEFT finetuned or fully finetuned.
+    - `app.py` for fully finetuned models, `main.py` for peft-finetuned models.
+    - update `src/deployment/.dockerignore` accordingly.
 
 ### Run Application
 
@@ -57,6 +56,13 @@ python3 -m deployment.app
 
 4. Test the application by accessing the Swagger UI at `http://localhost:8000/docs`. Upload an `.mp3` file and specify a task as either `transcribe` or `translate`. 
 
-### Visualize
+### Set up monitoring
 
 5. Visualize Prometheus graphs in Grafana by logging in to Grafana at `http://localhost:3000`. You can access Prometheus graphs at `http://localhost:9090`.
+
+
+## To dockerize and semd to a docker registry
+ 
+- Modify the `CMD` command in `src/deployment/Dockerfile` file according to whether your finetuned model is PEFT finetuned or fully finetuned.
+ - `app.py` for fully finetuned models, `main.py` for peft-finetuned models.
+ - update `src/deployment/.dockerignore` accordingly.
