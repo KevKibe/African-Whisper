@@ -240,7 +240,17 @@ cd src
 
 - To start the training , use the following command:
 ```bash
-python -m training.main --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE --huggingface_write_token YOUR_HUGGING_FACE_WRITE_TOKEN_HERE --dataset_name AUDIO_DATASET_NAME --language_abbr LANGUAGE_ABBREVIATION LANGUAGE_ABBREVIATION --model_id MODEL_ID --processing_task PROCESSING_TASK --wandb_api_key YOUR_WANDB_API_KEY_HERE --use_peft
+python -m training.main \
+    --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE \
+    --huggingface_write_token YOUR_HUGGING_FACE_WRITE_TOKEN_HERE \
+    --dataset_name AUDIO_DATASET_NAME \
+    --train_num_samples SAMPLE_SIZE \
+    --test_num_samples SAMPLE_SIZE \
+    --language_abbr LANGUAGE_ABBREVIATION \
+    --model_id MODEL_ID \
+    --processing_task PROCESSING_TASK \
+    --wandb_api_key YOUR_WANDB_API_KEY_HERE \
+    --use_peft
 
 Flags:
 # --use_peft: Optional flag to use PEFT finetuning. leave it out to perform full finetuning
