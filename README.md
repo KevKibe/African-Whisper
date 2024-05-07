@@ -18,32 +18,38 @@
 </p>
 
 
-*Enhancing Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages by providing seamless fine-tuning and deploying pipelines for Whisper Model*.
+*Framework for seamless fine-tuning and deploying Whisper Model developed to advance Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages*.
 <br>
 ![Diagram](diagram-1.png)
 ## Features
   
-- 🔧 Fine-tune the [Whisper](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013) model on any audio dataset from Huggingface, e.g., [Mozilla's](https://huggingface.co/mozilla-foundation) Common Voice datasets.
+- 🔧 Fine-Tuning: Fine-tune the [Whisper](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013) model on any audio dataset from Huggingface, e.g., [Mozilla's](https://huggingface.co/mozilla-foundation) Common Voice datasets.
 
-- 📊 View training run metrics on [Wandb](https://wandb.ai/).
+- 📊 Metrics Monitoring: View training run metrics on [Wandb](https://wandb.ai/).
 
-- 🎙️ Test your fine-tuned model using Gradio UI or directly on an audio file (.mp3 or .wav).
+- 🐳 Production Deployment: Seamlessly containerize and deploy the model inference endpoint for real-world applications.
 
-- 🚀 Deploy an API endpoint for audio file transcription or translation.
+- 🚀 Model Optimization: Utilize CTranslate2 for efficient model optimization, ensuring faster inference times.
 
-- 🐳 Containerize your API endpoint application and push to DockerHub.
+- 📝 Word-Level Transcriptions: Produce detailed word-level transcriptions and translations, complete with timestamps.
 
-## Why Whisper? 🤔
+- 🎙️ Multi-Speaker Diarization: Perform speaker identification and separation in multi-speaker audio using diarization techniques.
 
+- 🔍 Alignment Precision: Improve transcription and translation accuracy by aligning outputs with Wav2vec models.
 
-- 🌐 **Extensive Training Data**: Trained on 680,000 hours of multilingual and multitask(translation and transcription) supervised data from the web.
+- 🛡️ Reduced Hallucination: Leverage Voice Activity Detection (VAD) to minimize hallucination and improve transcription clarity.
+<br>
+The framework implements the following papers:
+<br>
+1. [Robust Speech Recognition via Large-Scale Weak Supervision](https://arxiv.org/abs/2212.04356): Speech processing systems trained to predict large amounts of transcripts of audio on the internet scaled to 680,000 hours of multilingual and multitask supervision.
 
-- 🗣️ **Sequence-based Understanding**: Whisper considers the full sequence of spoken words, ensuring accurate context recognition, unlike Word2Vec.
+2. [WhisperX](https://arxiv.org/abs/2303.00747): Time-Accurate Speech Transcription of Long-Form Audio for time-accurate speech recognition with word-level timestamps. 
 
-- 💻 **Simplification for Applications**: Deploy one model for transcribing and translating a multitude of languages, without sacrificing quality or context.
+3. [Pyannote.audio](https://arxiv.org/abs/1911.01255): Neural building blocks for speaker diarization for advanced speaker diarization capabilities. 
+
+4. [Efficient and High-Quality Neural Machine Translation with OpenNMT](https://arxiv.org/abs/1701.02810): Efficient neural machine translation and model acceleration.  
 
 For more details, you can refer to the [Whisper ASR model paper](https://cdn.openai.com/papers/whisper.pdf).<br>
-Want proof, check this [repo](https://github.com/KevKibe/Finetuning-WhisperSmall-LoRA-Swahili)
 
 
 
@@ -55,7 +61,8 @@ Want proof, check this [repo](https://github.com/KevKibe/Finetuning-WhisperSmall
 
 - Sign up to Weights and Biases and get your token keys use this [guide](https://app.wandb.ai/login?signup=true)
 
-- Demo video [here](https://youtu.be/qj48Chu4i4k?si=Vwv-6-qI7GJF7AMd)
+- [Usage Demo video ](https://youtu.be/qj48Chu4i4k?si=Vwv-6-qI7GJF7AMd)(v0.2.5)
+- [Deployment Demo video](https://www.youtube.com/watch?v=ulKJS_q3Emk)
 
 [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/16r4cxP-dSFplRTfgPLbzGXYRzBIUqpx9?usp=sharing)
 
