@@ -1,7 +1,6 @@
 import os
 from fastapi import FastAPI, UploadFile, HTTPException, Response
 from pydantic import BaseModel
-import tempfile
 from deployment.peft_speech_inference import SpeechInference
 import logging
 from dotenv import load_dotenv
