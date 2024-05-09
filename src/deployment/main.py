@@ -1,7 +1,6 @@
 import os
 from fastapi import FastAPI, UploadFile, HTTPException, Response
 from pydantic import BaseModel
-import tempfile
 from deployment.peft_speech_inference import SpeechInference
 import logging
 from dotenv import load_dotenv
@@ -39,25 +38,14 @@ async def speechinference(file: UploadFile, task: str):
         raise HTTPException(status_code=400, detail="No file provided")
 
     try:
-        with tempfile.NamedTemporaryFile(suffix=".tmp", delete=False) as tmp_file:
-            tmp_file.write(await file.read())
-            tmp_file_path = tmp_file.name
-
-        if file.filename.endswith(".mp3"):
-            logger.info("Processing mp3 file")
-            start_time = time.time()
-            result = inference.output(pipeline, tmp_file_path, task)
-            end_time = time.time()
-            duration = end_time - start_time
-            request_time.observe(duration)
-            logger.info(f"Time taken for inference: {duration} seconds")
-        elif file.filename.endswith(".wav"):
-            logger.info("Processing wav file")
-            pass
-        else:
-            logger.error("Unsupported file format")
-            raise HTTPException(status_code=400, detail="Unsupported file format")
-
+       
+        audio_data = await file.read()
+        logger.info("Processing mp3 file")
+        start_time = time.time()
+        result = inference.output(pipeline, audio_data, task)
+        end_time = time.time()
+        duration = end_time - start_time
+        request_time.observe(duration)
         logger.info("File processed successfully")
         successful_requests_counter.inc()
         return result
