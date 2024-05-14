@@ -23,25 +23,26 @@
 ![Diagram](diagram-1.png)
 ## Features
   
-- 🔧 Fine-Tuning: Fine-tune the [Whisper](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013) model on any audio dataset from Huggingface, e.g., [Mozilla's](https://huggingface.co/mozilla-foundation) Common Voice datasets.
+- 🔧 **Fine-Tuning**: Fine-tune the [Whisper](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013) model on any audio dataset from Huggingface, e.g., [Mozilla's](https://huggingface.co/mozilla-foundation) Common Voice datasets.
 
-- 📊 Metrics Monitoring: View training run metrics on [Wandb](https://wandb.ai/).
+- 📊 **Metrics Monitoring**: View training run metrics on [Wandb](https://wandb.ai/).
 
-- 🐳 Production Deployment: Seamlessly containerize and deploy the model inference endpoint for real-world applications.
+- 🐳 **Production Deployment**: Seamlessly containerize and deploy the model inference endpoint for real-world applications.
 
-- 🚀 Model Optimization: Utilize CTranslate2 for efficient model optimization, ensuring faster inference times.
+- 🚀 **Model Optimization**: Utilize CTranslate2 for efficient model optimization, ensuring faster inference times.
 
-- 📝 Word-Level Transcriptions: Produce detailed word-level transcriptions and translations, complete with timestamps.
+- 📝 **Word-Level Transcriptions**: Produce detailed word-level transcriptions and translations, complete with timestamps.
 
-- 🎙️ Multi-Speaker Diarization: Perform speaker identification and separation in multi-speaker audio using diarization techniques.
+- 🎙️ **Multi-Speaker Diarization**: Perform speaker identification and separation in multi-speaker audio using diarization techniques.
 
-- 🔍 Alignment Precision: Improve transcription and translation accuracy by aligning outputs with Wav2vec models.
+- 🔍 **Alignment Precision**: Improve transcription and translation accuracy by aligning outputs with Wav2vec models.
 
-- 🛡️ Reduced Hallucination: Leverage Voice Activity Detection (VAD) to minimize hallucination and improve transcription clarity.
+- 🛡️ **Reduced Hallucination**: Leverage Voice Activity Detection (VAD) to minimize hallucination and improve transcription clarity.
 <br>
 The framework implements the following papers:
 <br>
-1. [Robust Speech Recognition via Large-Scale Weak Supervision](https://arxiv.org/abs/2212.04356): Speech processing systems trained to predict large amounts of transcripts of audio on the internet scaled to 680,000 hours of multilingual and multitask supervision.
+
+1. [Robust Speech Recognition via Large-Scale Weak Supervision](https://arxiv.org/abs/2212.04356) : Speech processing systems trained to predict large amounts of transcripts of audio on the internet scaled to 680,000 hours of multilingual and multitask supervision.
 
 2. [WhisperX](https://arxiv.org/abs/2303.00747): Time-Accurate Speech Transcription of Long-Form Audio for time-accurate speech recognition with word-level timestamps. 
 
@@ -64,6 +65,9 @@ For more details, you can refer to the [Whisper ASR model paper](https://cdn.ope
 - [Usage Demo video ](https://youtu.be/qj48Chu4i4k?si=Vwv-6-qI7GJF7AMd)(v0.2.5)
 - [Deployment Demo video](https://www.youtube.com/watch?v=ulKJS_q3Emk)
 - [Generated subtitles on video clips in Swahili](https://youtu.be/mZnjlsFik7I?si=rMHQfuSC6ghMEpg8)
+
+<br>
+
 [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/16r4cxP-dSFplRTfgPLbzGXYRzBIUqpx9?usp=sharing)
 
 ## Step 1: Installation
@@ -117,8 +121,6 @@ processed_dataset = process.load_dataset(
     test_num_samples = None )     # Optional: int - Number of samples to load into test dataset, default the whole test set.
                                   # Set None to load the entire dataset
                                   # If dataset is more than on, train_num_samples/test_num_samples will apply to all e.g `language_abbr= ["af", "ti"]` will return 100 samples each. 
-                                 
-    
 ```
 
 ## Step 5: Train the Model
@@ -152,7 +154,7 @@ trainer.train(
 #     per_device_train_batch_size (int): The batch size per GPU for training (default is 96).
 #     per_device_eval_batch_size (int): The batch size per GPU for evaluation (default is 64).
 #     optim (str): The optimizer used for training (default is "adamw_bnb_8bit")
-
+# See more configurable parameters https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Seq2SeqTrainingArguments
 ```
 
 ## Step 6: Test Model using an Audio File
