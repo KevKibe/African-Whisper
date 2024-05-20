@@ -4,7 +4,11 @@ on: [pull_request]
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout Repository
@@ -21,9 +25,20 @@ jobs:
           pip install pytest einops lion-pytorch
 
       - name: Install FFmpeg
+        if: startsWith(matrix.os, 'ubuntu')
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
+
+      - name: Install FFmpeg (macOS)
+        if: startsWith(matrix.os, 'macos')
+        run: |
+          brew install ffmpeg
+
+      - name: Install FFmpeg (Windows)
+        if: startsWith(matrix.os, 'windows')
+        run: |
+          choco install ffmpeg
 
       - name: Run tests
         env:
