@@ -1,0 +1,104 @@
+site_name: African Whisper ASR Framework
+site_description: A framework for fast fine-tuning and API endpoint deployment of the Whisper model, specifically developed to accelerate Automatic Speech Recognition (ASR) for African languages.
+
+# Repository
+repo_url: https://github.com/KevKibe/African-Whisper
+repo_name: KevKibe/African-Whisper
+edit_uri: edit/master/DOCS
+
+theme:
+   name: 'material'
+   logo: logo_image.ico
+   favicon: logo_image.ico
+   # features:
+   #   - navigation.tabs
+   #   - navigation.sections
+   #   - toc.integrate
+   #   - navigation.top
+   #   - search.suggest
+   #   - search.highlight
+   #   - content.tabs.link
+   #   - content.code.annotation
+   #   - content.code.copy
+   language: en
+   palette:
+     - scheme: default
+       toggle:
+         icon: material/toggle-switch-off-outline 
+         name: Switch to dark mode
+       primary: grey
+       accent: orange 
+     - scheme: slate 
+       toggle:
+         icon: material/toggle-switch
+         name: Switch to light mode    
+       primary: grey
+       accent: orange
+
+
+# Plugins
+plugins:
+  - blog:
+      blog_dir: blog
+      post_url_format: "{slug}"
+      blog_toc: true
+  - social:
+      cards_layout_options:
+        background_color: "black"
+        color: "#FFFFFF"
+        font_family: "Roboto"
+#      debug: true
+      # cards_layout_dir: DOCS/layouts
+      # cards_layout: custom
+
+nav:
+ - Home: home.md
+ - Docs: 
+   - Getting Started: index.md
+   - Deployment: DEPLOYMENT.md
+   - Contributing: CONTRIBUTING.md
+   - Code of Conduct: CODE_OF_CONDUCT.md
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - codehilite
+  - footnotes
+#   - mdx_math:
+#       enable_dollar_delimiter: true
+  - toc:
+      permalink: true
+      separator: "_"
+
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - admonition
+  - pymdownx.arithmatex:
+      generic: true
+  - footnotes
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.mark
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+# plugins:
+#   - search:
+#       separator: '[\s\-\.]+'
+#       lang:
+#         - en
+
+# Customization
+extra_javascript:
+  - "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-MML-AM_CHTML"
+extra_css:
+  - "assets/css/custom.css"
+extra:
+  manifest: "manifest.json"
+  social:
+    - icon: "fontawesome/brands/twitter"
+      link: "https://twitter.com/AfriWhisper"
