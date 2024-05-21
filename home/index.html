@@ -79,7 +79,16 @@
       
     
     
-  </head>
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
   
   
     
@@ -278,7 +287,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../DEPLOYMENT/" class="md-nav__link">
+      <a href="../DEPLOYMENT.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -351,6 +360,23 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#demo_using_the_model_to_generate_accurate_word-level_transcriptionsswahili" class="md-nav__link">
+    <span class="md-ellipsis">
+      Demo: Using the Model to Generate Accurate Word-Level Transcriptions(Swahili)
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -386,10 +412,10 @@
     <img src= "logo_image.png" width="100">
 </p> -->
 
-<p><img alt="Diagram" src="../logo_image.png" /></p>
+<p><a class="glightbox" href="../logo_image.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Diagram" src="../logo_image.png" /></a></p>
 <p><em>Framework for seamless fine-tuning and deploying Whisper Model developed to advance Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages</em>.
 <br>
-<img alt="Diagram" src="../diagram-1.png" /></p>
+<a class="glightbox" href="../diagram-1.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Diagram" src="../diagram-1.png" /></a></p>
 <h1 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h1>
 <ul>
 <li>
@@ -417,6 +443,9 @@
 <p>🛡️ <strong>Reduced Hallucination</strong>: Leverage Voice Activity Detection (VAD) to minimize hallucination and improve transcription clarity.</p>
 </li>
 </ul>
+<h2 id="demo_using_the_model_to_generate_accurate_word-level_transcriptionsswahili">Demo: Using the Model to Generate Accurate Word-Level Transcriptions(Swahili)<a class="headerlink" href="#demo_using_the_model_to_generate_accurate_word-level_transcriptionsswahili" title="Permanent link">&para;</a></h2>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mZnjlsFik7I?si=IGnvPfHsm0EDsJYI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 <h1 id="research_implemented">Research Implemented<a class="headerlink" href="#research_implemented" title="Permanent link">&para;</a></h1>
 <p><br>
 The framework implements the following papers:
@@ -508,5 +537,7 @@ The framework implements the following papers:
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-MML-AM_CHTML"></script>
       
     
-  </body>
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
 </html>

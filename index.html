@@ -81,7 +81,16 @@
       
     
     
-  </head>
+   <link href="assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="assets/javascripts/glightbox.min.js"></script></head>
   
   
     
@@ -291,36 +300,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
+  <a href="#demo_using_the_model_to_generate_accurate_word-level_transcriptionsswahili" class="md-nav__link">
     <span class="md-ellipsis">
-      Documentation
+      Demo: Using the Model to Generate Accurate Word-Level Transcriptions(Swahili)
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#contributing" class="md-nav__link">
+  <a href="#research_implemented" class="md-nav__link">
     <span class="md-ellipsis">
-      Contributing
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#license" class="md-nav__link">
-    <span class="md-ellipsis">
-      License
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contact" class="md-nav__link">
-    <span class="md-ellipsis">
-      Contact
+      Research Implemented
     </span>
   </a>
   
@@ -361,7 +352,7 @@
   
   
     <li class="md-nav__item">
-      <a href="DEPLOYMENT/" class="md-nav__link">
+      <a href="DEPLOYMENT.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -448,36 +439,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
+  <a href="#demo_using_the_model_to_generate_accurate_word-level_transcriptionsswahili" class="md-nav__link">
     <span class="md-ellipsis">
-      Documentation
+      Demo: Using the Model to Generate Accurate Word-Level Transcriptions(Swahili)
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#contributing" class="md-nav__link">
+  <a href="#research_implemented" class="md-nav__link">
     <span class="md-ellipsis">
-      Contributing
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#license" class="md-nav__link">
-    <span class="md-ellipsis">
-      License
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contact" class="md-nav__link">
-    <span class="md-ellipsis">
-      Contact
+      Research Implemented
     </span>
   </a>
   
@@ -516,10 +489,7 @@
 
 </p>
 
-<p align="center">
-    <img src= "logo_image.png" width="100">
-</p>
-
+<p><a class="glightbox" href="logo_image.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Diagram" src="logo_image.png" /></a></p>
 <p><em>Framework for seamless fine-tuning and deploying Whisper Model developed to advance Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages</em>.</p>
 <h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h2>
 <ul>
@@ -545,11 +515,16 @@
 <p>🔍 <strong>Alignment Precision</strong>: Improve transcription and translation accuracy by aligning outputs with Wav2vec models.</p>
 </li>
 <li>
-<p>🛡️ <strong>Reduced Hallucination</strong>: Leverage Voice Activity Detection (VAD) to minimize hallucination and improve transcription clarity.
-<br>
-The framework implements the following papers:
-<br></p>
+<p>🛡️ <strong>Reduced Hallucination</strong>: Leverage Voice Activity Detection (VAD) to minimize hallucination and improve transcription clarity.</p>
 </li>
+</ul>
+<h2 id="demo_using_the_model_to_generate_accurate_word-level_transcriptionsswahili">Demo: Using the Model to Generate Accurate Word-Level Transcriptions(Swahili)<a class="headerlink" href="#demo_using_the_model_to_generate_accurate_word-level_transcriptionsswahili" title="Permanent link">&para;</a></h2>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mZnjlsFik7I?si=qnOlUlW8CdlT5-3W" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<h2 id="research_implemented">Research Implemented<a class="headerlink" href="#research_implemented" title="Permanent link">&para;</a></h2>
+<p>The framework implements the following papers:
+<br></p>
+<ol>
 <li>
 <p><a href="https://arxiv.org/abs/2212.04356">Robust Speech Recognition via Large-Scale Weak Supervision</a> : Speech processing systems trained to predict large amounts of transcripts of audio on the internet scaled to 680,000 hours of multilingual and multitask supervision.</p>
 </li>
@@ -562,19 +537,8 @@ The framework implements the following papers:
 <li>
 <p><a href="https://arxiv.org/abs/1701.02810">Efficient and High-Quality Neural Machine Translation with OpenNMT</a>: Efficient neural machine translation and model acceleration.  </p>
 </li>
-</ul>
+</ol>
 <p>For more details, you can refer to the <a href="https://cdn.openai.com/papers/whisper.pdf">Whisper ASR model paper</a>.<br></p>
-<h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h2>
-<p>Refer to the <a href="https://kevkibe.github.io/African-Whisper/gettingstarted/">Documentation</a> to get started</p>
-<h2 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">&para;</a></h2>
-<p>Contributions are welcome and encouraged.</p>
-<p>Before contributing, please take a moment to review our <a href="https://github.com/KevKibe/African-Whisper/blob/master/DOCS/CONTRIBUTING.md">Contribution Guidelines</a> for important information on how to contribute to this project.</p>
-<p>If you're unsure about anything or need assistance, don't hesitate to reach out to us or open an issue to discuss your ideas.</p>
-<p>We look forward to your contributions!</p>
-<h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">&para;</a></h2>
-<p>This project is licensed under the MIT License - see the <a href="https://github.com/KevKibe/African-Whisper/blob/main/LICENSE">LICENSE</a> file for details.</p>
-<h2 id="contact">Contact<a class="headerlink" href="#contact" title="Permanent link">&para;</a></h2>
-<p>For any enquiries, please reach out to me through keviinkibe@gmail.com</p>
 
 
 
@@ -647,5 +611,7 @@ The framework implements the following papers:
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-MML-AM_CHTML"></script>
       
     
-  </body>
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
 </html>
