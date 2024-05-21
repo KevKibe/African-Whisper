@@ -81,16 +81,7 @@
       
     
     
-   <link href="assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
-    html.glightbox-open { overflow: initial; height: 100%; }
-    .gslide-title { margin-top: 0px; user-select: text; }
-    .gslide-desc { color: #666; user-select: text; }
-    .gslide-image img { background: white; }
-    .gscrollbar-fixer { padding-right: 15px; }
-    .gdesc-inner { font-size: 0.75rem; }
-    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
-    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
-    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="assets/javascripts/glightbox.min.js"></script></head>
+  </head>
   
   
     
@@ -107,11 +98,6 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
-      
-        
-        <a href="#features" class="md-skip">
-          Skip to content
-        </a>
       
     </div>
     <div data-md-component="announce">
@@ -256,17 +242,6 @@
       
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Home
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="." class="md-nav__link md-nav__link--active">
         
   
@@ -276,50 +251,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#features" class="md-nav__link">
-    <span class="md-ellipsis">
-      Features
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#demo_using_the_model_to_generate_accurate_word-level_transcriptionsswahili" class="md-nav__link">
-    <span class="md-ellipsis">
-      Demo: Using the Model to Generate Accurate Word-Level Transcriptions(Swahili)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#research_implemented" class="md-nav__link">
-    <span class="md-ellipsis">
-      Research Implemented
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -423,41 +354,6 @@
   
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#features" class="md-nav__link">
-    <span class="md-ellipsis">
-      Features
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#demo_using_the_model_to_generate_accurate_word-level_transcriptionsswahili" class="md-nav__link">
-    <span class="md-ellipsis">
-      Demo: Using the Model to Generate Accurate Word-Level Transcriptions(Swahili)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#research_implemented" class="md-nav__link">
-    <span class="md-ellipsis">
-      Research Implemented
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -474,71 +370,9 @@
   
 
 
-<h1 align="center">African Whisper: ASR for African Languages</h1>
+  <h1>Home</h1>
 
-<p align="center">
-  <a href="https://twitter.com/AfriWhisper">
-    <img src="https://img.shields.io/twitter/follow/AfriWhisper?style=social" alt="Twitter">
-  </a>
-  <a href="https://github.com/KevKibe/African-Whisper/commits/">
-    <img src="https://img.shields.io/github/last-commit/KevKibe/African-Whisper?" alt="Last commit">
-  </a>
-  <a href="https://github.com/KevKibe/African-Whisper/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/KevKibe/African-Whisper?" alt="License">
-  </a>
 
-</p>
-
-<p><a class="glightbox" href="logo_image.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Diagram" src="logo_image.png" /></a></p>
-<p><em>Framework for seamless fine-tuning and deploying Whisper Model developed to advance Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages</em>.</p>
-<h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h2>
-<ul>
-<li>
-<p>🔧 <strong>Fine-Tuning</strong>: Fine-tune the <a href="https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013">Whisper</a> model on any audio dataset from Huggingface, e.g., <a href="https://huggingface.co/mozilla-foundation">Mozilla's</a> Common Voice datasets.</p>
-</li>
-<li>
-<p>📊 <strong>Metrics Monitoring</strong>: View training run metrics on <a href="https://wandb.ai/">Wandb</a>.</p>
-</li>
-<li>
-<p>🐳 <strong>Production Deployment</strong>: Seamlessly containerize and deploy the model inference endpoint for real-world applications.</p>
-</li>
-<li>
-<p>🚀 <strong>Model Optimization</strong>: Utilize CTranslate2 for efficient model optimization, ensuring faster inference times.</p>
-</li>
-<li>
-<p>📝 <strong>Word-Level Transcriptions</strong>: Produce detailed word-level transcriptions and translations, complete with timestamps.</p>
-</li>
-<li>
-<p>🎙️ <strong>Multi-Speaker Diarization</strong>: Perform speaker identification and separation in multi-speaker audio using diarization techniques.</p>
-</li>
-<li>
-<p>🔍 <strong>Alignment Precision</strong>: Improve transcription and translation accuracy by aligning outputs with Wav2vec models.</p>
-</li>
-<li>
-<p>🛡️ <strong>Reduced Hallucination</strong>: Leverage Voice Activity Detection (VAD) to minimize hallucination and improve transcription clarity.</p>
-</li>
-</ul>
-<h2 id="demo_using_the_model_to_generate_accurate_word-level_transcriptionsswahili">Demo: Using the Model to Generate Accurate Word-Level Transcriptions(Swahili)<a class="headerlink" href="#demo_using_the_model_to_generate_accurate_word-level_transcriptionsswahili" title="Permanent link">&para;</a></h2>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/mZnjlsFik7I?si=qnOlUlW8CdlT5-3W" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-<h2 id="research_implemented">Research Implemented<a class="headerlink" href="#research_implemented" title="Permanent link">&para;</a></h2>
-<p>The framework implements the following papers:
-<br></p>
-<ol>
-<li>
-<p><a href="https://arxiv.org/abs/2212.04356">Robust Speech Recognition via Large-Scale Weak Supervision</a> : Speech processing systems trained to predict large amounts of transcripts of audio on the internet scaled to 680,000 hours of multilingual and multitask supervision.</p>
-</li>
-<li>
-<p><a href="https://arxiv.org/abs/2303.00747">WhisperX</a>: Time-Accurate Speech Transcription of Long-Form Audio for time-accurate speech recognition with word-level timestamps. </p>
-</li>
-<li>
-<p><a href="https://arxiv.org/abs/1911.01255">Pyannote.audio</a>: Neural building blocks for speaker diarization for advanced speaker diarization capabilities. </p>
-</li>
-<li>
-<p><a href="https://arxiv.org/abs/1701.02810">Efficient and High-Quality Neural Machine Translation with OpenNMT</a>: Efficient neural machine translation and model acceleration.  </p>
-</li>
-</ol>
-<p>For more details, you can refer to the <a href="https://cdn.openai.com/papers/whisper.pdf">Whisper ASR model paper</a>.<br></p>
 
 
 
@@ -611,7 +445,5 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-MML-AM_CHTML"></script>
       
     
-  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
-document$.subscribe(() => { lightbox.reload() });
-</script></body>
+  </body>
 </html>

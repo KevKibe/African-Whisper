@@ -18,7 +18,7 @@
     
     
       
-        <title>PARAMETERS - African Whisper ASR Framework</title>
+        <title>Home - African Whisper ASR Framework</title>
       
     
     
@@ -55,11 +55,11 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="PARAMETERS - African Whisper ASR Framework" >
+        <meta  property="og:title"  content="Home - African Whisper ASR Framework" >
       
         <meta  property="og:description"  content="A framework for fast fine-tuning and API endpoint deployment of the Whisper model, specifically developed to accelerate Automatic Speech Recognition (ASR) for African languages." >
       
-        <meta  property="og:image"  content="./assets/images/social/PARAMETERS.png" >
+        <meta  property="og:image"  content="./assets/images/social/home.png" >
       
         <meta  property="og:image:type"  content="image/png" >
       
@@ -71,11 +71,11 @@
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="PARAMETERS - African Whisper ASR Framework" >
+        <meta  name="twitter:title"  content="Home - African Whisper ASR Framework" >
       
         <meta  name="twitter:description"  content="A framework for fast fine-tuning and API endpoint deployment of the Whisper model, specifically developed to accelerate Automatic Speech Recognition (ASR) for African languages." >
       
-        <meta  name="twitter:image"  content="./assets/images/social/PARAMETERS.png" >
+        <meta  name="twitter:image"  content="./assets/images/social/home.png" >
       
     
     
@@ -96,6 +96,11 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
+      
+        
+        <a href="#features" class="md-skip">
+          Skip to content
+        </a>
       
     </div>
     <div data-md-component="announce">
@@ -128,7 +133,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              PARAMETERS
+              Home
             
           </span>
         </div>
@@ -343,6 +348,8 @@
   
   
   
+    
+  
   
 </nav>
                   </div>
@@ -360,35 +367,75 @@
   
 
 
-  <h1>PARAMETERS</h1>
+<h1 align="center">African Whisper: ASR for African Languages</h1>
 
-<p>Here's a short description of each argument used in the different commands:</p>
+<p align="center">
+  <a href="https://twitter.com/AfriWhisper">
+    <img src="https://img.shields.io/twitter/follow/AfriWhisper?style=social" alt="Twitter">
+  </a>
+  <a href="https://github.com/KevKibe/African-Whisper/commits/">
+    <img src="https://img.shields.io/github/last-commit/KevKibe/African-Whisper?" alt="Last commit">
+  </a>
+  <a href="https://github.com/KevKibe/African-Whisper/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/KevKibe/African-Whisper?" alt="License">
+  </a>
+
+</p>
+
+<!-- <p align="center">
+    <img src= "logo_image.png" width="100">
+</p> -->
+
+<p><img alt="Diagram" src="../logo_image.png" /></p>
+<p><em>Framework for seamless fine-tuning and deploying Whisper Model developed to advance Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages</em>.
+<br>
+<img alt="Diagram" src="../diagram-1.png" /></p>
+<h1 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h1>
 <ul>
 <li>
-<p><strong>--huggingface_read_token</strong>: Your Hugging Face authentication token for read access. It allows you to download datasets and models from Hugging Face.</p>
+<p>🔧 <strong>Fine-Tuning</strong>: Fine-tune the <a href="https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013">Whisper</a> model on any audio dataset from Huggingface, e.g., <a href="https://huggingface.co/mozilla-foundation">Mozilla's</a> Common Voice datasets.</p>
 </li>
 <li>
-<p><strong>--huggingface_push_token</strong>: Your Hugging Face authentication token for write access. It's used for uploading models to your Hugging Face account.</p>
+<p>📊 <strong>Metrics Monitoring</strong>: View training run metrics on <a href="https://wandb.ai/">Wandb</a>.</p>
 </li>
 <li>
-<p><strong>--dataset_name</strong>: The name of the dataset you wish to use for training. Example: 'mozilla-foundation/common_voice_16_1'. This should match the dataset's identifier on the Hugging Face Datasets Hub.</p>
+<p>🐳 <strong>Production Deployment</strong>: Seamlessly containerize and deploy the model inference endpoint for real-world applications.</p>
 </li>
 <li>
-<p><strong>--language_abbr</strong>: The abbreviation of the language for the dataset you're using. Example: 'sw' for Swahili. This is used to specify the language variant of the dataset if it supports multiple languages.</p>
+<p>🚀 <strong>Model Optimization</strong>: Utilize CTranslate2 for efficient model optimization, ensuring faster inference times.</p>
 </li>
 <li>
-<p><strong>--model_id</strong>: Identifier for the pre-trained model you wish to fine-tune. Example: 'openai/whisper-small'. This should match the model's identifier on the Hugging Face Model Hub.</p>
+<p>📝 <strong>Word-Level Transcriptions</strong>: Produce detailed word-level transcriptions and translations, complete with timestamps.</p>
 </li>
 <li>
-<p><strong>--processing_task</strong>: Specifies the task for which the model is being trained. Example: 'transcribe'. This defines the objective of the model training, such as transcribing audio to text.</p>
+<p>🎙️ <strong>Multi-Speaker Diarization</strong>: Perform speaker identification and separation in multi-speaker audio using diarization techniques.</p>
 </li>
 <li>
-<p><strong>--wandb_api_key</strong>: Your Weights &amp; Biases (W&amp;B) API key. This is used for logging and tracking the training process if you're using W&amp;B for experiment tracking.</p>
+<p>🔍 <strong>Alignment Precision</strong>: Improve transcription and translation accuracy by aligning outputs with Wav2vec models.</p>
 </li>
 <li>
-<p><strong>--use_peft</strong>: Add this flag to fine-tune using PEFT method and omit it to do full fine-tuning. PEFT only works on a notbeook with GPU-support.</p>
+<p>🛡️ <strong>Reduced Hallucination</strong>: Leverage Voice Activity Detection (VAD) to minimize hallucination and improve transcription clarity.</p>
 </li>
 </ul>
+<h1 id="research_implemented">Research Implemented<a class="headerlink" href="#research_implemented" title="Permanent link">&para;</a></h1>
+<p><br>
+The framework implements the following papers:
+<br></p>
+<ol>
+<li>
+<p><a href="https://arxiv.org/abs/2212.04356">Robust Speech Recognition via Large-Scale Weak Supervision</a> : Speech processing systems trained to predict large amounts of transcripts of audio on the internet scaled to 680,000 hours of multilingual and multitask supervision.</p>
+</li>
+<li>
+<p><a href="https://arxiv.org/abs/2303.00747">WhisperX</a>: Time-Accurate Speech Transcription of Long-Form Audio for time-accurate speech recognition with word-level timestamps. </p>
+</li>
+<li>
+<p><a href="https://arxiv.org/abs/1911.01255">Pyannote.audio</a>: Neural building blocks for speaker diarization for advanced speaker diarization capabilities. </p>
+</li>
+<li>
+<p><a href="https://arxiv.org/abs/1701.02810">Efficient and High-Quality Neural Machine Translation with OpenNMT</a>: Efficient neural machine translation and model acceleration.  </p>
+</li>
+</ol>
+<p>For more details, you can refer to the <a href="https://cdn.openai.com/papers/whisper.pdf">Whisper ASR model paper</a>.<br></p>
 
 
 
