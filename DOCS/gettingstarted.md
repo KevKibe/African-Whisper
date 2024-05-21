@@ -1,60 +1,9 @@
-<h1 align="center">African Whisper: ASR for African Languages</h1>
-
-<p align="center">
-  <a href="https://twitter.com/AfriWhisper">
-    <img src="https://img.shields.io/twitter/follow/AfriWhisper?style=social" alt="Twitter">
-  </a>
-  <a href="https://github.com/KevKibe/African-Whisper/commits/">
-    <img src="https://img.shields.io/github/last-commit/KevKibe/African-Whisper?" alt="Last commit">
-  </a>
-  <a href="https://github.com/KevKibe/African-Whisper/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/KevKibe/African-Whisper?" alt="License">
-  </a>
-
-</p>
-
-<p align="center">
-    <img src= "logo_image.png" width="100">
-</p>
-
-
-*Framework for seamless fine-tuning and deploying Whisper Model developed to advance Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages*.
-
-
-## Features
-  
-- 🔧 **Fine-Tuning**: Fine-tune the [Whisper](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013) model on any audio dataset from Huggingface, e.g., [Mozilla's](https://huggingface.co/mozilla-foundation) Common Voice datasets.
-
-- 📊 **Metrics Monitoring**: View training run metrics on [Wandb](https://wandb.ai/).
-
-- 🐳 **Production Deployment**: Seamlessly containerize and deploy the model inference endpoint for real-world applications.
-
-- 🚀 **Model Optimization**: Utilize CTranslate2 for efficient model optimization, ensuring faster inference times.
-
-- 📝 **Word-Level Transcriptions**: Produce detailed word-level transcriptions and translations, complete with timestamps.
-
-- 🎙️ **Multi-Speaker Diarization**: Perform speaker identification and separation in multi-speaker audio using diarization techniques.
-
-- 🔍 **Alignment Precision**: Improve transcription and translation accuracy by aligning outputs with Wav2vec models.
-
-- 🛡️ **Reduced Hallucination**: Leverage Voice Activity Detection (VAD) to minimize hallucination and improve transcription clarity.
-<br>
-The framework implements the following papers:
-<br>
-
-1. [Robust Speech Recognition via Large-Scale Weak Supervision](https://arxiv.org/abs/2212.04356) : Speech processing systems trained to predict large amounts of transcripts of audio on the internet scaled to 680,000 hours of multilingual and multitask supervision.
-
-2. [WhisperX](https://arxiv.org/abs/2303.00747): Time-Accurate Speech Transcription of Long-Form Audio for time-accurate speech recognition with word-level timestamps. 
-
-3. [Pyannote.audio](https://arxiv.org/abs/1911.01255): Neural building blocks for speaker diarization for advanced speaker diarization capabilities. 
-
-4. [Efficient and High-Quality Neural Machine Translation with OpenNMT](https://arxiv.org/abs/1701.02810): Efficient neural machine translation and model acceleration.  
-
-For more details, you can refer to the [Whisper ASR model paper](https://cdn.openai.com/papers/whisper.pdf).<br>
-
-
 
 # 🚀 Getting Started
+
+## Usage Demo on Colab(v0.2.5)
+- Refer to documentation below for updated instructions and guides.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qj48Chu4i4k?si=Rm8GDFzqjQAvb4fd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Prerequisites
 
@@ -62,9 +11,6 @@ For more details, you can refer to the [Whisper ASR model paper](https://cdn.ope
 
 - Sign up to Weights and Biases and get your token keys use this [guide](https://app.wandb.ai/login?signup=true)
 
-- [Usage Demo video ](https://youtu.be/qj48Chu4i4k?si=Vwv-6-qI7GJF7AMd)(v0.2.5)
-- [Deployment Demo video](https://www.youtube.com/watch?v=ulKJS_q3Emk)
-- [Generated subtitles on video clips in Swahili](https://youtu.be/mZnjlsFik7I?si=rMHQfuSC6ghMEpg8)
 
 <br>
 
@@ -72,14 +18,14 @@ For more details, you can refer to the [Whisper ASR model paper](https://cdn.ope
 
 ## Step 1: Installation
 
-```python
+``` py
 !pip install africanwhisper
 # If you're on Colab, restart the session due to issue with numpy installation on colab.
 ```
 
 ## Step 2: Set Parameters
 
-```python
+``` py
 # Set the parameters (refer to the 'Usage on VM' section for more details)
 huggingface_read_token = " "
 huggingface_write_token = " "
@@ -94,7 +40,7 @@ use_peft = True                                       # Note: PEFT only works on
 ```
 
 ## Step 3: Prepare the Model
-```python
+``` py
 from training.data_prep import DataPrep
 
 # Initialize the DataPrep class and prepare the model
@@ -111,7 +57,7 @@ tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
 ```
 
 ## Step 4: Preprocess the Dataset
-```python
+``` py
 # Load and preprocess the dataset
 processed_dataset = process.load_dataset(
     feature_extractor=feature_extractor,
@@ -125,7 +71,7 @@ processed_dataset = process.load_dataset(
 
 ## Step 5: Train the Model
 
-```python
+``` py
 from training.model_trainer import Trainer
 
 # Initialize the Trainer class and train the model
@@ -159,7 +105,7 @@ trainer.train(
 
 ## Step 6: Test Model using an Audio File
 
-```python
+``` py
 # Using a PEFT fine-tuned model
 from deployment.peft_speech_inference import SpeechInference
 
@@ -180,7 +126,7 @@ print(transcription.timestamps)                                 # List of timest
 print(transcription.chunk_texts)                                # List of texts for each chunk.
 
 ```
-```python
+``` py
 # Using a fully fine-tuned model
 from deployment.speech_inference import SpeechTranscriptionPipeline, ModelOptimization
 
