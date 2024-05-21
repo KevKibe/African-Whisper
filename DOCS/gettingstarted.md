@@ -22,7 +22,7 @@
 !pip install africanwhisper[training]    # If you want to train and test the model on a notebook
 
 # !pip install africanwhisper[all]      # If you want to train and deploy an endpoint.
-#  
+
 # If you're on Colab, restart the session due to issue with numpy installation on colab.
 ```
 

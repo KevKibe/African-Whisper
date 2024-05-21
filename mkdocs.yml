@@ -1,4 +1,3 @@
-
 site_name: African Whisper ASR Framework
 site_description: A framework for fast fine-tuning and API endpoint deployment of the Whisper model, specifically developed to accelerate Automatic Speech Recognition (ASR) for African languages.
 
@@ -48,7 +47,7 @@ plugins:
         background_color: "black"
         color: "#FFFFFF"
         font_family: "Roboto"
-  - glightbox
+
 #      debug: true
       # cards_layout_dir: DOCS/layouts
       # cards_layout: custom
@@ -60,6 +59,7 @@ nav:
  - Contributing: CONTRIBUTING.md
  - Code of Conduct: CODE_OF_CONDUCT.md
 
+
 # Extensions
 markdown_extensions:
   - admonition
@@ -67,6 +67,7 @@ markdown_extensions:
   - footnotes
   - attr_list
   - md_in_html
+
 #   - mdx_math:
 #       enable_dollar_delimiter: true
   - toc:
