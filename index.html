@@ -99,6 +99,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#features" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -242,6 +247,17 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="." class="md-nav__link md-nav__link--active">
         
   
@@ -251,6 +267,68 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contributing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#license" class="md-nav__link">
+    <span class="md-ellipsis">
+      License
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contact" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contact
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -354,6 +432,59 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contributing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#license" class="md-nav__link">
+    <span class="md-ellipsis">
+      License
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contact" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contact
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -370,9 +501,80 @@
   
 
 
-  <h1>Home</h1>
+<h1 align="center">African Whisper: ASR for African Languages</h1>
 
+<p align="center">
+  <a href="https://twitter.com/AfriWhisper">
+    <img src="https://img.shields.io/twitter/follow/AfriWhisper?style=social" alt="Twitter">
+  </a>
+  <a href="https://github.com/KevKibe/African-Whisper/commits/">
+    <img src="https://img.shields.io/github/last-commit/KevKibe/African-Whisper?" alt="Last commit">
+  </a>
+  <a href="https://github.com/KevKibe/African-Whisper/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/KevKibe/African-Whisper?" alt="License">
+  </a>
 
+</p>
+
+<p align="center">
+    <img src= "logo_image.png" width="100">
+</p>
+
+<p><em>Framework for seamless fine-tuning and deploying Whisper Model developed to advance Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages</em>.</p>
+<h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>🔧 <strong>Fine-Tuning</strong>: Fine-tune the <a href="https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013">Whisper</a> model on any audio dataset from Huggingface, e.g., <a href="https://huggingface.co/mozilla-foundation">Mozilla's</a> Common Voice datasets.</p>
+</li>
+<li>
+<p>📊 <strong>Metrics Monitoring</strong>: View training run metrics on <a href="https://wandb.ai/">Wandb</a>.</p>
+</li>
+<li>
+<p>🐳 <strong>Production Deployment</strong>: Seamlessly containerize and deploy the model inference endpoint for real-world applications.</p>
+</li>
+<li>
+<p>🚀 <strong>Model Optimization</strong>: Utilize CTranslate2 for efficient model optimization, ensuring faster inference times.</p>
+</li>
+<li>
+<p>📝 <strong>Word-Level Transcriptions</strong>: Produce detailed word-level transcriptions and translations, complete with timestamps.</p>
+</li>
+<li>
+<p>🎙️ <strong>Multi-Speaker Diarization</strong>: Perform speaker identification and separation in multi-speaker audio using diarization techniques.</p>
+</li>
+<li>
+<p>🔍 <strong>Alignment Precision</strong>: Improve transcription and translation accuracy by aligning outputs with Wav2vec models.</p>
+</li>
+<li>
+<p>🛡️ <strong>Reduced Hallucination</strong>: Leverage Voice Activity Detection (VAD) to minimize hallucination and improve transcription clarity.
+<br>
+The framework implements the following papers:
+<br></p>
+</li>
+<li>
+<p><a href="https://arxiv.org/abs/2212.04356">Robust Speech Recognition via Large-Scale Weak Supervision</a> : Speech processing systems trained to predict large amounts of transcripts of audio on the internet scaled to 680,000 hours of multilingual and multitask supervision.</p>
+</li>
+<li>
+<p><a href="https://arxiv.org/abs/2303.00747">WhisperX</a>: Time-Accurate Speech Transcription of Long-Form Audio for time-accurate speech recognition with word-level timestamps. </p>
+</li>
+<li>
+<p><a href="https://arxiv.org/abs/1911.01255">Pyannote.audio</a>: Neural building blocks for speaker diarization for advanced speaker diarization capabilities. </p>
+</li>
+<li>
+<p><a href="https://arxiv.org/abs/1701.02810">Efficient and High-Quality Neural Machine Translation with OpenNMT</a>: Efficient neural machine translation and model acceleration.  </p>
+</li>
+</ul>
+<p>For more details, you can refer to the <a href="https://cdn.openai.com/papers/whisper.pdf">Whisper ASR model paper</a>.<br></p>
+<h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h2>
+<p>Refer to the <a href="https://kevkibe.github.io/African-Whisper/gettingstarted/">Documentation</a> to get started</p>
+<h2 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">&para;</a></h2>
+<p>Contributions are welcome and encouraged.</p>
+<p>Before contributing, please take a moment to review our <a href="https://github.com/KevKibe/African-Whisper/blob/master/DOCS/CONTRIBUTING.md">Contribution Guidelines</a> for important information on how to contribute to this project.</p>
+<p>If you're unsure about anything or need assistance, don't hesitate to reach out to us or open an issue to discuss your ideas.</p>
+<p>We look forward to your contributions!</p>
+<h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">&para;</a></h2>
+<p>This project is licensed under the MIT License - see the <a href="https://github.com/KevKibe/African-Whisper/blob/main/LICENSE">LICENSE</a> file for details.</p>
+<h2 id="contact">Contact<a class="headerlink" href="#contact" title="Permanent link">&para;</a></h2>
+<p>For any enquiries, please reach out to me through keviinkibe@gmail.com</p>
 
 
 
