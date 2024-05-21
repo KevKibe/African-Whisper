@@ -4,6 +4,10 @@
 
 ## To run locally:
 
+``` python
+pip install africanwhisper[deployment]
+```
+
 ### Set up Environment Variables
 ```bash
 cd src/deployment
