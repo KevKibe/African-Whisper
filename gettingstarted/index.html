@@ -582,173 +582,172 @@
 <p><br></p>
 <p><a href="https://colab.research.google.com/drive/16r4cxP-dSFplRTfgPLbzGXYRzBIUqpx9?usp=sharing"><img alt="Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
 <h2 id="step_1_installation">Step 1: Installation<a class="headerlink" href="#step_1_installation" title="Permanent link">&para;</a></h2>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">africanwhisper</span><span class="p">[</span><span class="n">training</span><span class="p">]</span>    <span class="c1"># If you want to train and test the model on a notebook</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">africanwhisper</span><span class="p">[</span><span class="n">training</span><span class="p">]</span>    <span class="c1"># If you want to train and test the model on a notebook</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">africanwhisper</span><span class="p">[</span><span class="nb">all</span><span class="p">]</span>      <span class="c1"># If you want to train and deploy an endpoint.</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># If you&#39;re on Colab, restart the session due to issue with numpy installation on colab.</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># !pip install africanwhisper[all]      # If you want to train and deploy an endpoint.</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># If you&#39;re on Colab, restart the session due to issue with numpy installation on colab.</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">africanwhisper</span><span class="p">[</span><span class="n">deployment</span><span class="p">]</span>      <span class="c1"># If you want to only deploy a model.</span>
-</code></pre></div></p>
 <h2 id="step_2_set_parameters">Step 2: Set Parameters<a class="headerlink" href="#step_2_set_parameters" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Set the parameters (refer to the &#39;Usage on VM&#39; section for more details)</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">huggingface_read_token</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">huggingface_write_token</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">dataset_name</span> <span class="o">=</span> <span class="s2">&quot;mozilla-foundation/common_voice_16_1&quot;</span> 
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">language_abbr</span><span class="o">=</span> <span class="p">[</span> <span class="p">]</span>                                    <span class="c1"># Example `[&quot;ti&quot;, &quot;yi&quot;]`. see abbreviations here https://huggingface.co/datasets/mozilla-foundation/common_voice_16_1. </span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>                                                      <span class="c1"># Note: choose a small dataset so as to not run out of memory,</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">model_id</span><span class="o">=</span> <span class="s2">&quot;model-id&quot;</span>                                  <span class="c1"># Example openai/whisper-small, openai/whisper-medium</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="n">processing_task</span><span class="o">=</span> <span class="s2">&quot;automatic-speech-recognition&quot;</span> 
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="n">wandb_api_key</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="n">use_peft</span> <span class="o">=</span> <span class="kc">True</span>                                       <span class="c1"># Note: PEFT only works on a notebook with GPU-support.</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Set the parameters (refer to the &#39;Usage on VM&#39; section for more details)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">huggingface_read_token</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">huggingface_write_token</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">dataset_name</span> <span class="o">=</span> <span class="s2">&quot;mozilla-foundation/common_voice_16_1&quot;</span> 
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">language_abbr</span><span class="o">=</span> <span class="p">[</span> <span class="p">]</span>                                    <span class="c1"># Example `[&quot;ti&quot;, &quot;yi&quot;]`. see abbreviations here https://huggingface.co/datasets/mozilla-foundation/common_voice_16_1. </span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>                                                      <span class="c1"># Note: choose a small dataset so as to not run out of memory,</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">model_id</span><span class="o">=</span> <span class="s2">&quot;model-id&quot;</span>                                  <span class="c1"># Example openai/whisper-small, openai/whisper-medium</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">processing_task</span><span class="o">=</span> <span class="s2">&quot;automatic-speech-recognition&quot;</span> 
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="n">wandb_api_key</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="n">use_peft</span> <span class="o">=</span> <span class="kc">True</span>                                       <span class="c1"># Note: PEFT only works on a notebook with GPU-support.</span>
 </code></pre></div>
 <h2 id="step_3_prepare_the_model">Step 3: Prepare the Model<a class="headerlink" href="#step_3_prepare_the_model" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span> <span class="nn">training.data_prep</span> <span class="kn">import</span> <span class="n">DataPrep</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Initialize the DataPrep class and prepare the model</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">process</span> <span class="o">=</span> <span class="n">DataPrep</span><span class="p">(</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">huggingface_read_token</span><span class="p">,</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">dataset_name</span><span class="p">,</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">language_abbr</span><span class="p">,</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">model_id</span><span class="p">,</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">processing_task</span><span class="p">,</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="n">use_peft</span>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="p">)</span>
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="n">tokenizer</span><span class="p">,</span> <span class="n">feature_extractor</span><span class="p">,</span> <span class="n">feature_processor</span><span class="p">,</span> <span class="n">model</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">prepare_model</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">training.data_prep</span> <span class="kn">import</span> <span class="n">DataPrep</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># Initialize the DataPrep class and prepare the model</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">process</span> <span class="o">=</span> <span class="n">DataPrep</span><span class="p">(</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">huggingface_read_token</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">dataset_name</span><span class="p">,</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">language_abbr</span><span class="p">,</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">model_id</span><span class="p">,</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">processing_task</span><span class="p">,</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="n">use_peft</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="p">)</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="n">tokenizer</span><span class="p">,</span> <span class="n">feature_extractor</span><span class="p">,</span> <span class="n">feature_processor</span><span class="p">,</span> <span class="n">model</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">prepare_model</span><span class="p">()</span>
 </code></pre></div>
 <h2 id="step_4_preprocess_the_dataset">Step 4: Preprocess the Dataset<a class="headerlink" href="#step_4_preprocess_the_dataset" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Load and preprocess the dataset</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">processed_dataset</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">feature_extractor</span><span class="o">=</span><span class="n">feature_extractor</span><span class="p">,</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">processor</span><span class="o">=</span><span class="n">feature_processor</span><span class="p">,</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">train_num_samples</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>     <span class="c1"># Optional: int - Number of samples to load into training dataset, default the whole training set.</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">test_num_samples</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">)</span>     <span class="c1"># Optional: int - Number of samples to load into test dataset, default the whole test set.</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>                                  <span class="c1"># Set None to load the entire dataset</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>                                  <span class="c1"># If dataset is more than on, train_num_samples/test_num_samples will apply to all e.g `language_abbr= [&quot;af&quot;, &quot;ti&quot;]` will return 100 samples each. </span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Load and preprocess the dataset</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">processed_dataset</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">feature_extractor</span><span class="o">=</span><span class="n">feature_extractor</span><span class="p">,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">processor</span><span class="o">=</span><span class="n">feature_processor</span><span class="p">,</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">train_num_samples</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>     <span class="c1"># Optional: int - Number of samples to load into training dataset, default the whole training set.</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">test_num_samples</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">)</span>     <span class="c1"># Optional: int - Number of samples to load into test dataset, default the whole test set.</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>                                  <span class="c1"># Set None to load the entire dataset</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>                                  <span class="c1"># If dataset is more than on, train_num_samples/test_num_samples will apply to all e.g `language_abbr= [&quot;af&quot;, &quot;ti&quot;]` will return 100 samples each. </span>
 </code></pre></div>
 <h2 id="step_5_train_the_model">Step 5: Train the Model<a class="headerlink" href="#step_5_train_the_model" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span> <span class="nn">training.model_trainer</span> <span class="kn">import</span> <span class="n">Trainer</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># Initialize the Trainer class and train the model</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">huggingface_write_token</span><span class="p">,</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">model_id</span><span class="p">,</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">processed_dataset</span><span class="p">,</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="n">model</span><span class="p">,</span>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    <span class="n">feature_processor</span><span class="p">,</span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    <span class="n">feature_extractor</span><span class="p">,</span>
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    <span class="n">tokenizer</span><span class="p">,</span>
-<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    <span class="n">wandb_api_key</span><span class="p">,</span>
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>    <span class="n">use_peft</span>
-<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="p">)</span>
-<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">(</span>
-<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>    <span class="n">max_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
-<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>    <span class="n">per_device_train_batch_size</span><span class="o">=</span><span class="mi">96</span><span class="p">,</span>
-<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>    <span class="n">per_device_eval_batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
-<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>    <span class="n">optim</span><span class="o">=</span><span class="s2">&quot;adamw_bnb_8bit&quot;</span>
-<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="p">)</span>
-<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>
-<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="c1"># Optional parameters for training:</span>
-<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="c1">#     max_steps (int): The maximum number of training steps (default is 100).</span>
-<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="c1">#     learning_rate (float): The learning rate for training (default is 1e-5).</span>
-<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="c1">#     per_device_train_batch_size (int): The batch size per GPU for training (default is 96).</span>
-<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="c1">#     per_device_eval_batch_size (int): The batch size per GPU for evaluation (default is 64).</span>
-<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="c1">#     optim (str): The optimizer used for training (default is &quot;adamw_bnb_8bit&quot;)</span>
-<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="c1"># See more configurable parameters https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Seq2SeqTrainingArguments</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span> <span class="nn">training.model_trainer</span> <span class="kn">import</span> <span class="n">Trainer</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># Initialize the Trainer class and train the model</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">huggingface_write_token</span><span class="p">,</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">model_id</span><span class="p">,</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">processed_dataset</span><span class="p">,</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">model</span><span class="p">,</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="n">feature_processor</span><span class="p">,</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="n">feature_extractor</span><span class="p">,</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="n">tokenizer</span><span class="p">,</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="n">wandb_api_key</span><span class="p">,</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="n">use_peft</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="p">)</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">(</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>    <span class="n">max_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    <span class="n">per_device_train_batch_size</span><span class="o">=</span><span class="mi">96</span><span class="p">,</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    <span class="n">per_device_eval_batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>    <span class="n">optim</span><span class="o">=</span><span class="s2">&quot;adamw_bnb_8bit&quot;</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="p">)</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="c1"># Optional parameters for training:</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="c1">#     max_steps (int): The maximum number of training steps (default is 100).</span>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="c1">#     learning_rate (float): The learning rate for training (default is 1e-5).</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="c1">#     per_device_train_batch_size (int): The batch size per GPU for training (default is 96).</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="c1">#     per_device_eval_batch_size (int): The batch size per GPU for evaluation (default is 64).</span>
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="c1">#     optim (str): The optimizer used for training (default is &quot;adamw_bnb_8bit&quot;)</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="c1"># See more configurable parameters https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Seq2SeqTrainingArguments</span>
 </code></pre></div>
 <h2 id="step_6_test_model_using_an_audio_file">Step 6: Test Model using an Audio File<a class="headerlink" href="#step_6_test_model_using_an_audio_file" title="Permanent link">&para;</a></h2>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Using a PEFT fine-tuned model</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span> <span class="nn">deployment.peft_speech_inference</span> <span class="kn">import</span> <span class="n">SpeechInference</span>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Using a PEFT fine-tuned model</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span> <span class="nn">deployment.peft_speech_inference</span> <span class="kn">import</span> <span class="n">SpeechInference</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;your-finetuned-model-name-on-huggingface-hub&quot;</span>   <span class="c1"># e.g., &quot;KevinKibe/whisper-small-af&quot;</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">huggingface_read_token</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="n">task</span> <span class="o">=</span> <span class="s2">&quot;desired-task&quot;</span>                                         <span class="c1"># either &#39;translate&#39; or &#39;transcribe&#39;</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="n">audiofile_dir</span> <span class="o">=</span> <span class="s2">&quot;location-of-audio-file&quot;</span>                      <span class="c1"># filetype should be .mp3 or .wav</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1"># Initialize the SpeechInference class and run inference</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="n">inference</span> <span class="o">=</span> <span class="n">SpeechInference</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">huggingface_read_token</span><span class="p">)</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">pipe_initialization</span><span class="p">()</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="n">transcription</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">audiofile_dir</span><span class="p">,</span> <span class="n">task</span><span class="p">)</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="c1"># Access different parts of the output</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">transcription</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>                                       <span class="c1"># The entire text transcription.</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="nb">print</span><span class="p">(</span><span class="n">transcription</span><span class="o">.</span><span class="n">chunks</span><span class="p">)</span>                                     <span class="c1"># List of individual text chunks with timestamps.</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="nb">print</span><span class="p">(</span><span class="n">transcription</span><span class="o">.</span><span class="n">timestamps</span><span class="p">)</span>                                 <span class="c1"># List of timestamps for each chunk.</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="nb">print</span><span class="p">(</span><span class="n">transcription</span><span class="o">.</span><span class="n">chunk_texts</span><span class="p">)</span>                                <span class="c1"># List of texts for each chunk.</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Using a fully fine-tuned model</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span> <span class="nn">deployment.speech_inference</span> <span class="kn">import</span> <span class="n">SpeechTranscriptionPipeline</span><span class="p">,</span> <span class="n">ModelOptimization</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;your-finetuned-model-name-on-huggingface-hub&quot;</span>   <span class="c1"># e.g., &quot;KevinKibe/whisper-small-af&quot;</span>
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">huggingface_read_token</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="n">task</span> <span class="o">=</span> <span class="s2">&quot;desired-task&quot;</span>                                         <span class="c1"># either &#39;translate&#39; or &#39;transcribe&#39;</span>
 <a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="n">audiofile_dir</span> <span class="o">=</span> <span class="s2">&quot;location-of-audio-file&quot;</span>                      <span class="c1"># filetype should be .mp3 or .wav</span>
 <a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="c1"># Initialize the SpeechInference class and run inference</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="n">inference</span> <span class="o">=</span> <span class="n">SpeechInference</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">huggingface_read_token</span><span class="p">)</span>
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">pipe_initialization</span><span class="p">()</span>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="n">transcription</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">audiofile_dir</span><span class="p">,</span> <span class="n">task</span><span class="p">)</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="c1"># Optimize model for better results</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="n">model_optimizer</span> <span class="o">=</span> <span class="n">ModelOptimization</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="n">model_optimizer</span><span class="o">.</span><span class="n">convert_model_to_optimized_format</span><span class="p">()</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="n">model</span> <span class="o">=</span> <span class="n">model_optimizer</span><span class="o">.</span><span class="n">load_transcription_model</span><span class="p">()</span>
 <a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>
-<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="c1"># Access different parts of the output</span>
-<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">transcription</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>                                       <span class="c1"># The entire text transcription.</span>
-<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="nb">print</span><span class="p">(</span><span class="n">transcription</span><span class="o">.</span><span class="n">chunks</span><span class="p">)</span>                                     <span class="c1"># List of individual text chunks with timestamps.</span>
-<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="nb">print</span><span class="p">(</span><span class="n">transcription</span><span class="o">.</span><span class="n">timestamps</span><span class="p">)</span>                                 <span class="c1"># List of timestamps for each chunk.</span>
-<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="nb">print</span><span class="p">(</span><span class="n">transcription</span><span class="o">.</span><span class="n">chunk_texts</span><span class="p">)</span>                                <span class="c1"># List of texts for each chunk.</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Using a fully fine-tuned model</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kn">from</span> <span class="nn">deployment.speech_inference</span> <span class="kn">import</span> <span class="n">SpeechTranscriptionPipeline</span><span class="p">,</span> <span class="n">ModelOptimization</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;your-finetuned-model-name-on-huggingface-hub&quot;</span>   <span class="c1"># e.g., &quot;KevinKibe/whisper-small-af&quot;</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">huggingface_read_token</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="n">task</span> <span class="o">=</span> <span class="s2">&quot;desired-task&quot;</span>                                         <span class="c1"># either &#39;translate&#39; or &#39;transcribe&#39;</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="n">audiofile_dir</span> <span class="o">=</span> <span class="s2">&quot;location-of-audio-file&quot;</span>                      <span class="c1"># filetype should be .mp3 or .wav</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="c1"># Optimize model for better results</span>
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="n">model_optimizer</span> <span class="o">=</span> <span class="n">ModelOptimization</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="n">model_optimizer</span><span class="o">.</span><span class="n">convert_model_to_optimized_format</span><span class="p">()</span>
-<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="n">model</span> <span class="o">=</span> <span class="n">model_optimizer</span><span class="o">.</span><span class="n">load_transcription_model</span><span class="p">()</span>
-<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>
-<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="c1"># Initiate the transcription model</span>
-<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="n">inference</span> <span class="o">=</span> <span class="n">SpeechTranscriptionPipeline</span><span class="p">(</span>
-<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>        <span class="n">audio_file_path</span><span class="o">=</span><span class="n">audiofile_dir</span><span class="p">,</span>
-<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>        <span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">,</span>
-<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>        <span class="n">huggingface_read_token</span><span class="o">=</span><span class="n">huggingface_read_token</span>
-<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>    <span class="p">)</span>
-<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>
-<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="c1"># To get transcriptions</span>
-<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="n">transcription</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">transcribe_audio</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
-<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="nb">print</span><span class="p">(</span><span class="n">transcription</span><span class="p">)</span>
-<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>
-<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="c1"># To get transcriptions with speaker labels</span>
-<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="n">alignment_result</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">align_transcription</span><span class="p">(</span><span class="n">transcription</span><span class="p">)</span>
-<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="n">diarization_result</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">diarize_audio</span><span class="p">(</span><span class="n">alignment_result</span><span class="p">)</span>
-<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a><span class="nb">print</span><span class="p">(</span><span class="n">diarization_result</span><span class="p">)</span>
-<a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a>
-<a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a><span class="c1">#To generate subtitles(.srt format), will be saved in root directory</span>
-<a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a><span class="n">inference</span><span class="o">.</span><span class="n">generate_subtitles</span><span class="p">(</span><span class="n">transcription</span><span class="p">,</span> <span class="n">alignment_result</span><span class="p">,</span> <span class="n">diarization_result</span><span class="p">)</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="c1"># Initiate the transcription model</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="n">inference</span> <span class="o">=</span> <span class="n">SpeechTranscriptionPipeline</span><span class="p">(</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>        <span class="n">audio_file_path</span><span class="o">=</span><span class="n">audiofile_dir</span><span class="p">,</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>        <span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">,</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>        <span class="n">huggingface_read_token</span><span class="o">=</span><span class="n">huggingface_read_token</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>    <span class="p">)</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="c1"># To get transcriptions</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="n">transcription</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">transcribe_audio</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="nb">print</span><span class="p">(</span><span class="n">transcription</span><span class="p">)</span>
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>
+<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="c1"># To get transcriptions with speaker labels</span>
+<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="n">alignment_result</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">align_transcription</span><span class="p">(</span><span class="n">transcription</span><span class="p">)</span>
+<a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="n">diarization_result</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">diarize_audio</span><span class="p">(</span><span class="n">alignment_result</span><span class="p">)</span>
+<a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="nb">print</span><span class="p">(</span><span class="n">diarization_result</span><span class="p">)</span>
+<a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a>
+<a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="c1">#To generate subtitles(.srt format), will be saved in root directory</span>
+<a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="n">inference</span><span class="o">.</span><span class="n">generate_subtitles</span><span class="p">(</span><span class="n">transcription</span><span class="p">,</span> <span class="n">alignment_result</span><span class="p">,</span> <span class="n">diarization_result</span><span class="p">)</span>
 </code></pre></div></p>
 <h1 id="using_the_cli">🖥️ Using the CLI<a class="headerlink" href="#using_the_cli" title="Permanent link">&para;</a></h1>
 <h2 id="step_1_clone_and_install_dependencies">Step 1: Clone and Install Dependencies<a class="headerlink" href="#step_1_clone_and_install_dependencies" title="Permanent link">&para;</a></h2>
 <ul>
 <li>
 <p>Clone the Repository: Clone or download the application code to your local machine.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/KevKibe/African-Whisper.git
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/KevKibe/African-Whisper.git
 </code></pre></div></p>
 </li>
 <li>
 <p>Create a virtual environment for the project and activate it.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>env
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nb">source</span><span class="w"> </span>venv/bin/activate
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>env
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">source</span><span class="w"> </span>venv/bin/activate
 </code></pre></div></p>
 </li>
 <li>
 <p>Install dependencies by running this command
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
 </code></pre></div></p>
 </li>
 <li>Navigate to:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nb">cd</span><span class="w"> </span>src
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nb">cd</span><span class="w"> </span>src
 </code></pre></div></li>
 </ul>
 <h2 id="step_2_finetune_the_model">Step 2: Finetune the Model<a class="headerlink" href="#step_2_finetune_the_model" title="Permanent link">&para;</a></h2>
 <ul>
 <li>To start the training , use the following command:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>python<span class="w"> </span>-m<span class="w"> </span>training.main<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">    </span>--huggingface_read_token<span class="w"> </span>YOUR_HUGGING_FACE_READ_TOKEN_HERE<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span>--huggingface_write_token<span class="w"> </span>YOUR_HUGGING_FACE_WRITE_TOKEN_HERE<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">    </span>--dataset_name<span class="w"> </span>AUDIO_DATASET_NAME<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span>--train_num_samples<span class="w"> </span>SAMPLE_SIZE<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span>--test_num_samples<span class="w"> </span>SAMPLE_SIZE<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">    </span>--language_abbr<span class="w"> </span>LANGUAGE_ABBREVIATION<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span>--model_id<span class="w"> </span>MODEL_ID<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">    </span>--processing_task<span class="w"> </span>PROCESSING_TASK<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">    </span>--wandb_api_key<span class="w"> </span>YOUR_WANDB_API_KEY_HERE<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">    </span>--use_peft
-<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>
-<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>Flags:
-<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="c1"># --use_peft: Optional flag to use PEFT finetuning. leave it out to perform full finetuning</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>python<span class="w"> </span>-m<span class="w"> </span>training.main<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span>--huggingface_read_token<span class="w"> </span>YOUR_HUGGING_FACE_READ_TOKEN_HERE<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span>--huggingface_write_token<span class="w"> </span>YOUR_HUGGING_FACE_WRITE_TOKEN_HERE<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span>--dataset_name<span class="w"> </span>AUDIO_DATASET_NAME<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">    </span>--train_num_samples<span class="w"> </span>SAMPLE_SIZE<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">    </span>--test_num_samples<span class="w"> </span>SAMPLE_SIZE<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">    </span>--language_abbr<span class="w"> </span>LANGUAGE_ABBREVIATION<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">    </span>--model_id<span class="w"> </span>MODEL_ID<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">    </span>--processing_task<span class="w"> </span>PROCESSING_TASK<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">    </span>--wandb_api_key<span class="w"> </span>YOUR_WANDB_API_KEY_HERE<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">    </span>--use_peft
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>Flags:
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="c1"># --use_peft: Optional flag to use PEFT finetuning. leave it out to perform full finetuning</span>
 </code></pre></div></li>
 <li>Find a description of these commands <a href="https://github.com/KevKibe/African-Whisper/blob/master/DOCS/PARAMETERS.md">here</a>.</li>
 </ul>
@@ -762,40 +761,40 @@
 <p>Ensure that ffmpeg is installed by running the following commands:</p>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># on Ubuntu or Debian</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ffmpeg
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1"># on Arch Linux</span>
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>sudo<span class="w"> </span>pacman<span class="w"> </span>-S<span class="w"> </span>ffmpeg
-<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
-<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="c1"># on MacOS using Homebrew (https://brew.sh/)</span>
-<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>brew<span class="w"> </span>install<span class="w"> </span>ffmpeg
-<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>
-<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="c1"># on Windows using Chocolatey (https://chocolatey.org/)</span>
-<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>choco<span class="w"> </span>install<span class="w"> </span>ffmpeg
-<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>
-<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="c1"># on Windows using Scoop (https://scoop.sh/)</span>
-<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>scoop<span class="w"> </span>install<span class="w"> </span>ffmpeg
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># on Ubuntu or Debian</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ffmpeg
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># on Arch Linux</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>sudo<span class="w"> </span>pacman<span class="w"> </span>-S<span class="w"> </span>ffmpeg
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="c1"># on MacOS using Homebrew (https://brew.sh/)</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>brew<span class="w"> </span>install<span class="w"> </span>ffmpeg
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="c1"># on Windows using Chocolatey (https://chocolatey.org/)</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>choco<span class="w"> </span>install<span class="w"> </span>ffmpeg
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="c1"># on Windows using Scoop (https://scoop.sh/)</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>scoop<span class="w"> </span>install<span class="w"> </span>ffmpeg
 </code></pre></div>
 <h3 id="to_get_inference_on_cli_locally">To get inference on CLI Locally<a class="headerlink" href="#to_get_inference_on_cli_locally" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nb">cd</span><span class="w"> </span>src/deployment
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nb">cd</span><span class="w"> </span>src/deployment
 </code></pre></div>
 - Create a <code>.env</code> file using <code>nano .env</code> command and add these keys and save the file.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;your-finetuned-model&quot;</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">HUGGINGFACE_READ_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;huggingface-read-token&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;your-finetuned-model&quot;</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="n">HUGGINGFACE_READ_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;huggingface-read-token&quot;</span>
 </code></pre></div></p>
 <ul>
 <li>To perform transcriptions and translations:</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># PEFT FINETUNED MODELS</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>python<span class="w"> </span>-m<span class="w"> </span>deployment.peft_speech_inference_cli<span class="w"> </span>--audio_file<span class="w"> </span>FILENAME<span class="w"> </span>--task<span class="w"> </span>TASK<span class="w"> </span>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1"># FULLY FINETUNED MODELS</span>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>python<span class="w"> </span>-m<span class="w"> </span>deployment.speech_inference_cli<span class="w"> </span>--audio_file<span class="w"> </span>FILENAME<span class="w"> </span>--task<span class="w"> </span>TASK<span class="w"> </span>--perform_diarization<span class="w"> </span>--perform_alignment
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>
-<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>Flags:
-<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="c1"># --perform_diarization: Optional flag to perform speaker diarization.</span>
-<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="c1"># --perform_alignment: Optional flag to perform alignment.</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># PEFT FINETUNED MODELS</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>python<span class="w"> </span>-m<span class="w"> </span>deployment.peft_speech_inference_cli<span class="w"> </span>--audio_file<span class="w"> </span>FILENAME<span class="w"> </span>--task<span class="w"> </span>TASK<span class="w"> </span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># FULLY FINETUNED MODELS</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>python<span class="w"> </span>-m<span class="w"> </span>deployment.speech_inference_cli<span class="w"> </span>--audio_file<span class="w"> </span>FILENAME<span class="w"> </span>--task<span class="w"> </span>TASK<span class="w"> </span>--perform_diarization<span class="w"> </span>--perform_alignment
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>Flags:
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="c1"># --perform_diarization: Optional flag to perform speaker diarization.</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="c1"># --perform_alignment: Optional flag to perform alignment.</span>
 </code></pre></div>
 <h2 id="step_4_deployment">🛳️ Step 4: Deployment<a class="headerlink" href="#step_4_deployment" title="Permanent link">&para;</a></h2>
 <ul>
