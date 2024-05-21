@@ -47,23 +47,27 @@ plugins:
         background_color: "black"
         color: "#FFFFFF"
         font_family: "Roboto"
+
 #      debug: true
       # cards_layout_dir: DOCS/layouts
       # cards_layout: custom
 
 nav:
- - Home: home.md
- - Docs: 
-   - Getting Started: index.md
-   - Deployment: DEPLOYMENT.md
-   - Contributing: CONTRIBUTING.md
-   - Code of Conduct: CODE_OF_CONDUCT.md
+ - Home: index.md
+ - Getting Started: gettingstarted.md
+ - Deployment: DEPLOYMENT.md
+ - Contributing: CONTRIBUTING.md
+ - Code of Conduct: CODE_OF_CONDUCT.md
+
 
 # Extensions
 markdown_extensions:
   - admonition
   - codehilite
   - footnotes
+  - attr_list
+  - md_in_html
+
 #   - mdx_math:
 #       enable_dollar_delimiter: true
   - toc:
