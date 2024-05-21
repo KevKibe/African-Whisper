@@ -618,22 +618,24 @@
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ulKJS_q3Emk?si=lfEQjMWxb33V5Kjv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 <h2 id="to_run_locally">To run locally:<a class="headerlink" href="#to_run_locally" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">pip</span> <span class="n">install</span> <span class="n">africanwhisper</span><span class="p">[</span><span class="n">deployment</span><span class="p">]</span>
+</code></pre></div>
 <h3 id="set_up_environment_variables">Set up Environment Variables<a class="headerlink" href="#set_up_environment_variables" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>src/deployment
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>src/deployment
 </code></pre></div>
 - Create a <code>.env</code> file using <code>nano .env</code> command or using <code>vim</code> and add these keys and save the file.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;your-finetuned-model&quot;</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">HUGGINGFACE_READ_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;huggingface-read-token&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;your-finetuned-model&quot;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">HUGGINGFACE_READ_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;huggingface-read-token&quot;</span>
 </code></pre></div></p>
 <h3 id="run_application">Run Application<a class="headerlink" href="#run_application" title="Permanent link">&para;</a></h3>
 <ul>
 <li>
 <p>Run this command to launch the endpoint:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># If the model is peft finetuned</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>python3<span class="w"> </span>-m<span class="w"> </span>deployment.main
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># If the model is fully finetuned</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>python3<span class="w"> </span>-m<span class="w"> </span>deployment.app
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># If the model is peft finetuned</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>python3<span class="w"> </span>-m<span class="w"> </span>deployment.main
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># If the model is fully finetuned</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>python3<span class="w"> </span>-m<span class="w"> </span>deployment.app
 </code></pre></div></p>
 </li>
 <li>
@@ -645,8 +647,8 @@
 <ol>
 <li>
 <p>Navigate to <code>src/deployment</code> and set up environment variables by creating a <code>.env</code> file with the following content:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;your-model-name&quot;</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">HUGGINGFACE_READ_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;your-token&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;your-model-name&quot;</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">HUGGINGFACE_READ_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;your-token&quot;</span>
 </code></pre></div>
 </li>
 <li>
@@ -667,7 +669,7 @@
 <ol>
 <li>
 <p>Run the application locally by executing the following command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up
 </code></pre></div>
 </li>
 </ol>

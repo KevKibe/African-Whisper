@@ -591,8 +591,11 @@
 <p><br></p>
 <p><a href="https://colab.research.google.com/drive/16r4cxP-dSFplRTfgPLbzGXYRzBIUqpx9?usp=sharing"><img alt="Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
 <h2 id="step_1_installation">Step 1: Installation<a class="headerlink" href="#step_1_installation" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">africanwhisper</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># If you&#39;re on Colab, restart the session due to issue with numpy installation on colab.</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">africanwhisper</span><span class="p">[</span><span class="n">training</span><span class="p">]</span>    <span class="c1"># If you want to train and test the model on a notebook</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># !pip install africanwhisper[all]      # If you want to train and deploy an endpoint.</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1">#  </span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># If you&#39;re on Colab, restart the session due to issue with numpy installation on colab.</span>
 </code></pre></div>
 <h2 id="step_2_set_parameters">Step 2: Set Parameters<a class="headerlink" href="#step_2_set_parameters" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Set the parameters (refer to the &#39;Usage on VM&#39; section for more details)</span>
