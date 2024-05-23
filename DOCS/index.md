@@ -55,3 +55,18 @@ The framework implements the following papers:
 
 For more details, you can refer to the [Whisper ASR model paper](https://cdn.openai.com/papers/whisper.pdf).<br>
 
+## Contributing 
+Contributions are welcome and encouraged.
+
+Before contributing, please take a moment to review our [Contribution Guidelines](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/CONTRIBUTING.md) for important information on how to contribute to this project.
+
+If you're unsure about anything or need assistance, don't hesitate to reach out to us or open an issue to discuss your ideas.
+
+We look forward to your contributions!
+
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/KevKibe/African-Whisper/blob/main/LICENSE) file for details.
+
+## Contact
+For any enquiries, please reach out to me through keviinkibe@gmail.com
