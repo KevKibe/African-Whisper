@@ -5,7 +5,7 @@ site_description: A framework for fast fine-tuning and API endpoint deployment o
 # Repository
 repo_url: https://github.com/KevKibe/African-Whisper
 repo_name: KevKibe/African-Whisper
-edit_uri: edit/master/DOCS
+edit_uri: edit/main/DOCS
 
 theme:
    name: 'material'
