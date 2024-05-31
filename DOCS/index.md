@@ -13,9 +13,8 @@
 
 </p>
 
-<p align="center">
-    <img src= "logo_image.png" width="100">
-</p>
+
+![Diagram](logo_image.png)
 
 
 *Framework for seamless fine-tuning and deploying Whisper Model developed to advance Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages*.
@@ -38,7 +37,12 @@
 - 🔍 **Alignment Precision**: Improve transcription and translation accuracy by aligning outputs with Wav2vec models.
 
 - 🛡️ **Reduced Hallucination**: Leverage Voice Activity Detection (VAD) to minimize hallucination and improve transcription clarity.
-<br>
+
+## Demo: Using the Model to Generate Accurate Word-Level Transcriptions(Swahili)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mZnjlsFik7I?si=qnOlUlW8CdlT5-3W" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+## Research Implemented
 The framework implements the following papers:
 <br>
 
@@ -51,9 +55,6 @@ The framework implements the following papers:
 4. [Efficient and High-Quality Neural Machine Translation with OpenNMT](https://arxiv.org/abs/1701.02810): Efficient neural machine translation and model acceleration.  
 
 For more details, you can refer to the [Whisper ASR model paper](https://cdn.openai.com/papers/whisper.pdf).<br>
-
-## Documentation
-Refer to the [Documentation](https://kevkibe.github.io/African-Whisper/gettingstarted/) to get started
 
 
 ## Contributing 
@@ -71,3 +72,4 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ## Contact
 For any enquiries, please reach out to me through keviinkibe@gmail.com
+
