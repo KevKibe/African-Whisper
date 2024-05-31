@@ -6,6 +6,7 @@
 ```
 git clone https://github.com/KevKibe/African-Whisper.git
 ```
+
 ### Set up Environment Variables
 ```bash
 cd src/deployment

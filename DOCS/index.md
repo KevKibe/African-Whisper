@@ -16,6 +16,7 @@
 
 ![Diagram](logo_image.png)
 
+
 *Framework for seamless fine-tuning and deploying Whisper Model developed to advance Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages*.
 
 
@@ -55,6 +56,7 @@ The framework implements the following papers:
 
 For more details, you can refer to the [Whisper ASR model paper](https://cdn.openai.com/papers/whisper.pdf).<br>
 
+
 ## Contributing 
 Contributions are welcome and encouraged.
 
@@ -70,3 +72,4 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ## Contact
 For any enquiries, please reach out to me through keviinkibe@gmail.com
+

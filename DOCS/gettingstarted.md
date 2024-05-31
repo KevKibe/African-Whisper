@@ -258,8 +258,3 @@ Flags:
 # --perform_alignment: Optional flag to perform alignment.
 
 ```
-
-
-
-
-

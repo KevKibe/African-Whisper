@@ -13,15 +13,19 @@
 
 </p>
 
-<p align="center">
+
+<!-- <p align="center">
     <img src= "logo_image.png" width="100">
-</p>
+</p> -->
+
+![Diagram](logo_image.png)
 
 
 *Framework for seamless fine-tuning and deploying Whisper Model developed to advance Automatic Speech Recognition (ASR): translation and transcription capabilities for African languages*.
+<br>
+![Diagram](diagram-1.png)
 
-
-## Features
+# Features
   
 - 🔧 **Fine-Tuning**: Fine-tune the [Whisper](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013) model on any audio dataset from Huggingface, e.g., [Mozilla's](https://huggingface.co/mozilla-foundation) Common Voice datasets.
 
@@ -38,6 +42,8 @@
 - 🔍 **Alignment Precision**: Improve transcription and translation accuracy by aligning outputs with Wav2vec models.
 
 - 🛡️ **Reduced Hallucination**: Leverage Voice Activity Detection (VAD) to minimize hallucination and improve transcription clarity.
+
+# Research Implemented
 <br>
 The framework implements the following papers:
 <br>
@@ -51,23 +57,3 @@ The framework implements the following papers:
 4. [Efficient and High-Quality Neural Machine Translation with OpenNMT](https://arxiv.org/abs/1701.02810): Efficient neural machine translation and model acceleration.  
 
 For more details, you can refer to the [Whisper ASR model paper](https://cdn.openai.com/papers/whisper.pdf).<br>
-
-## Documentation
-Refer to the [Documentation](https://kevkibe.github.io/African-Whisper/gettingstarted/) to get started
-
-
-## Contributing 
-Contributions are welcome and encouraged.
-
-Before contributing, please take a moment to review our [Contribution Guidelines](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/CONTRIBUTING.md) for important information on how to contribute to this project.
-
-If you're unsure about anything or need assistance, don't hesitate to reach out to us or open an issue to discuss your ideas.
-
-We look forward to your contributions!
-
-
-## License
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/KevKibe/African-Whisper/blob/main/LICENSE) file for details.
-
-## Contact
-For any enquiries, please reach out to me through keviinkibe@gmail.com
