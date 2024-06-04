@@ -11,6 +11,10 @@
       
       
       
+        <link rel="prev" href="../deployment/">
+      
+      
+        <link rel="next" href="../CONTRIBUTING/">
       
       
       <link rel="icon" href="../logo_image.ico">
@@ -18,7 +22,7 @@
     
     
       
-        <title>PARAMETERS - African Whisper ASR Framework</title>
+        <title>Troubleshooting - African Whisper ASR Framework</title>
       
     
     
@@ -55,11 +59,11 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="PARAMETERS - African Whisper ASR Framework" >
+        <meta  property="og:title"  content="Troubleshooting - African Whisper ASR Framework" >
       
         <meta  property="og:description"  content="A framework for fast fine-tuning and API endpoint deployment of the Whisper model, specifically developed to accelerate Automatic Speech Recognition (ASR) for African languages." >
       
-        <meta  property="og:image"  content="./assets/images/social/PARAMETERS.png" >
+        <meta  property="og:image"  content="./assets/images/social/troubleshoot.png" >
       
         <meta  property="og:image:type"  content="image/png" >
       
@@ -71,11 +75,11 @@
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="PARAMETERS - African Whisper ASR Framework" >
+        <meta  name="twitter:title"  content="Troubleshooting - African Whisper ASR Framework" >
       
         <meta  name="twitter:description"  content="A framework for fast fine-tuning and API endpoint deployment of the Whisper model, specifically developed to accelerate Automatic Speech Recognition (ASR) for African languages." >
       
-        <meta  name="twitter:image"  content="./assets/images/social/PARAMETERS.png" >
+        <meta  name="twitter:image"  content="./assets/images/social/troubleshoot.png" >
       
     
     
@@ -105,6 +109,11 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
+      
+        
+        <a href="#troubleshooting_tips" class="md-skip">
+          Skip to content
+        </a>
       
     </div>
     <div data-md-component="announce">
@@ -137,7 +146,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              PARAMETERS
+              Troubleshooting
             
           </span>
         </div>
@@ -299,10 +308,28 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../troubleshoot/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -311,6 +338,33 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting_tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting Tips
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -373,6 +427,23 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting_tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting Tips
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -389,34 +460,28 @@
   
 
 
-  <h1>PARAMETERS</h1>
+  <h1>Troubleshooting</h1>
 
-<p>Here's a short description of each argument used in the different commands:</p>
+<h2 id="troubleshooting_tips">Troubleshooting Tips<a class="headerlink" href="#troubleshooting_tips" title="Permanent link">&para;</a></h2>
 <ul>
 <li>
-<p><strong>--huggingface_read_token</strong>: Your Hugging Face authentication token for read access. It allows you to download datasets and models from Hugging Face.</p>
+<p>If you encounter trouble installing <code>africanwhisper</code> package on Kaggle, see: <br>
+<a href="https://github.com/KevKibe/African-Whisper/issues/142">Issue #142</a></p>
 </li>
 <li>
-<p><strong>--huggingface_push_token</strong>: Your Hugging Face authentication token for write access. It's used for uploading models to your Hugging Face account.</p>
+<p>If you encounter this error installing <code>africanwhisper</code> package on Colab:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ERROR: pip&#39;s dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>spacy 3.7.4 requires typer&lt;0.10.0,&gt;=0.3.0, but you have typer 0.12.3 which is incompatible.
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>torchtext 0.18.0 requires torch&gt;=2.3.0, but you have torch 2.2.2 which is incompatible.
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>weasel 0.3.4 requires typer&lt;0.10.0,&gt;=0.3.0, but you have typer 0.12.3 which is incompatible.
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Successfully installed GitPython-3.1.43 Mako-1.3.5 accelerate-0.29.3 africanwhisper-0.9.5 alembic-1.13.1 antlr4-python3-runtime-4.9.3 appdirs-1.4.4 asteroid-filterbanks-0.4.0 av-11.0.0 bitsandbytes-0.42.0 coloredlogs-15.0.1 colorlog-6.8.2 ctranslate2-4.1.0 datasets-2.17.0 dill-0.3.8 docker-pycreds-0.4.0 docopt-0.6.2 einops-0.8.0 evaluate-0.4.1 faster-whisper-1.0.0 gitdb-4.0.11 h5py-3.11.0 holoviews-1.18.3 humanfriendly-10.0 hyperpyyaml-1.2.2 jiwer-3.0.3 julius-0.2.7 keras-3.1.1 librosa-0.10.1 lightning-2.2.5 lightning-utilities-0.11.2 ml-dtypes-0.3.2 multiprocess-0.70.16 namex-0.0.8 numpy-1.26.4 nvidia-cublas-cu12-12.1.3.1 nvidia-cuda-cupti-cu12-12.1.105 nvidia-cuda-nvrtc-cu12-12.1.105 nvidia-cuda-runtime-cu12-12.1.105 nvidia-cudnn-cu12-8.9.2.26 nvidia-cufft-cu12-11.0.2.54 nvidia-curand-cu12-10.3.2.106 nvidia-cusolver-cu12-11.4.5.107 nvidia-cusparse-cu12-12.1.0.106 nvidia-nccl-cu12-2.19.3 nvidia-nvjitlink-cu12-12.5.40 nvidia-nvtx-cu12-12.1.105 omegaconf-2.3.0 onnxruntime-1.18.0 optree-0.11.0 optuna-3.6.1 peft-0.10.0 primePy-1.3 pyannote-audio-3.1.1 pyannote.core-5.0.0 pyannote.database-5.1.0 pyannote.metrics-3.2.1 pyannote.pipeline-3.0.1 python-dotenv-1.0.1 pytorch-lightning-2.2.5 pytorch-metric-learning-2.5.0 rapidfuzz-3.9.3 responses-0.18.0 ruamel.yaml-0.18.6 ruamel.yaml.clib-0.2.8 scipy-1.12.0 semver-3.0.2 sentry-sdk-2.4.0 setproctitle-1.3.3 shellingham-1.5.4 smmap-5.0.1 speechbrain-1.0.0 tensorboard-2.16.2 tensorboardX-2.6.2.2 tensorflow-2.16.1 tensorflow-probability-0.24.0 tf-keras-2.16.0 tokenizers-0.15.2 torch-2.2.2 torch-audiomentations-0.11.1 torch-pitch-shift-1.2.4 torchaudio-2.2.2 torchmetrics-1.4.0.post0 torchvision-0.17.2 transformers-4.39.2 triton-2.2.0 typer-0.12.3 wandb-0.16.6 xxhash-3.4.1
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>WARNING: The following packages were previously imported in this runtime:
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  [pydevd_plugins]
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>You must restart the runtime in order to use newly installed versions.
+</code></pre></div></p>
 </li>
-<li>
-<p><strong>--dataset_name</strong>: The name of the dataset you wish to use for training. Example: 'mozilla-foundation/common_voice_16_1'. This should match the dataset's identifier on the Hugging Face Datasets Hub.</p>
-</li>
-<li>
-<p><strong>--language_abbr</strong>: The abbreviation of the language for the dataset you're using. Example: 'sw' for Swahili. This is used to specify the language variant of the dataset if it supports multiple languages.</p>
-</li>
-<li>
-<p><strong>--model_id</strong>: Identifier for the pre-trained model you wish to fine-tune. Example: 'openai/whisper-small'. This should match the model's identifier on the Hugging Face Model Hub.</p>
-</li>
-<li>
-<p><strong>--processing_task</strong>: Specifies the task for which the model is being trained. Example: 'transcribe'. This defines the objective of the model training, such as transcribing audio to text.</p>
-</li>
-<li>
-<p><strong>--wandb_api_key</strong>: Your Weights &amp; Biases (W&amp;B) API key. This is used for logging and tracking the training process if you're using W&amp;B for experiment tracking.</p>
-</li>
-<li>
-<p><strong>--use_peft</strong>: Add this flag to fine-tune using PEFT method and omit it to do full fine-tuning. PEFT only works on a notbeook with GPU-support.</p>
-</li>
+<li>Restart the kernel and continue with the next step.</li>
 </ul>
 
 
