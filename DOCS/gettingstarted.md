@@ -19,6 +19,7 @@
 ## Step 1: Installation
 
 ``` py
+!pip install --upgrade pip
 !pip install africanwhisper[training]    # If you want to train and test the model on a notebook
 
 # !pip install africanwhisper[all]      # If you want to train and deploy an endpoint.
