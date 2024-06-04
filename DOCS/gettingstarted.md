@@ -92,18 +92,18 @@ trainer = Trainer(
     use_peft
 )
 trainer.train(
-    max_steps=100,
-    learning_rate=1e-3,
-    per_device_train_batch_size=96,
-    per_device_eval_batch_size=64,
-    optim="adamw_bnb_8bit"
+    max_steps=100,                              
+    learning_rate=1e-3,                        
+    per_device_train_batch_size=8,              # Adjust based on available RAM; increase if more RAM is available
+    per_device_eval_batch_size=8,               # Adjust based on available RAM; increase if more RAM is available
+    optim="adamw_bnb_8bit"  
 )
 
 # Optional parameters for training:
 #     max_steps (int): The maximum number of training steps (default is 100).
 #     learning_rate (float): The learning rate for training (default is 1e-5).
-#     per_device_train_batch_size (int): The batch size per GPU for training (default is 96).
-#     per_device_eval_batch_size (int): The batch size per GPU for evaluation (default is 64).
+#     per_device_train_batch_size (int): The batch size per GPU for training (default is 8).
+#     per_device_eval_batch_size (int): The batch size per GPU for evaluation (default is 8).
 #     optim (str): The optimizer used for training (default is "adamw_bnb_8bit")
 # See more configurable parameters https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Seq2SeqTrainingArguments
 ```
