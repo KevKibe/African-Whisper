@@ -67,7 +67,7 @@ class Trainer:
         self.model_prep = WhisperModelPrep(
             self.model_id,
             # "transcribe"
-            self.processing_task,
+            processing_task,
             self.use_peft
         )
 
