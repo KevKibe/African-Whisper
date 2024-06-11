@@ -40,6 +40,7 @@ class Trainer:
         tokenizer,
         wandb_api_key: str,
         use_peft: bool,
+        processing_task:str
     ):
         """
         Initializes the Trainer with the necessary components and configurations for training.
@@ -53,6 +54,7 @@ class Trainer:
             feature_extractor (Any): The audio feature extractor.
             tokenizer (PreTrainedTokenizer): The tokenizer for text data.
             language_abbr (str): Abbreviation for the dataset's language.
+            processing_task (str): task for the Whisper model to execute. Translate or Transcribe
         """
         os.environ["WANDB_API_KEY"] = wandb_api_key
         self.dataset = dataset
@@ -65,7 +67,7 @@ class Trainer:
         self.use_peft = use_peft
         self.model_prep = WhisperModelPrep(
             self.model_id,
-            "transcribe",
+            processing_task,
             self.use_peft
         )
 
@@ -147,8 +149,8 @@ class Trainer:
             output_dir (str): The output directory where the model predictions and checkpoints will be written.
             max_steps (int, optional): The maximum number of training steps. Defaults to 100.
             learning_rate (float, optional): The learning rate for the training process. Defaults to 1e-5.
-            per_device_train_batch_size (int, optional): The batch size per GPU during training. Defaults to 96.
-            per_device_eval_batch_size (int, optional): The batch size per GPU during evaluation. Defaults to 64.
+            per_device_train_batch_size (int, optional): The batch size per GPU during training. Defaults to 8.
+            per_device_eval_batch_size (int, optional): The batch size per GPU during evaluation. Defaults to 8.
             optim (str, optional): The optimizer to use for training. Defaults to "adamw_bnb_8bit".
             gradient_accumulation_steps (int, optional): The number of steps to accumulate gradients before performing an optimization step. Defaults to 1.
             gradient_checkpointing (bool, optional): Whether to use gradient checkpointing to save memory at the expense of slower backward pass. Defaults to True.
@@ -222,7 +224,7 @@ class Trainer:
         tokenizer.save_pretrained(training_args.output_dir)
         processor.save_pretrained(training_args.output_dir)
         torch.save(self.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bin")
-        self.model.save_pretrained(training_args.output_dir)
+        # self.model.save_pretrained(training_args.output_dir)
         progress_callback = WandbProgressResultsCallback(
             trainer, eval_dataset, tokenizer
         )

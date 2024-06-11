@@ -14,7 +14,7 @@ class TestTrainerManager(unittest.TestCase):
             dataset_name="mozilla-foundation/common_voice_16_1",
             language_abbr=["ti"],
             model_id=self.model_id,
-            processing_task="automatic-speech-recognition",
+            processing_task="translate",
             use_peft=False,
         )
         tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
@@ -29,6 +29,7 @@ class TestTrainerManager(unittest.TestCase):
             tokenizer=tokenizer,
             wandb_api_key=os.environ.get("WANDB_TOKEN"),
             use_peft=False,
+            processing_task="translate"
             )
         return super().setUp()
     
