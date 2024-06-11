@@ -29,6 +29,7 @@ class TestTrainerManager(unittest.TestCase):
             tokenizer=tokenizer,
             wandb_api_key=os.environ.get("WANDB_TOKEN"),
             use_peft=False,
+            processing_task="translate"
             )
         return super().setUp()
     
