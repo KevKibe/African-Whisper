@@ -39,8 +39,8 @@ dataset_name = "mozilla-foundation/common_voice_16_1"
 language_abbr= [ ]                                    # Example `["ti", "yi"]`. see abbreviations here https://huggingface.co/datasets/mozilla-foundation/common_voice_16_1. 
                                                       # Note: choose a small dataset so as to not run out of memory,
 model_id= "model-id"                                  # Example openai/whisper-small, openai/whisper-medium
-processing_task= "automatic-speech-recognition" 
-wandb_api_key = " "
+processing_task= "translate"                          # translate or transcribe
+wandb_api_key = " "     
 use_peft = True                                       # Note: PEFT only works on a notebook with GPU-support.
 
 ```
@@ -206,10 +206,10 @@ python -m training.main \
     --processing_task PROCESSING_TASK \
     --wandb_api_key YOUR_WANDB_API_KEY_HERE \
     --use_peft \
-    --max_steps NUMBER OF TRAINING STEPS \
-    --train_batch_size TRAINING BATCH SIZE \
-    --eval_batch_size EVALUATION BATCH SIZE \
-    --save_eval_logging_steps SAVING, EVALUATION AND LOGGING STEPS \
+    --max_steps NUMBER_OF_TRAINING_STEPS \
+    --train_batch_size TRAINING_BATCH_SIZE \
+    --eval_batch_size EVALUATION_BATCH_SIZE \
+    --save_eval_logging_steps SAVE_EVAL_AND_LOGGING_STEPS \
 
 Flags:
 # --use_peft: Optional flag to use PEFT finetuning. leave it out to perform full finetuning
