@@ -90,7 +90,8 @@ trainer = Trainer(
     feature_extractor,
     tokenizer,
     wandb_api_key,
-    use_peft
+    use_peft,
+    processing_task
 )
 trainer.train(
     max_steps=100,                              
@@ -204,7 +205,11 @@ python -m training.main \
     --model_id MODEL_ID \
     --processing_task PROCESSING_TASK \
     --wandb_api_key YOUR_WANDB_API_KEY_HERE \
-    --use_peft
+    --use_peft \
+    --max_steps NUMBER OF TRAINING STEPS \
+    --train_batch_size TRAINING BATCH SIZE \
+    --eval_batch_size EVALUATION BATCH SIZE \
+    --save_eval_logging_steps SAVING, EVALUATION AND LOGGING STEPS \
 
 Flags:
 # --use_peft: Optional flag to use PEFT finetuning. leave it out to perform full finetuning
