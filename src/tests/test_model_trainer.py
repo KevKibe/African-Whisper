@@ -14,7 +14,7 @@ class TestTrainerManager(unittest.TestCase):
             dataset_name="mozilla-foundation/common_voice_16_1",
             language_abbr=["ti"],
             model_id=self.model_id,
-            processing_task="automatic-speech-recognition",
+            processing_task="translate",
             use_peft=False,
         )
         tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
