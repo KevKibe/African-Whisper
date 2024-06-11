@@ -67,6 +67,26 @@ def parse_args():
         type=bool,
         help="True to train your model using PEFT method, False for full finetuning",
     )
+    parser.add_argument(
+        "--max_steps",
+        type=int,
+        help="The maximum number of training steps. Defaults to 100",
+    )
+    parser.add_argument(
+        "--train_batch_size",
+        type=int,
+        help="The batch size per GPU during training. Defaults to 8",
+    )
+    parser.add_argument(
+        "--eval_batch_size",
+        type=int,
+        help="The batch size per GPU during evaluation. Defaults to 8",
+    )
+    parser.add_argument(
+        "--save_eval_logging_steps",
+        type=int, 
+        help="The number of training steps before saving the model, evaluating the model and logging the training info. Defaults to 25",
+    )
 
     return parser.parse_args()
 
@@ -99,4 +119,11 @@ if __name__ == "__main__":
         wandb_api_key=args.wandb_api_key,
         use_peft=args.use_peft,
     )
-    trainer.train()
+    trainer.train(
+        max_steps=args.max_steps,
+        per_device_train_batch_size=args.train_batch_size,
+        per_device_eval_batch_size=args.eval_batch_size,
+        save_steps=args.save_eval_logging_steps,
+        eval_steps=args.save_eval_logging_steps,
+        logging_steps=args.save_eval_logging_steps
+    )
