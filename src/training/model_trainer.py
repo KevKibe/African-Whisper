@@ -40,7 +40,7 @@ class Trainer:
         tokenizer,
         wandb_api_key: str,
         use_peft: bool,
-        processing_task
+        processing_task:str
     ):
         """
         Initializes the Trainer with the necessary components and configurations for training.
@@ -54,6 +54,7 @@ class Trainer:
             feature_extractor (Any): The audio feature extractor.
             tokenizer (PreTrainedTokenizer): The tokenizer for text data.
             language_abbr (str): Abbreviation for the dataset's language.
+            processing_task (str): task for the Whisper model to execute. Translate or Transcribe
         """
         os.environ["WANDB_API_KEY"] = wandb_api_key
         self.dataset = dataset
@@ -66,7 +67,6 @@ class Trainer:
         self.use_peft = use_peft
         self.model_prep = WhisperModelPrep(
             self.model_id,
-            # "transcribe"
             processing_task,
             self.use_peft
         )
