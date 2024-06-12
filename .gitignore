@@ -1,0 +1,11 @@
+**/wandb
+**/__pycache__
+venv
+.env
+**/blog
+.cache/plugin/social
+**/translate
+**/transcribe
+site
+wandb
+**/openai
