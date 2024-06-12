@@ -734,7 +734,7 @@
 <a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="nb">print</span><span class="p">(</span><span class="n">transcription</span><span class="p">)</span>
 <a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>
 <a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="c1"># To get transcriptions with speaker labels</span>
-<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="n">alignment_result</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">align_transcription</span><span class="p">(</span><span class="n">transcription</span><span class="p">)</span>
+<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="n">alignment_result</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">align_transcription</span><span class="p">(</span><span class="n">transcription</span><span class="p">)</span> <span class="c1"># Optional parameter alignment_model: if the default wav2vec alignment model is not available e.g </span>
 <a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="n">diarization_result</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">diarize_audio</span><span class="p">(</span><span class="n">alignment_result</span><span class="p">)</span>
 <a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="nb">print</span><span class="p">(</span><span class="n">diarization_result</span><span class="p">)</span>
 <a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a>
@@ -832,6 +832,7 @@
 <a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>Flags:
 <a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="c1"># --perform_diarization: Optional flag to perform speaker diarization.</span>
 <a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="c1"># --perform_alignment: Optional flag to perform alignment.</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="c1"># --alignment_model: Optional flag to add custom alignment model/ if alignment model is not in source code.</span>
 </code></pre></div>
 
 
