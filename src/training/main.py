@@ -54,7 +54,7 @@ def parse_args():
     parser.add_argument(
         "--processing_task",
         type=str,
-        default="transcribe",
+        default=True,
         help="The processing task to be performed.",
     )
     parser.add_argument(
@@ -118,6 +118,7 @@ if __name__ == "__main__":
         tokenizer=tokenizer,
         wandb_api_key=args.wandb_api_key,
         use_peft=args.use_peft,
+        processing_task=args.processing_task
     )
     trainer.train(
         max_steps=args.max_steps,
