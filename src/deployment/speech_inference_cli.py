@@ -11,6 +11,7 @@ def main():
     parser.add_argument("--chunk_size", type=int, default=30, help="Chunk size for transcription")
     parser.add_argument("--perform_diarization", action="store_true", help="Perform diarization on the audio file")
     parser.add_argument("--perform_alignment", action="store_true", help="Perform alignment on the audio file")
+    parser.add_argument("--alignment_model", type=str, help="Model to performs alignment on the audio file")
     args = parser.parse_args()
 
     # Retrieve environment variables
@@ -34,10 +35,12 @@ def main():
     # Transcribe the audio
     transcription = inference.transcribe_audio(model=model)
     print(transcription)
-
+    alignment_model = args.alignment_model if hasattr(args, 'alignment_model') else None
     # Perform alignment if requested
     if args.perform_alignment:
-        alignment_result = inference.align_transcription(transcription)
+        alignment_result = inference.align_transcription(transcription, alignment_model)
+        print(transcription)
+        print(alignment_result['segments'][0]['text'])
     else:
         alignment_result = None
 
