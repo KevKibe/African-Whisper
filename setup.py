@@ -28,7 +28,7 @@ BASE_DEPS = [
 ]
 
 DEPLOYMENT_DEPS = [
-    "torch==2.2.2",
+    "torch==2.3.1",
     "transformers==4.39.1",
     "pydantic==2.6.4",
     "prometheus-client==0.20.0",
