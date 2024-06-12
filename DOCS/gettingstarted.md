@@ -159,7 +159,7 @@ transcription = inference.transcribe_audio(model=model)
 print(transcription)
 
 # To get transcriptions with speaker labels
-alignment_result = inference.align_transcription(transcription)
+alignment_result = inference.align_transcription(transcription) # Optional parameter alignment_model: if the default wav2vec alignment model is not available e.g 
 diarization_result = inference.diarize_audio(alignment_result)
 print(diarization_result)
 
@@ -262,5 +262,5 @@ python -m deployment.speech_inference_cli --audio_file FILENAME --task TASK --pe
 Flags:
 # --perform_diarization: Optional flag to perform speaker diarization.
 # --perform_alignment: Optional flag to perform alignment.
-
+# --alignment_model: Optional flag to add custom alignment model/ if alignment model is not in source code.
 ```

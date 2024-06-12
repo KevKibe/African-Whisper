@@ -123,18 +123,19 @@ class SpeechTranscriptionPipeline:
         )
         return transcription_result
 
-    def align_transcription(self, transcription_result: Dict) -> Dict:
+    def align_transcription(self, transcription_result: Dict, alignment_model: str = None) -> Dict:
         """
         Aligns the transcription result with the audio.
 
         Args:
             transcription_result (Dict): Transcription result to be aligned.
+            alignment_model (str): wav2vec2.0 model finetuned on the language
+
 
         Returns:
             Dict: Alignment result.
         """
-        align_language = "en"
-        align_model, align_metadata = load_align_model(align_language, self.device)
+        align_model, align_metadata = load_align_model(language_code=transcription_result['language'], device=self.device, model_name=alignment_model)
         
         if align_model is not None and len(transcription_result["segments"]) > 0:
             if transcription_result.get("language", "en") != align_metadata["language"]:
