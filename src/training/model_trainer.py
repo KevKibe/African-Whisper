@@ -221,9 +221,9 @@ class Trainer:
             callbacks=[ShuffleCallback()],
         )
         tokenizer = self.model_prep.initialize_tokenizer()
-        # processor = self.model_prep.initialize_processor()
-        # tokenizer.save_pretrained(training_args.output_dir)
-        # processor.save_pretrained(training_args.output_dir)
+        processor = self.model_prep.initialize_processor()
+        tokenizer.save_pretrained(training_args.output_dir)
+        processor.save_pretrained(training_args.output_dir)
         # torch.save(self.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bink")
         # self.model.save_pretrained(training_args.output_dir)
         progress_callback = WandbProgressResultsCallback(
@@ -233,8 +233,11 @@ class Trainer:
         trainer.train()
         print(trainer.model)
         current_directory = os.path.dirname(os.path.abspath(__file__))
-        trainer.save_model(current_directory)
+        trainer.model.save_model(current_directory)
+        print("saved model")
         merge_lora_weights(lora_model=current_directory, output_dir=training_args.output_dir, huggingface_write_token=self.huggingface_write_token)
+        print("weights merged")
         torch.save(trainer.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bin")
+        print("pytorch model saved")
 
 
