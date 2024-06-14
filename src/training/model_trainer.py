@@ -224,20 +224,23 @@ class Trainer:
         processor = self.model_prep.initialize_processor()
         tokenizer.save_pretrained(training_args.output_dir)
         processor.save_pretrained(training_args.output_dir)
-        # torch.save(self.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bink")
-        # self.model.save_pretrained(training_args.output_dir)
+
         progress_callback = WandbProgressResultsCallback(
             trainer, eval_dataset, tokenizer
         )
+        trainer.model.save_pretrained(training_args.output_dir)
+        torch.save(trainer.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bin")
         trainer.add_callback(progress_callback)
         trainer.train()
         # print(trainer.model)
-        # current_directory = os.path.dirname(os.path.abspath(__file__))
-        trainer.model.save_pretrained(training_args.output_dir)
-        print("saved model")
-        merge_lora_weights(hf_model_id="KevinKibe/whisper-small-finetuned", output_dir=training_args.output_dir, huggingface_write_token=self.huggingface_write_token)
-        print("weights merged")
-        torch.save(trainer.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bin")
-        print("pytorch model saved")
+        # # current_directory = os.path.dirname(os.path.abspath(__file__))
+        # trainer.model.save_pretrained(training_args.output_dir)
+        # print("saved model")
+        # merge_lora_weights(hf_model_id="KevinKibe/whisper-small-finetuned", output_dir=training_args.output_dir, huggingface_write_token=self.huggingface_write_token)
+        # print("weights merged")
+        # torch.save(trainer.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bin")
+        # print("pytorch model saved")
+    def merge(self,output_dir, huggingface_write_token):
+        merge_lora_weights(hf_model_id="KevinKibe/whisper-small-finetuned", output_dir=output_dir, huggingface_write_token=huggingface_write_token)
 
 
