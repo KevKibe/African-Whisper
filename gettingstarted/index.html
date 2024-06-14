@@ -380,9 +380,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step_6_test_model_using_an_audio_file" class="md-nav__link">
+  <a href="#step_6_merge_lora_weightsif_peft_was_used" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 6: Test Model using an Audio File
+      Step 6: Merge LoRA weights(if PEFT was used)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step_7_test_model_using_an_audio_file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 7: Test Model using an Audio File
     </span>
   </a>
   
@@ -566,9 +575,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step_6_test_model_using_an_audio_file" class="md-nav__link">
+  <a href="#step_6_merge_lora_weightsif_peft_was_used" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 6: Test Model using an Audio File
+      Step 6: Merge LoRA weights(if PEFT was used)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step_7_test_model_using_an_audio_file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 7: Test Model using an Audio File
     </span>
   </a>
   
@@ -689,58 +707,44 @@
 <a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="c1">#     optim (str): The optimizer used for training (default is &quot;adamw_bnb_8bit&quot;)</span>
 <a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="c1"># See more configurable parameters https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Seq2SeqTrainingArguments</span>
 </code></pre></div>
-<h2 id="step_6_test_model_using_an_audio_file">Step 6: Test Model using an Audio File<a class="headerlink" href="#step_6_test_model_using_an_audio_file" title="Permanent link">&para;</a></h2>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Using a PEFT fine-tuned model</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span> <span class="nn">deployment.peft_speech_inference</span> <span class="kn">import</span> <span class="n">SpeechInference</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;your-finetuned-model-name-on-huggingface-hub&quot;</span>   <span class="c1"># e.g., &quot;KevinKibe/whisper-small-af&quot;</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">huggingface_read_token</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="n">task</span> <span class="o">=</span> <span class="s2">&quot;desired-task&quot;</span>                                         <span class="c1"># either &#39;translate&#39; or &#39;transcribe&#39;</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="n">audiofile_dir</span> <span class="o">=</span> <span class="s2">&quot;location-of-audio-file&quot;</span>                      <span class="c1"># filetype should be .mp3 or .wav</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1"># Initialize the SpeechInference class and run inference</span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="n">inference</span> <span class="o">=</span> <span class="n">SpeechInference</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">huggingface_read_token</span><span class="p">)</span>
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">pipe_initialization</span><span class="p">()</span>
-<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="n">transcription</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">audiofile_dir</span><span class="p">,</span> <span class="n">task</span><span class="p">)</span>
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>
-<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="c1"># Access different parts of the output</span>
-<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">transcription</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>                                       <span class="c1"># The entire text transcription.</span>
-<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="nb">print</span><span class="p">(</span><span class="n">transcription</span><span class="o">.</span><span class="n">chunks</span><span class="p">)</span>                                     <span class="c1"># List of individual text chunks with timestamps.</span>
-<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="nb">print</span><span class="p">(</span><span class="n">transcription</span><span class="o">.</span><span class="n">timestamps</span><span class="p">)</span>                                 <span class="c1"># List of timestamps for each chunk.</span>
-<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="nb">print</span><span class="p">(</span><span class="n">transcription</span><span class="o">.</span><span class="n">chunk_texts</span><span class="p">)</span>                                <span class="c1"># List of texts for each chunk.</span>
+<h2 id="step_6_merge_lora_weightsif_peft_was_used">Step 6: Merge LoRA weights(if PEFT was used)<a class="headerlink" href="#step_6_merge_lora_weightsif_peft_was_used" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span> <span class="nn">training.merge_lora</span> <span class="kn">import</span> <span class="n">Merger</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># Merge PEFT fine-tuned model weights with the base model weights</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">Merger</span><span class="o">.</span><span class="n">merge_lora_weights</span><span class="p">(</span><span class="n">hf_model_id</span><span class="o">=</span><span class="s2">&quot;your-finetuned-model-name-on-huggingface-hub&quot;</span><span class="p">,</span> <span class="n">huggingface_write_token</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Using a fully fine-tuned model</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span> <span class="nn">deployment.speech_inference</span> <span class="kn">import</span> <span class="n">SpeechTranscriptionPipeline</span><span class="p">,</span> <span class="n">ModelOptimization</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;your-finetuned-model-name-on-huggingface-hub&quot;</span>   <span class="c1"># e.g., &quot;KevinKibe/whisper-small-af&quot;</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">huggingface_read_token</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="n">task</span> <span class="o">=</span> <span class="s2">&quot;desired-task&quot;</span>                                         <span class="c1"># either &#39;translate&#39; or &#39;transcribe&#39;</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="n">audiofile_dir</span> <span class="o">=</span> <span class="s2">&quot;location-of-audio-file&quot;</span>                      <span class="c1"># filetype should be .mp3 or .wav</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="c1"># Optimize model for better results</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="n">model_optimizer</span> <span class="o">=</span> <span class="n">ModelOptimization</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="n">model_optimizer</span><span class="o">.</span><span class="n">convert_model_to_optimized_format</span><span class="p">()</span>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="n">model</span> <span class="o">=</span> <span class="n">model_optimizer</span><span class="o">.</span><span class="n">load_transcription_model</span><span class="p">()</span>
-<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>
-<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="c1"># Initiate the transcription model</span>
-<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="n">inference</span> <span class="o">=</span> <span class="n">SpeechTranscriptionPipeline</span><span class="p">(</span>
-<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>        <span class="n">audio_file_path</span><span class="o">=</span><span class="n">audiofile_dir</span><span class="p">,</span>
-<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>        <span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">,</span>
-<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>        <span class="n">huggingface_read_token</span><span class="o">=</span><span class="n">huggingface_read_token</span>
-<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>    <span class="p">)</span>
-<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>
-<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="c1"># To get transcriptions</span>
-<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="n">transcription</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">transcribe_audio</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
-<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="nb">print</span><span class="p">(</span><span class="n">transcription</span><span class="p">)</span>
-<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>
-<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="c1"># To get transcriptions with speaker labels</span>
-<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="n">alignment_result</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">align_transcription</span><span class="p">(</span><span class="n">transcription</span><span class="p">)</span> <span class="c1"># Optional parameter alignment_model: if the default wav2vec alignment model is not available e.g </span>
-<a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="n">diarization_result</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">diarize_audio</span><span class="p">(</span><span class="n">alignment_result</span><span class="p">)</span>
-<a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="nb">print</span><span class="p">(</span><span class="n">diarization_result</span><span class="p">)</span>
-<a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a>
-<a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="c1">#To generate subtitles(.srt format), will be saved in root directory</span>
-<a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="n">inference</span><span class="o">.</span><span class="n">generate_subtitles</span><span class="p">(</span><span class="n">transcription</span><span class="p">,</span> <span class="n">alignment_result</span><span class="p">,</span> <span class="n">diarization_result</span><span class="p">)</span>
-</code></pre></div></p>
+<h2 id="step_7_test_model_using_an_audio_file">Step 7: Test Model using an Audio File<a class="headerlink" href="#step_7_test_model_using_an_audio_file" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span> <span class="nn">deployment.speech_inference</span> <span class="kn">import</span> <span class="n">SpeechTranscriptionPipeline</span><span class="p">,</span> <span class="n">ModelOptimization</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;your-finetuned-model-name-on-huggingface-hub&quot;</span>   <span class="c1"># e.g., &quot;KevinKibe/whisper-small-af&quot;</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">huggingface_read_token</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">task</span> <span class="o">=</span> <span class="s2">&quot;desired-task&quot;</span>                                         <span class="c1"># either &#39;translate&#39; or &#39;transcribe&#39;</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="n">audiofile_dir</span> <span class="o">=</span> <span class="s2">&quot;location-of-audio-file&quot;</span>                      <span class="c1"># filetype should be .mp3 or .wav</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="c1"># Optimize model for better results</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="n">model_optimizer</span> <span class="o">=</span> <span class="n">ModelOptimization</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="n">model_optimizer</span><span class="o">.</span><span class="n">convert_model_to_optimized_format</span><span class="p">()</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="n">model</span> <span class="o">=</span> <span class="n">model_optimizer</span><span class="o">.</span><span class="n">load_transcription_model</span><span class="p">()</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="c1"># Initiate the transcription model</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="n">inference</span> <span class="o">=</span> <span class="n">SpeechTranscriptionPipeline</span><span class="p">(</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>        <span class="n">audio_file_path</span><span class="o">=</span><span class="n">audiofile_dir</span><span class="p">,</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>        <span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">,</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>        <span class="n">huggingface_read_token</span><span class="o">=</span><span class="n">huggingface_read_token</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>    <span class="p">)</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="c1"># To get transcriptions</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="n">transcription</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">transcribe_audio</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="nb">print</span><span class="p">(</span><span class="n">transcription</span><span class="p">)</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="c1"># To get transcriptions with speaker labels</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="n">alignment_result</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">align_transcription</span><span class="p">(</span><span class="n">transcription</span><span class="p">)</span> <span class="c1"># Optional parameter alignment_model: if the default wav2vec alignment model is not available e.g </span>
+<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="n">diarization_result</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">diarize_audio</span><span class="p">(</span><span class="n">alignment_result</span><span class="p">)</span>
+<a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="nb">print</span><span class="p">(</span><span class="n">diarization_result</span><span class="p">)</span>
+<a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a>
+<a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="c1">#To generate subtitles(.srt format), will be saved in root directory</span>
+<a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="n">inference</span><span class="o">.</span><span class="n">generate_subtitles</span><span class="p">(</span><span class="n">transcription</span><span class="p">,</span> <span class="n">alignment_result</span><span class="p">,</span> <span class="n">diarization_result</span><span class="p">)</span>
+</code></pre></div>
 <h1 id="using_the_cli">🖥️ Using the CLI<a class="headerlink" href="#using_the_cli" title="Permanent link">&para;</a></h1>
 <h2 id="step_1_clone_and_install_dependencies">Step 1: Clone and Install Dependencies<a class="headerlink" href="#step_1_clone_and_install_dependencies" title="Permanent link">&para;</a></h2>
 <ul>
