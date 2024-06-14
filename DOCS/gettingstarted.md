@@ -110,31 +110,17 @@ trainer.train(
 # See more configurable parameters https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Seq2SeqTrainingArguments
 ```
 
-## Step 6: Test Model using an Audio File
+## Step 6: Merge LoRA weights(if PEFT was used)
+```python
+from training.merge_lora import Merger
 
-``` py
-# Using a PEFT fine-tuned model
-from deployment.peft_speech_inference import SpeechInference
-
-model_name = "your-finetuned-model-name-on-huggingface-hub"   # e.g., "KevinKibe/whisper-small-af"
-huggingface_read_token = " "
-task = "desired-task"                                         # either 'translate' or 'transcribe'
-audiofile_dir = "location-of-audio-file"                      # filetype should be .mp3 or .wav
-
-# Initialize the SpeechInference class and run inference
-inference = SpeechInference(model_name, huggingface_read_token)
-pipeline = inference.pipe_initialization()
-transcription = inference.output(pipeline, audiofile_dir, task)
-
-# Access different parts of the output
-print(transcription.text)                                       # The entire text transcription.
-print(transcription.chunks)                                     # List of individual text chunks with timestamps.
-print(transcription.timestamps)                                 # List of timestamps for each chunk.
-print(transcription.chunk_texts)                                # List of texts for each chunk.
-
+# Merge PEFT fine-tuned model weights with the base model weights
+Merger.merge_lora_weights(hf_model_id="your-finetuned-model-name-on-huggingface-hub", huggingface_write_token = " ")
 ```
+
+## Step 7: Test Model using an Audio File
+
 ``` py
-# Using a fully fine-tuned model
 from deployment.speech_inference import SpeechTranscriptionPipeline, ModelOptimization
 
 model_name = "your-finetuned-model-name-on-huggingface-hub"   # e.g., "KevinKibe/whisper-small-af"
