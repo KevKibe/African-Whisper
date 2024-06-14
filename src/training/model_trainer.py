@@ -10,7 +10,6 @@ from torch.utils.data import IterableDataset
 from transformers import TrainerCallback
 from .whisper_model_prep import WhisperModelPrep
 from typing import Dict, Any
-from .merge_lora import merge_lora_weights
 import warnings
 
 warnings.filterwarnings("ignore")
