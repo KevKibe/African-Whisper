@@ -223,10 +223,14 @@ class Trainer:
         processor = self.model_prep.initialize_processor()
         tokenizer.save_pretrained(training_args.output_dir)
         processor.save_pretrained(training_args.output_dir)
-        torch.save(self.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bin")
-        # self.model.save_pretrained(training_args.output_dir)
+
         progress_callback = WandbProgressResultsCallback(
             trainer, eval_dataset, tokenizer
         )
+        trainer.model.save_pretrained(training_args.output_dir)
+        torch.save(trainer.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bin")
         trainer.add_callback(progress_callback)
         trainer.train()
+
+
+
