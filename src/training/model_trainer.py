@@ -232,7 +232,9 @@ class Trainer:
         trainer.add_callback(progress_callback)
         trainer.train()
         print(trainer.model)
-        merge_lora_weights(lora_model=trainer.model, output_dir=training_args.output_dir, huggingface_write_token=self.huggingface_write_token)
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+        trainer.save_model(current_directory)
+        merge_lora_weights(lora_model=current_directory, output_dir=training_args.output_dir, huggingface_write_token=self.huggingface_write_token)
         torch.save(trainer.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bin")
 
 
