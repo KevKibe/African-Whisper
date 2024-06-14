@@ -235,7 +235,7 @@ class Trainer:
         # current_directory = os.path.dirname(os.path.abspath(__file__))
         trainer.model.save_pretrained(training_args.output_dir)
         print("saved model")
-        merge_lora_weights(lora_model="KevinKibe/whisper-small-finetuned", output_dir=training_args.output_dir, huggingface_write_token=self.huggingface_write_token)
+        merge_lora_weights(hf_model_id="KevinKibe/whisper-small-finetuned", output_dir=training_args.output_dir, huggingface_write_token=self.huggingface_write_token)
         print("weights merged")
         torch.save(trainer.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bin")
         print("pytorch model saved")
