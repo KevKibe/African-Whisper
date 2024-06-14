@@ -233,6 +233,6 @@ class Trainer:
         trainer.train()
         print(trainer.model)
         merge_lora_weights(lora_model=trainer.model, output_dir=training_args.output_dir, huggingface_write_token=self.huggingface_write_token)
-        trainer.model.save_pretrained(training_args.output_dir)
+        torch.save(trainer.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bink")
 
 
