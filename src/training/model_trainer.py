@@ -10,6 +10,7 @@ from torch.utils.data import IterableDataset
 from transformers import TrainerCallback
 from .whisper_model_prep import WhisperModelPrep
 from typing import Dict, Any
+from .merge_lora import merge_lora_weights
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -220,13 +221,18 @@ class Trainer:
             callbacks=[ShuffleCallback()],
         )
         tokenizer = self.model_prep.initialize_tokenizer()
-        processor = self.model_prep.initialize_processor()
-        tokenizer.save_pretrained(training_args.output_dir)
-        processor.save_pretrained(training_args.output_dir)
-        torch.save(self.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bin")
+        # processor = self.model_prep.initialize_processor()
+        # tokenizer.save_pretrained(training_args.output_dir)
+        # processor.save_pretrained(training_args.output_dir)
+        # torch.save(self.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bink")
         # self.model.save_pretrained(training_args.output_dir)
         progress_callback = WandbProgressResultsCallback(
             trainer, eval_dataset, tokenizer
         )
         trainer.add_callback(progress_callback)
         trainer.train()
+        print(trainer.model)
+        merge_lora_weights(lora_model=trainer.model, output_dir=training_args.output_dir, huggingface_write_token=self.huggingface_write_token)
+        trainer.model.save_pretrained(training_args.output_dir)
+
+
