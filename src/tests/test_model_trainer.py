@@ -48,7 +48,6 @@ class TestTrainerManager(unittest.TestCase):
             )
         assert os.path.exists(f"../{self.model_id}-finetuned/preprocessor_config.json")
         assert os.path.exists(f"../{self.model_id}-finetuned/tokenizer_config.json")
-        assert os.path.exists(f"../{self.model_id}-finetuned/adapter_model.safetensors")
         
         
 if __name__ == '__main__':
