@@ -61,7 +61,7 @@ setup(
     },
     description = "A framework for fast fine-tuning and API endpoint deployment of Whisper model specifically developed to accelerate Automatic Speech Recognition(ASR) for African Languages.",
     python_requires=">=3.9",
-    install_requires = BASE_DEPS,
+    # install_requires = BASE_DEPS,
     extras_require={
         "all": ALL_DEPS,
         "training": BASE_DEPS,
