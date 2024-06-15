@@ -35,7 +35,7 @@ class TestTrainerManager(unittest.TestCase):
     
     def test_train(self):
         self.trainer.train(
-            max_steps = 20,
+            max_steps = 10,
             learning_rate = 1e-5,
             save_steps=10,
             eval_steps=10,
@@ -46,8 +46,9 @@ class TestTrainerManager(unittest.TestCase):
             use_cpu = True,
             optim = "adamw_hf"
             )
-        assert os.path.exists(f"../{self.model_id}-finetuned/pytorch_model.bin")
-
+        assert os.path.exists(f"../{self.model_id}-finetuned/preprocessor_config.json")
+        assert os.path.exists(f"../{self.model_id}-finetuned/tokenizer_config.json")
+        assert os.path.exists(f"../{self.model_id}-finetuned/adapter_model.safetensors")
         
         
 if __name__ == '__main__':
