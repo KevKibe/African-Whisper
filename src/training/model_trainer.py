@@ -219,10 +219,8 @@ class Trainer:
             tokenizer=self.feature_processor.feature_extractor,
             callbacks=[ShuffleCallback()],
         )
-        tokenizer = self.model_prep.initialize_tokenizer()
-        processor = self.model_prep.initialize_processor()
+        tokenizer = trainer.tokenizer
         tokenizer.save_pretrained(training_args.output_dir)
-        processor.save_pretrained(training_args.output_dir)
         progress_callback = WandbProgressResultsCallback(
             trainer, eval_dataset, tokenizer
         )
