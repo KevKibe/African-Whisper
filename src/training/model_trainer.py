@@ -136,7 +136,7 @@ class Trainer:
         greater_is_better: bool = False,
         push_to_hub: bool = True,
         hub_strategy: str = "checkpoint",
-        save_safetensors: bool = False,
+        save_safetensors: bool = True,
         resume_from_checkpoint: str = "last-checkpoint",
         report_to: str = "wandb",
         remove_unused_columns: bool = False,
@@ -223,12 +223,9 @@ class Trainer:
         processor = self.model_prep.initialize_processor()
         tokenizer.save_pretrained(training_args.output_dir)
         processor.save_pretrained(training_args.output_dir)
-
         progress_callback = WandbProgressResultsCallback(
             trainer, eval_dataset, tokenizer
         )
-        trainer.model.save_pretrained(training_args.output_dir)
-        torch.save(trainer.model.state_dict(), f"{training_args.output_dir}/pytorch_model.bin")
         trainer.add_callback(progress_callback)
         trainer.train()
 
