@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 BASE_DEPS = [
     "transformers==4.39.2",
     "datasets==2.19.2",
-    "librosa==0.10.1",
+    "librosa==0.10.2.post1",
     "evaluate==0.4.1",
     "jiwer==3.0.3",
     "bitsandbytes==0.42.0",
