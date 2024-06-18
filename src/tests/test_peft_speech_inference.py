@@ -16,7 +16,7 @@ class TestPeftSpeechInferenceManager(unittest.TestCase):
         This method initializes the SpeechInference instance with a model name and
         a Huggingface read token. It also sets the audio file path and task type for testing.
         """
-        self.model_name = "KevinKibe/whisper-small-ti"
+        self.model_name = "KevinKibe/whisper-tiny-finetuned"
         self.huggingface_read_token = os.environ.get("HF_READ_TOKEN")
         self.speech_inference = SpeechInference(self.model_name, self.huggingface_read_token)
         self.audio_file_path = "src/tests/samples_jfk.wav"
