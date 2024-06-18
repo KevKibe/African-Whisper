@@ -7,7 +7,7 @@ BASE_DEPS = [
     "evaluate==0.4.1",
     "jiwer==3.0.3",
     "bitsandbytes==0.42.0",
-    "accelerate==0.29.3",
+    "accelerate==0.31.0",
     "peft==0.11.1",
     "numpy==1.26.4",
     "wandb==0.16.6",
