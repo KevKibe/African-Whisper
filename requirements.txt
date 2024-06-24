@@ -3,7 +3,7 @@ transformers==4.39.2
 datasets==2.19.2
 librosa==0.10.2.post1
 evaluate==0.4.1
-jiwer==3.0.3
+jiwer==3.0.4
 bitsandbytes==0.42.0
 accelerate==0.31.0
 peft==0.11.1
