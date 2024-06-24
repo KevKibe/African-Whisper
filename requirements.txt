@@ -24,4 +24,4 @@ torchvision==0.17.2
 ctranslate2==4.1.0
 pandas==2.0.3
 fastapi==0.110.1
-uvicorn==0.29.0
+uvicorn==0.30.1
