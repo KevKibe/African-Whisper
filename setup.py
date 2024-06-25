@@ -33,7 +33,7 @@ DEPLOYMENT_DEPS = [
     "pydantic==2.7.3",
     "prometheus-client==0.20.0",
     "fastapi==0.110.1",
-    "uvicorn==0.29.0",
+    "uvicorn==0.30.1",
     "python-dotenv==1.0.1",
     "faster-whisper==1.0.0",
     "pyannote-audio==3.2.0",
