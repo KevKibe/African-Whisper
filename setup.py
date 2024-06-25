@@ -32,7 +32,7 @@ DEPLOYMENT_DEPS = [
     "transformers==4.39.1",
     "pydantic==2.7.3",
     "prometheus-client==0.20.0",
-    "fastapi==0.110.1",
+    "fastapi==0.111.0",
     "uvicorn==0.30.1",
     "python-dotenv==1.0.1",
     "faster-whisper==1.0.0",
