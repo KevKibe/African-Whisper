@@ -18,12 +18,12 @@ BASE_DEPS = [
     "keras==3.1.1",
     "scipy==1.12.0",
     "tensorflow-probability==0.24.0",
-    "faster-whisper==1.0.0",
+    "faster-whisper==1.0.3",
     "python-dotenv==1.0.1",
     "pyannote-audio==3.2.0",
     "nltk==3.8.1",
     "torchvision==0.17.2",
-    "ctranslate2==4.1.0",
+    "ctranslate2==4.3.0",
     "pandas==2.0.3",
 ]
 
@@ -35,11 +35,11 @@ DEPLOYMENT_DEPS = [
     "fastapi==0.111.0",
     "uvicorn==0.30.1",
     "python-dotenv==1.0.1",
-    "faster-whisper==1.0.0",
+    "faster-whisper==1.0.3",
     "pyannote-audio==3.2.0",
     "nltk==3.8.1",
     "torchvision==0.17.2",
-    "ctranslate2==4.1.0",
+    "ctranslate2==4.3.0",
     "pandas==2.2.1",
 ]
 ALL_DEPS = BASE_DEPS + DEPLOYMENT_DEPS
@@ -60,6 +60,8 @@ setup(
         "Source": "https://github.com/KevKibe/African-Whisper",
     },
     description = "A framework for fast fine-tuning and API endpoint deployment of Whisper model specifically developed to accelerate Automatic Speech Recognition(ASR) for African Languages.",
+    readme = "README.md",
+    license = "MIT",
     python_requires=">=3.9",
     # install_requires = BASE_DEPS,
     extras_require={
