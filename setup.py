@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 BASE_DEPS = [
-    "transformers==4.39.2",
+    "transformers==4.42.3",
     "datasets==2.19.2",
     "librosa==0.10.2.post1",
     "evaluate==0.4.1",
@@ -29,7 +29,7 @@ BASE_DEPS = [
 
 DEPLOYMENT_DEPS = [
     "torch==2.3.1",
-    "transformers==4.39.1",
+    "transformers==4.42.3",
     "pydantic==2.7.3",
     "prometheus-client==0.20.0",
     "fastapi==0.111.0",
