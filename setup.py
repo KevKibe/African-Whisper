@@ -18,12 +18,12 @@ BASE_DEPS = [
     "keras==3.1.1",
     "scipy==1.12.0",
     "tensorflow-probability==0.24.0",
-    "faster-whisper==1.0.2",
+    "faster-whisper==1.0.3",
     "python-dotenv==1.0.1",
     "pyannote-audio==3.2.0",
     "nltk==3.8.1",
     "torchvision==0.17.2",
-    "ctranslate2==4.1.0",
+    "ctranslate2==4.3.1",
     "pandas==2.0.3",
 ]
 
@@ -35,11 +35,11 @@ DEPLOYMENT_DEPS = [
     "fastapi==0.111.0",
     "uvicorn==0.30.1",
     "python-dotenv==1.0.1",
-    "faster-whisper==1.0.2",
+    "faster-whisper==1.0.3",
     "pyannote-audio==3.2.0",
     "nltk==3.8.1",
     "torchvision==0.17.2",
-    "ctranslate2==4.1.0",
+    "ctranslate2==4.3.1",
     "pandas==2.2.1",
 ]
 ALL_DEPS = BASE_DEPS + DEPLOYMENT_DEPS
