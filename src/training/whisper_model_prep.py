@@ -97,6 +97,7 @@ class WhisperModelPrep:
             )
             model.config.forced_decoder_ids = None
             model.config.suppress_tokens = []
+            model.config.use_cache = False
             model.generation_config.language = "en"
             model.generation_config.task = self.processing_task
             model = prepare_model_for_kbit_training(model)
@@ -116,6 +117,7 @@ class WhisperModelPrep:
             )
             model.config.forced_decoder_ids = None
             model.config.suppress_tokens = []
+            model.config.use_cache = False
             model.generation_config.language = "en"
             model.generation_config.task = self.processing_task
 
