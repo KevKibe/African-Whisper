@@ -63,7 +63,7 @@ setup(
     readme = "README.md",
     license = "MIT",
     python_requires=">=3.9",
-    # install_requires = BASE_DEPS,
+    install_requires = BASE_DEPS,
     extras_require={
         "all": ALL_DEPS,
         "training": BASE_DEPS,
