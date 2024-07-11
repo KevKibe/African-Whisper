@@ -196,13 +196,18 @@ python -m training.main \
     --train_batch_size TRAINING_BATCH_SIZE \
     --eval_batch_size EVALUATION_BATCH_SIZE \
     --save_eval_logging_steps SAVE_EVAL_AND_LOGGING_STEPS \
-
-Flags:
-# --use_peft: Optional flag to use PEFT finetuning. leave it out to perform full finetuning
 ```
+- Run `python -m training.main --help` to see the flag descriptions. 
 - Find a description of these commands [here](https://github.com/KevKibe/African-Whisper/blob/master/DOCS/PARAMETERS.md).
 
-## Step 3: Get Inference
+
+## Step 3: Merge the Model Weights(if PEFT Finetuned)
+
+```bash
+python -m training.merge_lora --hf_model_id MODEL-ID-ON-HF --huggingface_write_token HF-WRITE_TOKEN
+```
+
+## Step 4: Get Inference
 
 ### Install ffmpeg
 - To get inference from your fine-tuned model, follow these steps:
@@ -239,14 +244,9 @@ HUGGINGFACE_READ_TOKEN = "huggingface-read-token"
 - To perform transcriptions and translations:
 
 ```bash
-# PEFT FINETUNED MODELS
-python -m deployment.peft_speech_inference_cli --audio_file FILENAME --task TASK 
 
-# FULLY FINETUNED MODELS
 python -m deployment.speech_inference_cli --audio_file FILENAME --task TASK --perform_diarization --perform_alignment
 
-Flags:
-# --perform_diarization: Optional flag to perform speaker diarization.
-# --perform_alignment: Optional flag to perform alignment.
-# --alignment_model: Optional flag to add custom alignment model/ if alignment model is not in source code.
 ```
+- Run `python -m training.main --help` to see the flag descriptions. 
+
