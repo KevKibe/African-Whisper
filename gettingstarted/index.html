@@ -786,13 +786,14 @@
 <a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">    </span>--train_batch_size<span class="w"> </span>TRAINING_BATCH_SIZE<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="w">    </span>--eval_batch_size<span class="w"> </span>EVALUATION_BATCH_SIZE<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="w">    </span>--save_eval_logging_steps<span class="w"> </span>SAVE_EVAL_AND_LOGGING_STEPS<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>
-<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>Flags:
-<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="c1"># --use_peft: Optional flag to use PEFT finetuning. leave it out to perform full finetuning</span>
 </code></pre></div></li>
+<li>Run <code>python -m training.main --help</code> to see the flag descriptions. </li>
 <li>Find a description of these commands <a href="https://github.com/KevKibe/African-Whisper/blob/master/DOCS/PARAMETERS.md">here</a>.</li>
 </ul>
-<h2 id="step_3_get_inference">Step 3: Get Inference<a class="headerlink" href="#step_3_get_inference" title="Permanent link">&para;</a></h2>
+<h2 id="step_3_merge_the_model_weightsif_peft_finetuned">Step 3: Merge the Model Weights(if PEFT Finetuned)<a class="headerlink" href="#step_3_merge_the_model_weightsif_peft_finetuned" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>python<span class="w"> </span>-m<span class="w"> </span>training.merge_lora<span class="w"> </span>--hf_model_id<span class="w"> </span>MODEL-ID-ON-HF<span class="w"> </span>--huggingface_write_token<span class="w"> </span>HF-WRITE_TOKEN
+</code></pre></div>
+<h2 id="step_4_get_inference">Step 4: Get Inference<a class="headerlink" href="#step_4_get_inference" title="Permanent link">&para;</a></h2>
 <h3 id="install_ffmpeg">Install ffmpeg<a class="headerlink" href="#install_ffmpeg" title="Permanent link">&para;</a></h3>
 <ul>
 <li>
@@ -802,42 +803,34 @@
 <p>Ensure that ffmpeg is installed by running the following commands:</p>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># on Ubuntu or Debian</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ffmpeg
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># on Arch Linux</span>
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>sudo<span class="w"> </span>pacman<span class="w"> </span>-S<span class="w"> </span>ffmpeg
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
-<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="c1"># on MacOS using Homebrew (https://brew.sh/)</span>
-<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>brew<span class="w"> </span>install<span class="w"> </span>ffmpeg
-<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
-<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="c1"># on Windows using Chocolatey (https://chocolatey.org/)</span>
-<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>choco<span class="w"> </span>install<span class="w"> </span>ffmpeg
-<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>
-<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="c1"># on Windows using Scoop (https://scoop.sh/)</span>
-<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>scoop<span class="w"> </span>install<span class="w"> </span>ffmpeg
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># on Ubuntu or Debian</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ffmpeg
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1"># on Arch Linux</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>sudo<span class="w"> </span>pacman<span class="w"> </span>-S<span class="w"> </span>ffmpeg
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="c1"># on MacOS using Homebrew (https://brew.sh/)</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>brew<span class="w"> </span>install<span class="w"> </span>ffmpeg
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="c1"># on Windows using Chocolatey (https://chocolatey.org/)</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>choco<span class="w"> </span>install<span class="w"> </span>ffmpeg
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="c1"># on Windows using Scoop (https://scoop.sh/)</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>scoop<span class="w"> </span>install<span class="w"> </span>ffmpeg
 </code></pre></div>
 <h3 id="to_get_inference_on_cli_locally">To get inference on CLI Locally<a class="headerlink" href="#to_get_inference_on_cli_locally" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nb">cd</span><span class="w"> </span>src/deployment
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nb">cd</span><span class="w"> </span>src/deployment
 </code></pre></div>
 - Create a <code>.env</code> file using <code>nano .env</code> command and add these keys and save the file.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;your-finetuned-model&quot;</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="n">HUGGINGFACE_READ_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;huggingface-read-token&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;your-finetuned-model&quot;</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">HUGGINGFACE_READ_TOKEN</span> <span class="o">=</span> <span class="s2">&quot;huggingface-read-token&quot;</span>
 </code></pre></div></p>
 <ul>
 <li>To perform transcriptions and translations:</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># PEFT FINETUNED MODELS</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>python<span class="w"> </span>-m<span class="w"> </span>deployment.peft_speech_inference_cli<span class="w"> </span>--audio_file<span class="w"> </span>FILENAME<span class="w"> </span>--task<span class="w"> </span>TASK<span class="w"> </span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># FULLY FINETUNED MODELS</span>
-<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>python<span class="w"> </span>-m<span class="w"> </span>deployment.speech_inference_cli<span class="w"> </span>--audio_file<span class="w"> </span>FILENAME<span class="w"> </span>--task<span class="w"> </span>TASK<span class="w"> </span>--perform_diarization<span class="w"> </span>--perform_alignment
-<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
-<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>Flags:
-<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="c1"># --perform_diarization: Optional flag to perform speaker diarization.</span>
-<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="c1"># --perform_alignment: Optional flag to perform alignment.</span>
-<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="c1"># --alignment_model: Optional flag to add custom alignment model/ if alignment model is not in source code.</span>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>python<span class="w"> </span>-m<span class="w"> </span>deployment.speech_inference_cli<span class="w"> </span>--audio_file<span class="w"> </span>FILENAME<span class="w"> </span>--task<span class="w"> </span>TASK<span class="w"> </span>--perform_diarization<span class="w"> </span>--perform_alignment
 </code></pre></div>
+- Run <code>python -m training.main --help</code> to see the flag descriptions. </p>
 
 
 
