@@ -4,7 +4,7 @@ BASE_DEPS = [
     "transformers==4.42.3",
     "datasets==2.19.2",
     "librosa==0.10.2.post1",
-    "evaluate==0.4.1",
+    "evaluate==0.4.2",
     "jiwer==3.0.4",
     "bitsandbytes==0.42.0",
     "accelerate==0.31.0",
