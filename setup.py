@@ -46,7 +46,7 @@ ALL_DEPS = BASE_DEPS + DEPLOYMENT_DEPS
 
 setup(
     name="africanwhisper",
-    version="0.9.9",
+    version="0.9.10",
     author="Kevin Kibe",
     author_email="keviinkibe@gmail.com",
     package_dir={"": "src"},
