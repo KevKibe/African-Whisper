@@ -1,4 +1,4 @@
-pip==24.0
+pip==24.1.2
 transformers==4.39.2
 datasets==2.19.2
 librosa==0.10.2.post1
