@@ -9,7 +9,7 @@ BASE_DEPS = [
     "bitsandbytes==0.42.0",
     "accelerate==0.31.0",
     "peft==0.11.1",
-    "numpy==1.26.4",
+    "numpy==2.0.1",
     "wandb==0.17.4",
     "holoviews==1.18.3",
     "panel==1.3.8",
