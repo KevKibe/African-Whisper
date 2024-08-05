@@ -15,7 +15,7 @@ BASE_DEPS = [
     "panel==1.3.8",
     "tf-keras==2.16.0",
     "tensorflow==2.16.1",
-    "keras==3.1.1",
+    "keras==3.4.1",
     "scipy==1.12.0",
     "tensorflow-probability==0.24.0",
     "faster-whisper==1.0.3",
