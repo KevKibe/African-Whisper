@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 #MODIFY ACCORDINGLY, WHETEHR USING PEFT MODEL ENDPOINT OR FULL FINETUNED METHOD
-CMD ["python", "main.py"] 
+CMD ["python", "app.py"]
