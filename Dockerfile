@@ -5,13 +5,11 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     pip install --upgrade pip
 
-    
-WORKDIR /app
+WORKDIR /src
 
-COPY requirements.txt .
+COPY src/deployment/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY src/ .
 
-#MODIFY ACCORDINGLY, WHETEHR USING PEFT MODEL ENDPOINT OR FULL FINETUNED METHOD
-CMD ["python", "app.py"]
+CMD ["python3", "-m", "deployment.app"]
