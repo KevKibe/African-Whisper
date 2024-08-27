@@ -52,7 +52,9 @@ class TestAudioDataProcessor(unittest.TestCase):
 
         # Act & Assert
         for split, samples in sample_dataset.items():
+            print("split:", split)
             for sample in samples:
+                print("sample:", sample)
                 resampled_data = self.processor.resampled_dataset(sample)
                 self.assertIn("input_features", resampled_data)
                 self.assertIn("labels", resampled_data)
