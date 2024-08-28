@@ -46,14 +46,13 @@ class Trainer:
         Initializes the Trainer with the necessary components and configurations for training.
 
         Parameters:
-            huggingface_push_token (str): Hugging Face API token for authenticated push access.
+            huggingface_write_token (str): Hugging Face API token for authenticated push access.
             model_id (str): Identifier for the pre-trained model.
             dataset (DatasetDict): The dataset split into 'train' and 'test'.
             model (PreTrainedModel): The model instance to be trained.
             feature_processor (Any): The audio feature processor.
             feature_extractor (Any): The audio feature extractor.
             tokenizer (PreTrainedTokenizer): The tokenizer for text data.
-            language_abbr (str): Abbreviation for the dataset's language.
             processing_task (str): task for the Whisper model to execute. Translate or Transcribe
         """
         os.environ["WANDB_API_KEY"] = wandb_api_key

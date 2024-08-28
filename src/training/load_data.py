@@ -31,7 +31,8 @@ class Dataset:
         """Load datasets for each language abbreviation and concatenate train/test splits.
 
         Parameters:
-            num_samples(int): Number of training samples to load from each dataset eg if num_samples = 100, 200 samples, 100 from each dataset will be loaded.   
+            train_num_samples(int): Number of training samples to load from each dataset e.g. if num_samples = 100, 200 samples, 100 from each dataset will be loaded.
+            test_num_samples(int): Number of testing samples to load from each dataset e.g. if num_samples = 100, 200 samples, 100 from each dataset will be loaded.
             
         Returns:
             dict: A dictionary containing concatenated train and test splits for each language.
@@ -50,8 +51,9 @@ class Dataset:
             else:
                 data["test"] = test_split
         return data
-    
-    def count_examples(self, dataset: IterableDataset) -> int:
+
+    @staticmethod
+    def count_examples( dataset: IterableDataset) -> int:
         """
         Count the number of examples in the dataset.
 

@@ -101,7 +101,7 @@ if __name__ == "__main__":
         processing_task=args.processing_task,
         use_peft=args.use_peft,
     )
-    tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
+    feature_extractor, tokenizer, feature_processor, model = process.prepare_model()
 
     dataset = process.load_dataset(feature_extractor, 
                                    tokenizer, 

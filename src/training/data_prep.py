@@ -8,7 +8,7 @@ from .load_data import Dataset
 from .whisper_model_prep import WhisperModelPrep
 from .audio_data_processor import AudioDataProcessor
 from datasets import DatasetDict
-from typing import Tuple
+from typing import Tuple, List
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -23,7 +23,7 @@ class DataPrep:
         self,
         huggingface_read_token: str,
         dataset_name: str,
-        language_abbr: str,
+        language_abbr: List[str],
         model_id: str,
         processing_task: str,
         use_peft: bool,
@@ -32,7 +32,7 @@ class DataPrep:
         Initializes the Trainer with the necessary configuration and loads the evaluation metric.
 
         Parameters:
-            huggingface_token (str): Hugging Face API token for authenticated access.
+            huggingface_read_token (str): Hugging Face API token for authenticated access.
             dataset_name (str): Name of the dataset to be downloaded from Hugging Face.
             language_abbr (str): Language abbreviation for the dataset.
             model_id (str): Model ID for the model to be used in training.
@@ -70,15 +70,15 @@ class DataPrep:
                respective class, ready for use in the training pipeline.
         """
 
-        self.tokenizer = self.model_prep.initialize_tokenizer()
-        self.feature_extractor = self.model_prep.initialize_feature_extractor()
-        self.feature_processor = self.model_prep.initialize_processor()
-        self.model = self.model_prep.initialize_model()
+        tokenizer = self.model_prep.initialize_tokenizer()
+        feature_extractor = self.model_prep.initialize_feature_extractor()
+        feature_processor = self.model_prep.initialize_processor()
+        model = self.model_prep.initialize_model()
         return (
-            self.tokenizer,
-            self.feature_extractor,
-            self.feature_processor,
-            self.model,
+            feature_extractor,
+            tokenizer,
+            feature_processor,
+            model,
         )
 
     def load_dataset(
