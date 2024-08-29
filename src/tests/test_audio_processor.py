@@ -17,11 +17,16 @@ class TestAudioDataProcessor(unittest.TestCase):
         """
         # Load dataset
         self.data_loader = Dataset(
-            huggingface_token = os.environ.get("HF_READ_TOKEN"),
+            huggingface_token = "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",
             dataset_name="mozilla-foundation/common_voice_16_1",
             language_abbr=["yi", "ti"]
         )
         self.dataset = self.data_loader.load_dataset(train_num_samples=10, test_num_samples=10)
+        has_train_sample = any(True for _ in self.dataset["train"])
+        assert has_train_sample, "Train dataset is empty!"
+
+        has_test_sample = any(True for _ in self.dataset["test"])
+        assert has_test_sample, "Test dataset is empty!"
 
         # Initialize model preparation
         self.model_prep = WhisperModelPrep(
