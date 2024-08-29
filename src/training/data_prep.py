@@ -34,7 +34,7 @@ class DataPrep:
         Parameters:
             huggingface_read_token (str): Hugging Face API token for authenticated access.
             dataset_name (str): Name of the dataset to be downloaded from Hugging Face.
-            language_abbr (str): Language abbreviation for the dataset.
+            language_abbr (List[str]): Language abbreviation for the dataset.
             model_id (str): Model ID for the model to be used in training.
             processing_task (str): The processing task to be performed (e.g., "transcribe").
         """
