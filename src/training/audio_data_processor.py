@@ -45,7 +45,7 @@ class AudioDataProcessor:
 
         audio_features = self.feature_extractor(resampled_audio, sampling_rate=16000).input_features[0]
 
-        tokenized_sentence = self.tokenizer(sample["sentence"]).input_ids
+        tokenized_sentence = self.tokenizer(str(sample["sentence"])).input_ids
 
         sample["input_features"] = audio_features
         sample["labels"] = tokenized_sentence
