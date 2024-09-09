@@ -45,6 +45,10 @@ class AudioDataProcessor:
 
         audio_features = self.feature_extractor(resampled_audio, sampling_rate=16000).input_features[0]
 
+        sentence = sample.get("sentence", "")
+        if not isinstance(sentence, str):
+            raise ValueError(f"Expected 'sentence' to be a string but got {type(sentence)}")
+
         tokenized_sentence = self.tokenizer(str(sample["sentence"])).input_ids
 
         sample["input_features"] = audio_features
