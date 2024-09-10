@@ -1,18 +1,17 @@
-make pip:
+pip:
 	pip install -r requirements.txt
 
 pip-dev:
 	pip install mkdocs-material mkdocs-glightbox mkdocs-material[imaging] && export DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib
 
-make env:
+env:
 	python3 -m venv venv && source venv/bin/activate
 
-make test:
+test:
 	pytest
 
-make up:
-	pip install -r requirements.txt
-	cd src && python -m deployment.app
+up:
+	cd src/deployment && pip install -r requirements.txt && cd .. && python -m deployment.app
 
-make deploy:
+deploy:
 	docker-compose -f src/deployment/docker-compose.yaml up --build

@@ -21,11 +21,7 @@ HUGGINGFACE_READ_TOKEN = "huggingface-read-token"
 
 - Run this command to launch the endpoint:
 ```bash
-# If the model is peft finetuned
-python3 -m deployment.main
-
-# If the model is fully finetuned
-python3 -m deployment.app
+make up
 ```
 
 - Test it out by accessing the Swagger UI at `http://localhost:8000/docs` and uploading either an .mp3 file or a .wav file and a task either `transcribe` or `translate`. 
@@ -45,29 +41,10 @@ python3 -m deployment.app
    - `MODEL_NAME`: Name of the fine-tuned model to use in your Hugging Face Hub repository.
    - `HUGGINGFACE_READ_TOKEN`: Your Hugging Face authentication token for read access.
 
-2. Modify the `CMD` command in`src/deployment/Dockerfile` file according to whether your finetuned model is PEFT finetuned or fully finetuned.
-    - `app.py` for fully finetuned models, `main.py` for peft-finetuned models.
-    - update `src/deployment/.dockerignore` accordingly.
-
-### Run Application
-
-3. Run the application locally by executing the following command:
-
-    ```bash
-    docker compose up
-    ```
-
-### Test
-
-4. Test the application by accessing the Swagger UI at `http://localhost:8000/docs`. Upload an `.mp3` file and specify a task as either `transcribe` or `translate`. 
-
-### Set up monitoring
-
-5. Visualize Prometheus graphs in Grafana by logging in to Grafana at `http://localhost:3000`. You can access Prometheus graphs at `http://localhost:9090`.
-
-
-## To dockerize and semd to a docker registry
- 
-- Modify the `CMD` command in `src/deployment/Dockerfile` file according to whether your finetuned model is PEFT finetuned or fully finetuned.
- - `app.py` for fully finetuned models, `main.py` for peft-finetuned models.
- - update `src/deployment/.dockerignore` accordingly.
+2. Top deploy a docker container running the application and monitoring endpoints.
+   ```bash
+   make deploy
+   ```
+- `http://localhost:8000` - Application. `/docs` for Swagger UI.
+- `http://localhost:3000` - Grafana dashboard.
+- `http://localhost:9090` - Prometheus dashboard
