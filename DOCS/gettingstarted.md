@@ -37,7 +37,6 @@ huggingface_read_token = " "
 huggingface_write_token = " "
 dataset_name = "mozilla-foundation/common_voice_16_1" 
 language_abbr= [ ]                                    # Example `["ti", "yi"]`. see abbreviations here https://huggingface.co/datasets/mozilla-foundation/common_voice_16_1. 
-                                                      # Note: choose a small dataset so as to not run out of memory,
 model_id= "model-id"                                  # Example openai/whisper-small, openai/whisper-medium
 processing_task= "translate"                          # translate or transcribe
 wandb_api_key = " "     
