@@ -18,7 +18,14 @@ class TestTrainerManager(unittest.TestCase):
             use_peft=False,
         )
         tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
-        dataset = process.load_dataset(feature_extractor, tokenizer, feature_processor)
+        dataset = process.load_dataset(feature_extractor, tokenizer, feature_processor, train_num_samples=10, test_num_samples=10)
+
+        has_train_sample = any(True for _ in dataset["train"])
+        assert has_train_sample, "Train dataset is empty!"
+
+        has_test_sample = any(True for _ in dataset["test"])
+        assert has_test_sample, "Test dataset is empty!"
+
         self.trainer = Trainer(
             huggingface_write_token= os.environ.get("HF_WRITE_TOKEN"),
             model_id=self.model_id,
@@ -34,6 +41,11 @@ class TestTrainerManager(unittest.TestCase):
         return super().setUp()
     
     def test_train(self):
+        # print(self.trainer.dataset['train'])
+        # data_loader = self.trainer.get_train_dataloader()
+        # for batch in data_loader:
+        #     print(batch)
+        #     assert batch is not None, "Empty batch found!"
         self.trainer.train(
             max_steps = 10,
             learning_rate = 1e-5,
@@ -48,7 +60,7 @@ class TestTrainerManager(unittest.TestCase):
             )
         assert os.path.exists(f"../{self.model_id}-finetuned/preprocessor_config.json")
         assert os.path.exists(f"../{self.model_id}-finetuned/tokenizer_config.json")
-        
+
         
 if __name__ == '__main__':
     unittest.main()
