@@ -3,8 +3,8 @@ services:
   speech-inference:
     container_name: speech-inference
     build:
-      context: .
-      dockerfile: ./Dockerfile
+      context: ../../
+      dockerfile: Dockerfile
     #IF THE IMAGE IS READY COMMENT OUT THE BUILD SPECIFICATIONS
     # image: DOCKER-USERNAME/DOCKER-IMAGE:TAG
     restart: 'on-failure'

@@ -6,12 +6,11 @@ RUN apt-get update && \
     pip install --upgrade pip
 
     
-WORKDIR /app
+WORKDIR /src
 
-COPY requirements.txt .
+COPY src/deployment/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY src/ .
 
-#MODIFY ACCORDINGLY, WHETEHR USING PEFT MODEL ENDPOINT OR FULL FINETUNED METHOD
-CMD ["python", "main.py"] 
+CMD ["python3", "-m", "deployment.app"]

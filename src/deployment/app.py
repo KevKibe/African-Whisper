@@ -12,7 +12,6 @@ from deployment.speech_inference import SpeechTranscriptionPipeline, ModelOptimi
 load_dotenv()
 
 app = FastAPI()
-# FOR FULLY FINETUNED MODELS
 
 request_time = Histogram('request_processing_seconds', 'Time spent processing request',
                          ['endpoint'])
