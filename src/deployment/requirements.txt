@@ -11,3 +11,4 @@ nltk==3.8.1
 torchvision==0.17.2
 ctranslate2==4.1.0
 pandas==2.2.1
+python-multipart==0.0.9
