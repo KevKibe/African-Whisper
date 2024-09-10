@@ -32,7 +32,7 @@ class DataPrep:
         Initializes the Trainer with the necessary configuration and loads the evaluation metric.
 
         Parameters:
-            huggingface_token (str): Hugging Face API token for authenticated access.
+            huggingface_read_token (str): Hugging Face API token for authenticated access.
             dataset_name (str): Name of the dataset to be downloaded from Hugging Face.
             language_abbr (str): Language abbreviation for the dataset.
             model_id (str): Model ID for the model to be used in training.
@@ -56,8 +56,8 @@ class DataPrep:
     def prepare_model(
         self,
     ) -> Tuple[
-        WhisperFeatureExtractor,
         WhisperTokenizer,
+        WhisperFeatureExtractor,
         WhisperProcessor,
         WhisperForConditionalGeneration,
     ]:

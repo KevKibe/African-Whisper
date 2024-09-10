@@ -27,6 +27,11 @@ class TestDatasetManager(unittest.TestCase):
         """Test the load_dataset method."""
         tokenizer, feature_extractor, processor, model = self.data_prep.prepare_model()
         dataset = self.data_prep.load_dataset(feature_extractor, tokenizer, processor, train_num_samples = 10, test_num_samples=10)
+        has_train_sample = any(True for _ in dataset["train"])
+        assert has_train_sample, "Train dataset is empty!"
+
+        has_test_sample = any(True for _ in dataset["test"])
+        assert has_test_sample, "Test dataset is empty!"
         self.assertIsInstance(dataset, dict)
         self.assertIsInstance(dataset["train"], IterableDataset)
         self.assertIsInstance(dataset["test"], IterableDataset)

@@ -19,7 +19,10 @@ class TestDatasetManager(unittest.TestCase):
         """Test loading the dataset and verifying its contents."""
         # Act
         data = self.dataset_manager.load_dataset(train_num_samples=10, test_num_samples = 10)
-
+        has_train_sample = any(True for _ in data["train"])
+        assert has_train_sample, "Train dataset is empty!"
+        has_test_sample = any(True for _ in data["test"])
+        assert has_test_sample, "Test dataset is empty!"
         # Assert
         self.assertIsNotNone(data, "The loaded dataset should not be None.")
         self.assertIn("train", data, "The dataset should contain a 'train' split.")
