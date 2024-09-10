@@ -16,7 +16,7 @@ BASE_DEPS = [
     "wandb==0.17.4",
     "holoviews==1.18.3",
     "panel==1.3.8",
-    "tf-keras==2.16.0",
+    "tf-keras==2.17.0",
     "tensorflow==2.16.1",
     "keras==3.1.1",
     "scipy==1.12.0",
