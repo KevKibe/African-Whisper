@@ -113,12 +113,13 @@ class WhisperModelPrep:
         else:
             print("PEFT optimization is not enabled.")
             model = WhisperForConditionalGeneration.from_pretrained(
-                self.model_id
+                self.model_id,
+                low_cpu_mem_usage = True
             )
             model.config.forced_decoder_ids = None
             model.config.suppress_tokens = []
             model.config.use_cache = False
             model.generation_config.language = "en"
             model.generation_config.task = self.processing_task
-
+            model.to("cuda")
         return model
