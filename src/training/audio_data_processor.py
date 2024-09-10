@@ -1,5 +1,5 @@
 from datasets import DatasetDict
-from transformers import PreTrainedTokenizer, PreTrainedFeatureExtractor, Processor
+from transformers import PreTrainedTokenizer
 from typing import Dict, Any
 import librosa
 import warnings
@@ -13,9 +13,9 @@ class AudioDataProcessor:
     def __init__(
             self,
             dataset: DatasetDict,
-            feature_extractor: PreTrainedFeatureExtractor,
+            feature_extractor,
             tokenizer: PreTrainedTokenizer,
-            feature_processor: Processor
+            feature_processor
     ):
         """
         Initializes the DatasetProcessor with the dataset, feature extractor, and tokenizer.
