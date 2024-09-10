@@ -1,5 +1,8 @@
 from setuptools import find_packages, setup
 
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
 BASE_DEPS = [
     "transformers==4.42.3",
     "datasets==2.19.2",
@@ -61,9 +64,11 @@ setup(
     },
     description = "A framework for fast fine-tuning and API endpoint deployment of Whisper model specifically developed to accelerate Automatic Speech Recognition(ASR) for African Languages.",
     readme = "README.md",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     license = "MIT",
     python_requires=">=3.9",
-    # install_requires = BASE_DEPS,
+    install_requires = BASE_DEPS,
     extras_require={
         "all": ALL_DEPS,
         "training": BASE_DEPS,
