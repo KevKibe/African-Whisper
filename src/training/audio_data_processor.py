@@ -1,5 +1,5 @@
 from datasets import DatasetDict
-from transformers import PreTrainedTokenizer
+from transformers import PreTrainedTokenizer, PreTrainedFeatureExtractor, Processor
 from typing import Dict, Any
 import librosa
 import warnings
@@ -8,11 +8,14 @@ warnings.filterwarnings("ignore")
 class AudioDataProcessor:
     """
     Processes audio datasets for use in whisper models, including cleaning and resampling.
-
     """
 
     def __init__(
-        self, dataset: DatasetDict, feature_extractor, tokenizer: PreTrainedTokenizer, feature_processor
+            self,
+            dataset: DatasetDict,
+            feature_extractor: PreTrainedFeatureExtractor,
+            tokenizer: PreTrainedTokenizer,
+            feature_processor: Processor
     ):
         """
         Initializes the DatasetProcessor with the dataset, feature extractor, and tokenizer.
@@ -21,12 +24,12 @@ class AudioDataProcessor:
             dataset (DatasetDict): The dataset to process.
             feature_extractor (PreTrainedFeatureExtractor): The feature extractor for audio data.
             tokenizer (PreTrainedTokenizer): The tokenizer for text data.
+            feature_processor (Processor): A processor combining both feature extraction and tokenization.
         """
         self.dataset = dataset
         self.feature_extractor = feature_extractor
         self.tokenizer = tokenizer
         self.processor = feature_processor
-
 
     def resampled_dataset(self, sample: Dict[str, Any]) -> DatasetDict:
         """
@@ -42,14 +45,11 @@ class AudioDataProcessor:
 
         sample["audio"]["array"] = resampled_audio
         sample["audio"]["sampling_rate"] = 16000
-
+        print(resampled_audio)
+        print(type(resampled_audio))
         audio_features = self.feature_extractor(resampled_audio, sampling_rate=16000).input_features[0]
 
-        sentence = sample.get("sentence", "")
-        if not isinstance(sentence, str):
-            raise ValueError(f"Expected 'sentence' to be a string but got {type(sentence)}")
-
-        tokenized_sentence = self.tokenizer(str(sample["sentence"])).input_ids
+        tokenized_sentence = self.tokenizer(sample["sentence"]).input_ids
 
         sample["input_features"] = audio_features
         sample["labels"] = tokenized_sentence
