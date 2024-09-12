@@ -1,4 +1,3 @@
-from datasets import DatasetDict
 from transformers import PreTrainedTokenizer
 from typing import Dict, Any
 import librosa
@@ -18,7 +17,7 @@ class AudioDataProcessor:
         Initializes the DatasetProcessor with the dataset, feature extractor, and tokenizer.
 
         Parameters:
-            dataset (DatasetDict): The dataset to process.
+            dataset (dict): The dataset to process.
             feature_extractor (PreTrainedFeatureExtractor): The feature extractor for audio data.
             tokenizer (PreTrainedTokenizer): The tokenizer for text data.
         """

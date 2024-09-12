@@ -3,7 +3,6 @@ from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer, WhisperForCon
 from .collator import DataCollatorSpeechSeq2SeqWithPadding
 import evaluate
 import torch
-from datasets import DatasetDict
 from .wandb_callback import WandbProgressResultsCallback
 from transformers.trainer_pt_utils import IterableDatasetShard
 from torch.utils.data import IterableDataset
@@ -48,7 +47,7 @@ class Trainer:
         Parameters:
             huggingface_token (str): Hugging Face API token for authenticated push access.
             model_id (str): Identifier for the pre-trained model.
-            dataset (DatasetDict): The dataset split into 'train' and 'test'.
+            dataset (dict): The dataset split into 'train' and 'test'.
             model (PreTrainedModel): The model instance to be trained.
             feature_processor (Any): The audio feature processor.
             feature_extractor (Any): The audio feature extractor.
