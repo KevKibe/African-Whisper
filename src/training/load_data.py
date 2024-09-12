@@ -27,11 +27,16 @@ class Dataset:
         self.dataset_name = dataset_name
         self.language_abbr = language_abbr
     
-    def load_dataset(self, train_num_samples: int = None, test_num_samples: int = None):
+    def load_dataset(self, train_num_samples: int = None, test_num_samples: int = None) -> dict:
         """Load datasets for each language abbreviation and concatenate train/test splits.
 
         Parameters:
-            num_samples(int): Number of training samples to load from each dataset eg if num_samples = 100, 200 samples, 100 from each dataset will be loaded.   
+        train_num_samples (int, optional): The maximum number of training samples to load from each dataset.
+            For example, if train_num_samples = 100, then 100 samples will be loaded from each dataset's training split.
+            If None, the entire training split will be loaded.
+        test_num_samples (int, optional): The maximum number of test samples to load from each dataset.
+            For example, if test_num_samples = 100, then 100 samples will be loaded from each dataset's test split.
+            If None, the entire test split will be loaded.
             
         Returns:
             dict: A dictionary containing concatenated train and test splits for each language.

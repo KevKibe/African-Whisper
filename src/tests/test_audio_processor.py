@@ -17,7 +17,7 @@ class TestAudioDataProcessor(unittest.TestCase):
         """
         # Load dataset
         self.data_loader = Dataset(
-            huggingface_token = os.environ.get("HF_READ_TOKEN"),
+            huggingface_token = os.environ.get("HF_WRITE_TOKEN"),
             dataset_name="mozilla-foundation/common_voice_16_1",
             language_abbr=["yi", "ti"]
         )

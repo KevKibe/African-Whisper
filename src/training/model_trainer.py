@@ -1,5 +1,5 @@
 import os
-from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer
+from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer, WhisperForConditionalGeneration
 from .collator import DataCollatorSpeechSeq2SeqWithPadding
 import evaluate
 import torch
@@ -31,10 +31,10 @@ class Trainer:
 
     def __init__(
         self,
-        huggingface_write_token: str,
+        huggingface_token: str,
         model_id: str,
-        dataset: DatasetDict,
-        model: str,
+        dataset: dict,
+        model: WhisperForConditionalGeneration,
         feature_processor,
         feature_extractor,
         tokenizer,
@@ -46,14 +46,13 @@ class Trainer:
         Initializes the Trainer with the necessary components and configurations for training.
 
         Parameters:
-            huggingface_push_token (str): Hugging Face API token for authenticated push access.
+            huggingface_token (str): Hugging Face API token for authenticated push access.
             model_id (str): Identifier for the pre-trained model.
             dataset (DatasetDict): The dataset split into 'train' and 'test'.
             model (PreTrainedModel): The model instance to be trained.
             feature_processor (Any): The audio feature processor.
             feature_extractor (Any): The audio feature extractor.
             tokenizer (PreTrainedTokenizer): The tokenizer for text data.
-            language_abbr (str): Abbreviation for the dataset's language.
             processing_task (str): task for the Whisper model to execute. Translate or Transcribe
         """
         os.environ["WANDB_API_KEY"] = wandb_api_key
@@ -63,7 +62,7 @@ class Trainer:
         self.tokenizer = tokenizer
         self.feature_processor = feature_processor
         self.feature_extractor = feature_extractor
-        self.huggingface_write_token = huggingface_write_token
+        self.huggingface_token = huggingface_token
         self.use_peft = use_peft
         self.model_prep = WhisperModelPrep(
             self.model_id,
@@ -197,7 +196,7 @@ class Trainer:
             metric_for_best_model=metric_for_best_model,
             greater_is_better=greater_is_better,
             push_to_hub=push_to_hub,
-            hub_token=self.huggingface_write_token,
+            hub_token=self.huggingface_token,
             hub_strategy = hub_strategy,
             save_safetensors = save_safetensors,
             resume_from_checkpoint  = resume_from_checkpoint,

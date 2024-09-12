@@ -8,7 +8,7 @@ from .load_data import Dataset
 from .whisper_model_prep import WhisperModelPrep
 from .audio_data_processor import AudioDataProcessor
 from datasets import DatasetDict
-from typing import Tuple
+from typing import Tuple, List
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -21,9 +21,9 @@ class DataPrep:
 
     def __init__(
         self,
-        huggingface_read_token: str,
+        huggingface_token: str,
         dataset_name: str,
-        language_abbr: str,
+        language_abbr: List[str],
         model_id: str,
         processing_task: str,
         use_peft: bool,
@@ -32,13 +32,13 @@ class DataPrep:
         Initializes the Trainer with the necessary configuration and loads the evaluation metric.
 
         Parameters:
-            huggingface_read_token (str): Hugging Face API token for authenticated access.
+            huggingface_token (str): Hugging Face API token for authenticated access.
             dataset_name (str): Name of the dataset to be downloaded from Hugging Face.
             language_abbr (str): Language abbreviation for the dataset.
             model_id (str): Model ID for the model to be used in training.
             processing_task (str): The processing task to be performed (e.g., "transcribe").
         """
-        self.huggingface_read_token = huggingface_read_token
+        self.huggingface_token = huggingface_token
         self.dataset_name = dataset_name
         self.language_abbr = language_abbr
         self.model_id = model_id
@@ -50,7 +50,7 @@ class DataPrep:
             self.use_peft,
         )
         self.data_loader = Dataset(
-            self.huggingface_read_token, self.dataset_name, self.language_abbr
+            self.huggingface_token, self.dataset_name, self.language_abbr
         )
 
     def prepare_model(
@@ -87,7 +87,7 @@ class DataPrep:
         tokenizer: WhisperTokenizer, 
         processor: WhisperProcessor,
         train_num_samples: int = None,
-        test_num_samples: int = None) -> DatasetDict:
+        test_num_samples: int = None) -> dict:
         """
         Retrieves and preprocesses the specified dataset for model training and evaluation.
 
@@ -100,7 +100,7 @@ class DataPrep:
         num_samples(int): Number of training samples to load from each dataset eg if num_samples = 100, 200 samples, 100 from each dataset will be loaded. 
 
         Returns:
-            DatasetDict: A dictionary containing the preprocessed 'train' and 'test' splits of the dataset,
+            dict: A dictionary containing the preprocessed 'train' and 'test' splits of the dataset,
                         ready for use in model training and evaluation. Each split has been cleaned and
                         processed to include only the necessary features for model input.
         """
