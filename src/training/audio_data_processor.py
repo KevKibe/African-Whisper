@@ -1,4 +1,3 @@
-from datasets import DatasetDict
 from transformers import PreTrainedTokenizer
 from typing import Dict, Any
 import librosa
@@ -12,13 +11,13 @@ class AudioDataProcessor:
     """
 
     def __init__(
-        self, dataset: DatasetDict, feature_extractor, tokenizer: PreTrainedTokenizer, feature_processor
+        self, dataset: dict, feature_extractor, tokenizer: PreTrainedTokenizer, feature_processor
     ):
         """
         Initializes the DatasetProcessor with the dataset, feature extractor, and tokenizer.
 
         Parameters:
-            dataset (DatasetDict): The dataset to process.
+            dataset (dict): The dataset to process.
             feature_extractor (PreTrainedFeatureExtractor): The feature extractor for audio data.
             tokenizer (PreTrainedTokenizer): The tokenizer for text data.
         """
@@ -28,12 +27,12 @@ class AudioDataProcessor:
         self.processor = feature_processor
 
 
-    def resampled_dataset(self, sample: Dict[str, Any]) -> DatasetDict:
+    def resampled_dataset(self, sample: Dict[str, Any]) -> dict:
         """
         Resamples the audio data to the required sampling rate and extracts features using the feature extractor.
 
         Parameters:
-            example (dict): A single sample from the dataset, containing 'audio' and 'sentence' keys.
+            sample (dict): A single sample from the dataset, containing 'audio' and 'sentence' keys.
 
         Returns:
             dict: The updated sample resampled to 16000kHz.

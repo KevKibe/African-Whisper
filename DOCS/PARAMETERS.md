@@ -1,6 +1,6 @@
 Here's a short description of each argument used in the different commands:
 
-- **--huggingface_read_token**: Your Hugging Face authentication token for read access. It allows you to download datasets and models from Hugging Face.
+- **--huggingface_token**: Your Hugging Face authentication token for write access. It allows you to download datasets and models from Hugging Face.
 
 - **--huggingface_push_token**: Your Hugging Face authentication token for write access. It's used for uploading models to your Hugging Face account.
 

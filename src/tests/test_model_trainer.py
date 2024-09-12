@@ -10,7 +10,7 @@ class TestTrainerManager(unittest.TestCase):
     def setUp(self) -> None:
         self.model_id="openai/whisper-tiny"
         process = DataPrep(
-            huggingface_read_token=os.environ.get("HF_READ_TOKEN"),
+            huggingface_token=os.environ.get("HF_WRITE_TOKEN"),
             dataset_name="mozilla-foundation/common_voice_16_1",
             language_abbr=["ti"],
             model_id=self.model_id,
@@ -27,7 +27,7 @@ class TestTrainerManager(unittest.TestCase):
         assert has_test_sample, "Test dataset is empty!"
 
         self.trainer = Trainer(
-            huggingface_write_token= os.environ.get("HF_WRITE_TOKEN"),
+            huggingface_token= os.environ.get("HF_WRITE_TOKEN"),
             model_id=self.model_id,
             dataset=dataset,
             model=model,

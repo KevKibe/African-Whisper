@@ -87,13 +87,13 @@ class SpeechTranscriptionPipeline:
         device (str or int): Device identifier, either 'cpu' or GPU device index.
         batch_size (int): Number of audio segments to process per batch.
         chunk_size (int): Duration of each audio chunk for processing.
-        huggingface_read_token (str): Read token for accessing Huggingface API.
+        huggingface_token (str): Read token for accessing Huggingface API.
         model_name (str): Name of the model to be used for transcription.
     """
     def __init__(self,
                  audio_file_path: str,
                  task: str,
-                 huggingface_read_token: str,
+                 huggingface_token: str,
                  batch_size: int = 32,
                  chunk_size: int = 30) -> None:
         self.audio = load_audio(audio_file_path)
@@ -101,7 +101,7 @@ class SpeechTranscriptionPipeline:
         self.device = 0 if torch.cuda.is_available() else "cpu"
         self.batch_size = batch_size
         self.chunk_size = chunk_size
-        self.huggingface_read_token = huggingface_read_token
+        self.huggingface_token = huggingface_token
 
 
     def transcribe_audio(self, model) -> Dict:
@@ -109,7 +109,7 @@ class SpeechTranscriptionPipeline:
         Transcribes the loaded audio file using the specified model.
 
         Args:
-            model (object): The transcription model to be used.
+            model: The transcription model to be used.
 
         Returns:
             Dict: Transcription result.
@@ -168,7 +168,7 @@ class SpeechTranscriptionPipeline:
         Returns:
             Dict: Diarization result with speakers assigned to segments.
         """
-        diarize_model = DiarizationPipeline(token=self.huggingface_read_token, device=self.device)
+        diarize_model = DiarizationPipeline(token=self.huggingface_token, device=self.device)
         diarize_segments = diarize_model(self.audio, min_speakers=min_speakers, max_speakers=max_speakers)
         diarization_result = assign_word_speakers(diarize_segments, alignment_result)
         return diarization_result

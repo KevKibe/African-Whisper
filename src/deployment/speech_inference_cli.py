@@ -16,7 +16,7 @@ def main():
 
     # Retrieve environment variables
     model_name = os.getenv("MODEL_NAME")
-    huggingface_read_token = os.getenv("HUGGINGFACE_READ_TOKEN")
+    huggingface_token = os.getenv("HUGGINGFACE_TOKEN")
 
     # Initialize model optimization
     model_optimizer = ModelOptimization(model_name=model_name)
@@ -29,7 +29,7 @@ def main():
         task=args.task,
         batch_size=args.batch_size,
         chunk_size=args.chunk_size,
-        huggingface_read_token=huggingface_read_token
+        huggingface_token=huggingface_token
     )
 
     # Transcribe the audio
@@ -43,6 +43,8 @@ def main():
         print(alignment_result['segments'][0]['text'])
     else:
         alignment_result = None
+
+    diarization_result = None
 
     # Perform diarization if requested
     if args.perform_diarization:
