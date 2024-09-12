@@ -10,13 +10,7 @@ def parse_args():
         description="Run the training orchestrator with specified parameters."
     )
     parser.add_argument(
-        "--huggingface_read_token",
-        type=str,
-        required=True,
-        help="Hugging Face API token for read authenticated access.",
-    )
-    parser.add_argument(
-        "--huggingface_write_token",
+        "--huggingface_token",
         type=str,
         required=True,
         help="Hugging Face API token for write authenticated access.",
@@ -94,7 +88,7 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
     process = DataPrep(
-        huggingface_read_token=args.huggingface_read_token,
+        huggingface_token=args.huggingface_token,
         dataset_name=args.dataset_name,
         language_abbr=args.language_abbr,
         model_id=args.model_id,
@@ -109,7 +103,7 @@ if __name__ == "__main__":
                                    train_num_samples = args.train_num_samples,
                                    test_num_samples = args.test_num_samples)
     trainer = Trainer(
-        huggingface_write_token=args.huggingface_write_token,
+        huggingface_token=args.huggingface_token,
         model_id=args.model_id,
         dataset=dataset,
         model=model,

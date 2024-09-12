@@ -33,8 +33,7 @@
 
 ``` py
 # Set the parameters (refer to the 'Usage on VM' section for more details)
-huggingface_read_token = " "
-huggingface_write_token = " "
+huggingface_token = " "  # make sure token has write permissions
 dataset_name = "mozilla-foundation/common_voice_16_1" 
 language_abbr= [ ]                                    # Example `["ti", "yi"]`. see abbreviations here https://huggingface.co/datasets/mozilla-foundation/common_voice_16_1. 
 model_id= "model-id"                                  # Example openai/whisper-small, openai/whisper-medium
@@ -50,7 +49,7 @@ from training.data_prep import DataPrep
 
 # Initialize the DataPrep class and prepare the model
 process = DataPrep(
-    huggingface_read_token,
+    huggingface_token,
     dataset_name,
     language_abbr,
     model_id,
@@ -81,7 +80,7 @@ from training.model_trainer import Trainer
 
 # Initialize the Trainer class and train the model
 trainer = Trainer(
-    huggingface_write_token,
+    huggingface_token,
     model_id,
     processed_dataset,
     model,
@@ -123,7 +122,7 @@ Merger.merge_lora_weights(hf_model_id="your-finetuned-model-name-on-huggingface-
 from deployment.speech_inference import SpeechTranscriptionPipeline, ModelOptimization
 
 model_name = "your-finetuned-model-name-on-huggingface-hub"   # e.g., "KevinKibe/whisper-small-af"
-huggingface_read_token = " "
+huggingface_token = " "
 task = "desired-task"                                         # either 'translate' or 'transcribe'
 audiofile_dir = "location-of-audio-file"                      # filetype should be .mp3 or .wav
 
@@ -136,7 +135,7 @@ model = model_optimizer.load_transcription_model()
 inference = SpeechTranscriptionPipeline(
         audio_file_path=audiofile_dir,
         task=task,
-        huggingface_read_token=huggingface_read_token
+        huggingface_token=huggingface_token
     )
 
 # To get transcriptions
@@ -181,8 +180,7 @@ cd src
 - To start the training , use the following command:
 ```bash
 python -m training.main \
-    --huggingface_read_token YOUR_HUGGING_FACE_READ_TOKEN_HERE \
-    --huggingface_write_token YOUR_HUGGING_FACE_WRITE_TOKEN_HERE \
+    --huggingface_token YOUR_HUGGING_FACE_WRITE_TOKEN_HERE \
     --dataset_name AUDIO_DATASET_NAME \
     --train_num_samples SAMPLE_SIZE \
     --test_num_samples SAMPLE_SIZE \
@@ -237,7 +235,7 @@ cd src/deployment
 - Create a `.env` file using `nano .env` command and add these keys and save the file.
 ```python
 MODEL_NAME = "your-finetuned-model"
-HUGGINGFACE_READ_TOKEN = "huggingface-read-token"
+HUGGINGFACE_TOKEN = "huggingface-token"
 ```
 
 - To perform transcriptions and translations:

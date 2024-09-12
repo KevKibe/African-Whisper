@@ -30,7 +30,7 @@ class TestSpeechTranscriptionPipelineManager(unittest.TestCase):
         self.speech_transcription_pipeline = SpeechTranscriptionPipeline(
             audio_file_path=audio_file_path,
             task=task,
-            huggingface_read_token=self.huggingface_token
+            huggingface_token=self.huggingface_token
         )
         
         self.asr_model = self.model_initialization.load_transcription_model()

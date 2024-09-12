@@ -25,7 +25,7 @@ successful_requests_counter = Counter('app_successful_requests_total',
 
 
 # Retrieve the Hugging Face read token and model name from environment variables
-huggingface_read_token = os.getenv("HUGGINGFACE_READ_TOKEN")
+huggingface_token = os.getenv("HUGGINGFACE_TOKEN")
 model = os.getenv("MODEL_NAME")
 
 # Initialize and convert Model to CTranslate2
@@ -67,7 +67,7 @@ async def transcribe(
     
         # Perform transcription
         start_time = time.time()
-        inference = SpeechTranscriptionPipeline(audio_file_path=tmp_file_path, task = task, huggingface_read_token = huggingface_read_token)
+        inference = SpeechTranscriptionPipeline(audio_file_path=tmp_file_path, task=task, huggingface_token=huggingface_token)
         transcription = inference.transcribe_audio(model = model)
         end_time = time.time()
         transcription_duration = end_time - start_time
@@ -126,7 +126,7 @@ async def get_subtitles(file: UploadFile = File(...),
         
         # Perform transcription
         start_time = time.time()
-        inference = SpeechTranscriptionPipeline(audio_file_path=tmp_file_path, task = task, huggingface_read_token = huggingface_read_token)
+        inference = SpeechTranscriptionPipeline(audio_file_path=tmp_file_path, task = task, huggingface_token = huggingface_token)
         transcription_result = inference.transcribe_audio(model = model)
         end_time = time.time()
         transcription_duration = end_time - start_time

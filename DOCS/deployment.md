@@ -14,7 +14,7 @@ cd src/deployment
 - Create a `.env` file using `nano .env` command or using `vim` and add these keys and save the file.
 ```python
 MODEL_NAME = "your-finetuned-model"
-HUGGINGFACE_READ_TOKEN = "huggingface-read-token"
+HUGGINGFACE_TOKEN = "huggingface-token"
 ```
 
 ### Run Application
@@ -35,11 +35,11 @@ make up
  
     ```python
     MODEL_NAME = "your-model-name"
-    HUGGINGFACE_READ_TOKEN = "your-token"
+    HUGGINGFACE_TOKEN = "your-token"
     ```
 
    - `MODEL_NAME`: Name of the fine-tuned model to use in your Hugging Face Hub repository.
-   - `HUGGINGFACE_READ_TOKEN`: Your Hugging Face authentication token for read access.
+   - `HUGGINGFACE_TOKEN`: Your Hugging Face authentication token for write access.
 
 2. Top deploy a docker container running the application and monitoring endpoints.
    ```bash
