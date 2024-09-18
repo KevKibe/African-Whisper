@@ -5,7 +5,7 @@ from transformers import (
     WhisperForConditionalGeneration,
 )
 from transformers.models.whisper.english_normalizer import BasicTextNormalizer, EnglishTextNormalizer
-from huggingface_hub import HfFolder, create_repo, get_full_repo_name, snapshot_download, upload_folder
+from huggingface_hub import HfFolder, create_repo, get_full_repo_name, snapshot_download, upload_folder, Repository
 from pathlib import Path
 import numpy as np
 import datasets
@@ -338,7 +338,12 @@ def preprocess_datasets(
             else:
                 repo_name = hub_model_id
             create_repo(repo_name, repo_type="dataset", exist_ok=True, token=token)
-            snapshot_download(repo_id=repo_name, local_dir=output_dir)
+            repo = Repository(
+                output_dir,
+                clone_from=repo_name,
+                token=token,
+                repo_type="dataset",
+            )
 
             # Ensure large txt files can be pushed to the Hub with git-lfs
             with open(os.path.join(output_dir, ".gitattributes"), "r+") as f:
