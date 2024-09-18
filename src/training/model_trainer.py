@@ -259,7 +259,6 @@ def training_schedule(
     processor,
     model,
     max_label_length,
-    generation_num_beams,
     language,
     task,
     accelerator,
@@ -282,6 +281,7 @@ def training_schedule(
     num_workers=2,
     concatenate_audio=True,
     streaming=False,
+    generation_num_beams=None,
     return_timestamps=False
 ):
 
