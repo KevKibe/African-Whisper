@@ -149,7 +149,7 @@ def preprocess_datasets(
     preprocessing_batch_size=500,
     preprocessing_num_workers=None,
     dataloader_num_workers=0,
-    text_column_name="text",
+    text_column_name="sentence",
     id_column_name="id",
     speaker_id_column_name=None,
     max_samples_per_split=None,
@@ -159,7 +159,6 @@ def preprocess_datasets(
     output_dir=None,
     push_to_hub=True,
     hub_model_id=None
-
 ):
     max_input_length = int(max_duration_in_seconds * feature_extractor.sampling_rate)
     max_label_length = (
@@ -329,26 +328,27 @@ def preprocess_datasets(
 
     # Handle the repository creation
     output_dir = output_dir
-    if accelerator.is_main_process:
-        if push_to_hub:
-            if hub_model_id is None:
-                repo_name = get_full_repo_name(
-                    Path(output_dir).absolute().name,
-                    token=token,
-                )
-            else:
-                repo_name = hub_model_id
-            create_repo(repo_name, repo_type="dataset", exist_ok=True, token=token)
-            snapshot_download(repo_id=repo_name, local_dir=output_dir)
+    if push_to_hub:
+        if hub_model_id is None:
+            repo_name = get_full_repo_name(Path(output_dir).absolute().name, token=token)
+        else:
+            repo_name = hub_model_id
 
-            # Ensure large txt files can be pushed to the Hub with git-lfs
-            with open(os.path.join(output_dir, ".gitattributes"), "r+") as f:
-                git_lfs_extensions = f.read()
-                if "*.csv" not in git_lfs_extensions:
-                    f.write("*.csv filter=lfs diff=lfs merge=lfs -text")
+        # Create the repository if it doesn't exist
+        create_repo(repo_name, repo_type="dataset", exist_ok=True, token=token)
 
-        elif output_dir is not None:
-            # this is where we'll save our transcriptions
+        # Download the snapshot to the local directory
+        snapshot_download(repo_id=repo_name, local_dir=output_dir)
+
+        # Ensure large files can be pushed to the Hub with git-lfs
+        attributes_path = os.path.join(output_dir, ".gitattributes")
+        with open(attributes_path, "a") as f:
+            git_lfs_extensions = f.read()
+            if "*.csv" not in git_lfs_extensions:
+                f.write("*.csv filter=lfs diff=lfs merge=lfs -text\n")
+    else:
+        # Create the local directory if not pushing to the Hub
+        if output_dir is not None:
             os.makedirs(output_dir, exist_ok=True)
 
     accelerator.wait_for_everyone()

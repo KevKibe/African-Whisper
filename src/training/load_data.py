@@ -80,10 +80,11 @@ def load_and_validate_ps_datasets(
         dataset_name,
         dataset_config_name,
         dataset_cache_dir,
-        preprocessing_num_workers,
-        audio_column_name,
-        text_column_name,
         streaming,
+        preprocessing_num_workers=None,
+        audio_column_name="audio",
+        text_column_name="sentence",
+
     ):
     raw_datasets = IterableDatasetDict() if streaming else DatasetDict()
     token = token if token is not None else HfFolder().get_token()
