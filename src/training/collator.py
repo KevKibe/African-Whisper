@@ -1,6 +1,6 @@
 import torch
 from dataclasses import dataclass
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Union, Optional
 import warnings
 
 warnings.filterwarnings("ignore")
