@@ -17,7 +17,6 @@ from datasets import (
 )
 from soundfile import LibsndfileError
 from datasets.arrow_dataset import table_iter
-import logging
 from accelerate.logging import get_logger
 from .load_data import Dataset
 from .whisper_model_prep import WhisperModelPrep
@@ -327,6 +326,7 @@ def preprocess_datasets(
         )
 
     # Handle the repository creation
+    repo_name = None
     output_dir = output_dir
     if accelerator.is_main_process:
         if push_to_hub:
@@ -356,4 +356,5 @@ def preprocess_datasets(
             os.makedirs(output_dir, exist_ok=True)
 
     accelerator.wait_for_everyone()
+    return vectorized_datasets, file_ids_dataset, decoder_eot_token_id, decoder_prev_token_id, timestamp_position, repo_name,
 
