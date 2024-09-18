@@ -3,7 +3,16 @@ from transformers import WhisperForConditionalGeneration
 from peft import prepare_model_for_kbit_training
 from peft import LoraConfig, get_peft_model
 import warnings
-
+from transformers import (
+    HfArgumentParser,
+    Seq2SeqTrainingArguments,
+    WhisperConfig,
+    WhisperFeatureExtractor,
+    WhisperForConditionalGeneration,
+    WhisperProcessor,
+    WhisperTokenizerFast,
+)
+import torch
 warnings.filterwarnings("ignore")
 
 class WhisperModelPrep:
@@ -123,3 +132,88 @@ class WhisperModelPrep:
             model.generation_config.task = self.processing_task
             # model.to("cuda")
         return model
+
+def load_model_ps(
+        model_name_or_path,
+        token,
+        model_revision="main",
+        cache_dir=None,
+        feature_extractor_name=None,
+        config_name=None,
+        tokenizer_name=None,
+        processor_name=None,
+        use_fast_tokenizer=True,
+        subfolder="",
+        attn_implementation=None,
+        language=None,
+        dtype="bfloat16",
+        return_timestamps=False,
+        task="transcribe",
+):
+    if dtype == "float16":
+        mixed_precision = "fp16"
+        torch_dtype = torch.float16
+    elif dtype == "bfloat16":
+        mixed_precision = "bf16"
+        torch_dtype = torch.bfloat16
+    else:
+        mixed_precision = "no"
+        torch_dtype = torch.float32
+
+    config = WhisperConfig.from_pretrained(
+            (config_name if config_name else model_name_or_path),
+            cache_dir=cache_dir,
+            revision=model_revision,
+            token=token,
+        )
+    feature_extractor = WhisperFeatureExtractor.from_pretrained(
+        (feature_extractor_name if feature_extractor_name else model_name_or_path),
+        cache_dir=cache_dir,
+        revision=model_revision,
+        token=token,
+    )
+    tokenizer = WhisperTokenizerFast.from_pretrained(
+        (tokenizer_name if tokenizer_name else model_name_or_path),
+        cache_dir=cache_dir,
+        use_fast=use_fast_tokenizer,
+        revision=model_revision,
+        token=token,
+    )
+    processor = WhisperProcessor.from_pretrained(
+        (processor_name if processor_name else model_name_or_path),
+        cache_dir=cache_dir,
+        revision=model_revision,
+        token=token,
+    )
+
+    model = WhisperForConditionalGeneration.from_pretrained(
+        model_name_or_path,
+        config=config,
+        cache_dir=cache_dir,
+        revision=model_revision,
+        subfolder=subfolder,
+        token=token,
+        low_cpu_mem_usage=True,
+        torch_dtype=torch_dtype,
+        attn_implementation=attn_implementation,
+    )
+    model.eval()
+
+    if model.config.decoder_start_token_id is None:
+        raise ValueError("Make sure that `config.decoder_start_token_id` is correctly defined")
+
+    return_timestamps = return_timestamps
+    if hasattr(model.generation_config, "is_multilingual") and model.generation_config.is_multilingual:
+        is_multilingual = True
+        # We need to set the language and task ids for multilingual checkpoints
+        tokenizer.set_prefix_tokens(
+            language=language, task=task, predict_timestamps=return_timestamps
+        )
+    elif language is not None:
+        raise ValueError(
+            "Setting language token for an English-only checkpoint is not permitted. The language argument should "
+            "only be set for multilingual checkpoints."
+        )
+    else:
+        is_multilingual = False
+    return model, feature_extractor, tokenizer, processor, is_multilingual

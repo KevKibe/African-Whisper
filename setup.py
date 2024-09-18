@@ -28,6 +28,8 @@ BASE_DEPS = [
     "torchvision==0.17.2",
     "ctranslate2==4.3.1",
     "pandas==2.0.3",
+    "huggingface_hub",
+    "soundfile"
 ]
 
 DEPLOYMENT_DEPS = [
@@ -68,7 +70,7 @@ setup(
     long_description_content_type="text/markdown",
     license = "MIT",
     python_requires=">=3.9",
-    # install_requires = BASE_DEPS,
+    install_requires = BASE_DEPS,
     extras_require={
         "all": ALL_DEPS,
         "training": BASE_DEPS,

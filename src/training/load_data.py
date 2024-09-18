@@ -1,7 +1,8 @@
 from datasets import load_dataset, IterableDataset, concatenate_datasets
 import warnings
 from typing import List
-
+from datasets import IterableDatasetDict, DatasetDict
+from huggingface_hub import HfFolder
 warnings.filterwarnings("ignore")
 
 class Dataset:
@@ -70,3 +71,52 @@ class Dataset:
         for _ in dataset:
             count += 1
         return count
+
+
+def load_and_validate_ps_datasets(
+        token,
+        dataset_split_name,
+        accelerator,
+        dataset_name,
+        dataset_config_name,
+        dataset_cache_dir,
+        preprocessing_num_workers,
+        audio_column_name,
+        text_column_name,
+        streaming,
+    ):
+    raw_datasets = IterableDatasetDict() if streaming else DatasetDict()
+    token = token if token is not None else HfFolder().get_token()
+
+    data_splits = dataset_split_name.split("+")
+
+    for split in data_splits:
+        with accelerator.main_process_first():
+            raw_datasets[split] = load_dataset(
+                dataset_name,
+                dataset_config_name,
+                split=split,
+                cache_dir=dataset_cache_dir,
+                token=token,
+                streaming=streaming,
+                num_proc=preprocessing_num_workers if not streaming else None,
+                trust_remote_code=True
+            )
+
+    if audio_column_name not in next(iter(raw_datasets.values())).column_names:
+        raise ValueError(
+            f"--audio_column_name '{audio_column_name}' not found in dataset"
+            f" '{dataset_name}'. Make sure to set `--audio_column_name` to"
+            " the correct audio column - one of"
+            f" {', '.join(next(iter(raw_datasets.values())).column_names)}."
+        )
+
+    if text_column_name not in next(iter(raw_datasets.values())).column_names:
+        raise ValueError(
+            f"--text_column_name {text_column_name} not found in dataset"
+            f" '{dataset_name}'. Make sure to set `--text_column_name` to the"
+            " correct text column - one of"
+            f" {', '.join(next(iter(raw_datasets.values())).column_names)}."
+        )
+
+    return raw_datasets, data_splits

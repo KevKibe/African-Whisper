@@ -46,7 +46,7 @@ def load_asr_model(whisper_arch,
         print("No language specified, language will be first be detected for each audio file (increases inference time).")
         tokenizer = None
 
-    default_asr_options =  {
+    default_asr_options =  { # explore temperature_increment_on_fallback parameter
         "beam_size": 5,
         "best_of": 5,
         "patience": 1,
@@ -57,7 +57,7 @@ def load_asr_model(whisper_arch,
         "compression_ratio_threshold": 2.4,
         "log_prob_threshold": -1.0,
         "no_speech_threshold": 0.6,
-        "condition_on_previous_text": False,
+        "condition_on_previous_text": False, # explore True
         "prompt_reset_on_temperature": 0.5,
         "initial_prompt": None,
         "prefix": None,
@@ -65,7 +65,7 @@ def load_asr_model(whisper_arch,
         "suppress_tokens": [-1],
         "without_timestamps": True,
         "max_initial_timestamp": 0.0,
-        "word_timestamps": False,
+        "word_timestamps": False, # Explore True
         "prepend_punctuations": "\"'“¿([{-",
         "append_punctuations": "\"'.。,，!！?？:：”)]}、",
         "suppress_numerals": False,
