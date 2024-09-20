@@ -255,7 +255,6 @@ def filter_eot_tokens(preds, decoder_eot_token_id):
 
 
 def training_schedule(
-    per_device_eval_batch_size,
     processor,
     model,
     max_label_length,
@@ -263,22 +262,23 @@ def training_schedule(
     task,
     accelerator,
     vectorized_datasets,
-    dataloader_num_workers,
     file_ids_dataset,
     output_dir,
     torch_dtype,
     tokenizer,
-    logging_steps,
     push_to_hub,
     repo_name,
     raw_datasets,
     decoder_eot_token_id,
     decoder_prev_token_id,
     timestamp_position,
-    preprocessing_batch_size,
     data_splits,
     dataset_config_name,
+    logging_steps=None,
+    preprocessing_batch_size=None,
+    per_device_eval_batch_size=None,
     num_workers=2,
+    dataloader_num_workers=None,
     concatenate_audio=True,
     streaming=False,
     generation_num_beams=None,
@@ -395,7 +395,7 @@ def training_schedule(
         # compute WER metric for eval sets
         wer_desc = ""
         if "validation" in split or "test" in split:
-            eval_preds = filter_eot_tokens(eval_preds)
+            eval_preds = filter_eot_tokens(eval_preds, decoder_eot_token_id)
             wer_metric, pred_str, label_str, norm_pred_str, norm_label_str, eval_ids = compute_metrics(
                 eval_preds, eval_labels, eval_ids
             )
