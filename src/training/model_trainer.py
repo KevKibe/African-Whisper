@@ -436,6 +436,7 @@ def training_schedule(
         if not streaming:
             print(f"pred str: {len(pred_str)}")
             print(f"eval preds: {len(eval_preds)}")
+            print(f"raw datasets split: {len(raw_datasets[split])}")
             raw_datasets[split] = raw_datasets[split].add_column("whisper_transcript", pred_str)
             raw_datasets[split] = raw_datasets[split].add_column("eval_preds", eval_preds)
 
