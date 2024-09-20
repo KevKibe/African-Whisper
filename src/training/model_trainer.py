@@ -461,24 +461,24 @@ def training_schedule(
                     )
 
 
-        logger.info("***** Running Labelling *****")
-        logger.info("  Instantaneous batch size per device =" f" {per_device_eval_batch_size}")
-        logger.info(
-            f"  Total eval batch size (w. parallel & distributed) = {per_device_eval_batch_size * accelerator.num_processes}"
-        )
-        logger.info(f"  Predict labels with timestamps = {return_timestamps}")
-        for split in data_splits:
-            eval_step_with_save(split=split)
-            accelerator.wait_for_everyone()
-            if push_to_hub and accelerator.is_main_process:
-                upload_folder(
-                    folder_path=output_dir,
-                    repo_id=repo_name,
-                    repo_type="dataset",
-                    commit_message=f"Saving final transcriptions for split {split.replace('.', '-').split('/')[-1]}",
-                )
-        if not streaming and accelerator.is_main_process:
-            raw_datasets.save_to_disk(output_dir, num_proc=num_workers)
-            if push_to_hub:
-                raw_datasets.push_to_hub(repo_name, config_name=dataset_config_name)
-        accelerator.end_training()
+    logger.info("***** Running Labelling *****")
+    logger.info("  Instantaneous batch size per device =" f" {per_device_eval_batch_size}")
+    logger.info(
+        f"  Total eval batch size (w. parallel & distributed) = {per_device_eval_batch_size * accelerator.num_processes}"
+    )
+    logger.info(f"  Predict labels with timestamps = {return_timestamps}")
+    for split in data_splits:
+        eval_step_with_save(split=split)
+        accelerator.wait_for_everyone()
+        if push_to_hub and accelerator.is_main_process:
+            upload_folder(
+                folder_path=output_dir,
+                repo_id=repo_name,
+                repo_type="dataset",
+                commit_message=f"Saving final transcriptions for split {split.replace('.', '-').split('/')[-1]}",
+            )
+    if not streaming and accelerator.is_main_process:
+        raw_datasets.save_to_disk(output_dir, num_proc=num_workers)
+        if push_to_hub:
+            raw_datasets.push_to_hub(repo_name, config_name=dataset_config_name)
+    accelerator.end_training()
