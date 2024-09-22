@@ -100,18 +100,30 @@ class DataPrep:
         feature_extractor: WhisperFeatureExtractor, 
         tokenizer: WhisperTokenizer, 
         processor: WhisperProcessor,
+        streaming: bool = True,
         train_num_samples: int = None,
         test_num_samples: int = None) -> dict:
         """
         Retrieves and preprocesses the specified dataset for model training and evaluation.
 
         Parameters:
-        feature_extractor (PreTrainedFeatureExtractor): The feature extractor instance to be used for
-                                                        audio data preprocessing.
-        tokenizer (PreTrainedTokenizer): The tokenizer instance for processing textual data associated
-                                         with the audio samples.
-        processor (WhisperProcessor): The processor instance for processing the audio samples.
-        num_samples(int): Number of training samples to load from each dataset eg if num_samples = 100, 200 samples, 100 from each dataset will be loaded. 
+        feature_extractor (PreTrainedFeatureExtractor):
+            The feature extractor instance to be used for audio data preprocessing.
+        tokenizer (PreTrainedTokenizer):
+            The tokenizer instance for processing textual data associated with the audio samples.
+        processor (WhisperProcessor):
+            The processor instance for processing the audio samples.
+        streaming (bool):
+            If True, the datasets will be streamed, allowing for loading large datasets without requiring them to fit into memory.
+            If False, the entire dataset will be downloaded before processing.
+        train_num_samples (int, optional):
+            The maximum number of training samples to load from each dataset.
+            For example, if train_num_samples = 100, then 100 samples will be loaded from each dataset's training split.
+            If None, the entire training split will be loaded.
+        test_num_samples (int, optional):
+            The maximum number of test samples to load from each dataset.
+            For example, if test_num_samples = 100, then 100 samples will be loaded from each dataset's test split.
+            If None, the entire test split will be loaded.
 
         Returns:
             dict: A dictionary containing the preprocessed 'train' and 'test' splits of the dataset,
@@ -119,13 +131,22 @@ class DataPrep:
                         processed to include only the necessary features for model input.
         """
 
-        dataset = self.data_loader.load_dataset(train_num_samples = train_num_samples,
-                                                test_num_samples = test_num_samples)
+        dataset = self.data_loader.load_dataset(
+            streaming,
+            train_num_samples = train_num_samples,
+            test_num_samples = test_num_samples
+        )
         print(f"Training dataset size: {self.data_loader.count_examples(dataset['train'])}")
         print(f"Test dataset size: {self.data_loader.count_examples(dataset['test'])}")
         processor = AudioDataProcessor(dataset, feature_extractor, tokenizer, processor)
         dataset['train']= dataset['train'].map(processor.resampled_dataset, remove_columns=list(next(iter(dataset['train'])).keys()))
         dataset['test']= dataset['test'].map(processor.resampled_dataset)
+        # if streaming = False:
+        #     os.makedirs(self.dataset_name, exist_ok=True)
+        #     dataset['train'].save_to_disk(os.path.join(self.dataset_name, "train_data"))
+        #     dataset['test'].save_to_disk(os.path.join(self.dataset_name, "test_data"))
+        # else:
+
         return dataset
 
 

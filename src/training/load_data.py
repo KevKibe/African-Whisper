@@ -28,10 +28,13 @@ class Dataset:
         self.dataset_name = dataset_name
         self.language_abbr = language_abbr
     
-    def load_dataset(self, train_num_samples: int = None, test_num_samples: int = None) -> dict:
+    def load_dataset(self, streaming: bool = True, train_num_samples: int = None, test_num_samples: int = None) -> dict:
         """Load datasets for each language abbreviation and concatenate train/test splits.
 
         Parameters:
+        streaming (bool):
+            If True, the datasets will be streamed, allowing for loading large datasets without requiring them to fit into memory.
+            If False, the entire dataset will be downloaded before processing.
         train_num_samples (int, optional): The maximum number of training samples to load from each dataset.
             For example, if train_num_samples = 100, then 100 samples will be loaded from each dataset's training split.
             If None, the entire training split will be loaded.
@@ -44,7 +47,7 @@ class Dataset:
         """
         data = {}
         for lang in self.language_abbr:
-            dataset = load_dataset(self.dataset_name, lang, streaming=True, token=self.huggingface_token, trust_remote_code=True)
+            dataset = load_dataset(self.dataset_name, lang, streaming=streaming, token=self.huggingface_token, trust_remote_code=True)
             train_split = dataset['train'].take(train_num_samples)
             test_split = dataset['test'].take(test_num_samples)
             if "train" in data:
