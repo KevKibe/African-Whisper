@@ -345,7 +345,6 @@ def training_schedule(
             collate_fn=data_collator,
             num_workers=dataloader_num_workers,
             pin_memory=True,
-
         )
         file_loader = DataLoader(
             file_ids_dataset[split],
@@ -374,14 +373,13 @@ def training_schedule(
             if step % logging_steps == 0 and step > 0:
                 batches.write(f"Saving transcriptions for split {split} step {step}")
                 accelerator.wait_for_everyone()
-                pred_ids = eval_preds[-(len(eval_preds) - len(pred_str)) :]
-                pred_ids = filter_eot_tokens(pred_ids, decoder_eot_token_id)
+                pred_ids = eval_preds[-(len(eval_preds) - len(pred_str)):]
+                pred_ids = filter_eot_tokens(pred_ids)
                 pred_str.extend(
                     tokenizer.batch_decode(
                         pred_ids, skip_special_tokens=False, decode_with_timestamps=return_timestamps
                     )
                 )
-                assert len(pred_str) == len(eval_ids), "Mismatch between predictions and eval ids."
                 csv_data = [[eval_ids[i], pred_str[i]] for i in range(len(eval_preds))]
 
                 with open(output_csv, "w", encoding="UTF8", newline="") as f:
@@ -399,15 +397,14 @@ def training_schedule(
                     )
 
         accelerator.wait_for_everyone()
-
         eval_time = time.time() - eval_start
 
         # compute WER metric for eval sets
         wer_desc = ""
         if "validation" in split or "test" in split:
-            eval_preds = filter_eot_tokens(eval_preds, decoder_eot_token_id)
+            eval_preds = filter_eot_tokens(eval_preds)
             wer_metric, pred_str, label_str, norm_pred_str, norm_label_str, eval_ids = compute_metrics(
-                eval_preds, eval_labels, eval_ids, tokenizer, normalizer
+                eval_preds, eval_labels, eval_ids
             )
             wer_desc = " ".join([f"Eval {key}: {value} |" for key, value in wer_metric.items()])
             # Save metrics + predictions
@@ -427,7 +424,7 @@ def training_schedule(
             )
         else:
             pred_ids = eval_preds[-(len(eval_preds) - len(pred_str)):]
-            pred_ids = filter_eot_tokens(pred_ids, decoder_eot_token_id)
+            pred_ids = filter_eot_tokens(pred_ids)
             pred_str.extend(
                 tokenizer.batch_decode(pred_ids, skip_special_tokens=False, decode_with_timestamps=return_timestamps)
             )
@@ -444,9 +441,6 @@ def training_schedule(
         logger.info(wer_desc)
 
         if not streaming:
-            print(f"pred str: {len(pred_str)}")
-            print(f"eval preds: {len(eval_preds)}")
-            print(f"raw datasets split: {len(raw_datasets[split])}")
             raw_datasets[split] = raw_datasets[split].add_column("whisper_transcript", pred_str)
             raw_datasets[split] = raw_datasets[split].add_column("eval_preds", eval_preds)
 
