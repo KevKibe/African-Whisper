@@ -4,8 +4,8 @@ from transformers import (
     WhisperProcessor,
     WhisperForConditionalGeneration,
 )
-from transformers.models.whisper.english_normalizer import BasicTextNormalizer, EnglishTextNormalizer
-from huggingface_hub import create_repo, get_full_repo_name, Repository
+# from transformers.models.whisper.english_normalizer import BasicTextNormalizer, EnglishTextNormalizer
+from huggingface_hub import create_repo, get_full_repo_name
 from pathlib import Path
 import numpy as np
 import logging

@@ -7,6 +7,8 @@ from transformers import (
     WhisperForConditionalGeneration,
     WhisperProcessor,
     WhisperTokenizerFast,
+    WhisperTokenizer,
+
 )
 import torch
 warnings.filterwarnings("ignore")
