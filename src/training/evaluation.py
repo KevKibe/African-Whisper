@@ -105,36 +105,67 @@ metric = evaluate.load("wer")
 # convention is that we space all punctuation *except* apostrophes
 all_punctuation = list(string.punctuation.replace("'", ""))
 
+# def compute_metrics(
+#         preds,
+#         labels,
+#         file_ids,
+#         tokenizer,
+#         return_timestamps=False
+# ):
+#     # replace padded labels by the padding token
+#     for idx in range(len(labels)):
+#         labels[idx][labels[idx] == -100] = tokenizer.pad_token_id
+#
+#     pred_str = tokenizer.batch_decode(preds, skip_special_tokens=True, decode_with_timestamps=return_timestamps)
+#     # we do not want to group tokens when computing the metrics
+#     label_str = tokenizer.batch_decode(labels, skip_special_tokens=True)
+#
+#     # space punctuation for orthographic WER (c.f. ESB paper https://arxiv.org/abs/2210.13352)
+#     spaced_pred_str = [
+#         pred_str[i].replace(punctuation, f" {punctuation} ")
+#         for punctuation in all_punctuation
+#         for i in range(len(pred_str))
+#     ]
+#     spaced_label_str = [
+#         label_str[i].replace(punctuation, f" {punctuation} ")
+#         for punctuation in all_punctuation
+#         for i in range(len(label_str))
+#     ]
+#     wer_ortho = 100 * metric.compute(predictions=spaced_pred_str, references=spaced_label_str)
+#
+#     # normalize everything and re-compute the WER
+#     normalizer = EnglishTextNormalizer(tokenizer.english_spelling_normalizer)
+#     norm_pred_str = [normalizer(pred) for pred in pred_str]
+#     norm_label_str = [normalizer(label) for label in label_str]
+#     # for logging, we need the pred/labels to match the norm_pred/norm_labels, so discard any filtered samples here
+#     pred_str = [pred_str[i] for i in range(len(norm_pred_str)) if len(norm_label_str[i]) > 0]
+#     label_str = [label_str[i] for i in range(len(norm_label_str)) if len(norm_label_str[i]) > 0]
+#     file_ids = [file_ids[i] for i in range(len(file_ids)) if len(norm_label_str[i]) > 0]
+#     # filtering step to only evaluate the samples that correspond to non-zero normalized references:
+#     norm_pred_str = [norm_pred_str[i] for i in range(len(norm_pred_str)) if len(norm_label_str[i]) > 0]
+#     norm_label_str = [norm_label_str[i] for i in range(len(norm_label_str)) if len(norm_label_str[i]) > 0]
+#
+#     wer = 100 * metric.compute(predictions=norm_pred_str, references=norm_label_str)
+#
+#     return {"wer": wer, "wer_ortho": wer_ortho}, pred_str, label_str, norm_pred_str, norm_label_str, file_ids
+
 def compute_metrics(
         preds,
         labels,
         file_ids,
         tokenizer,
+        normalizer,
         return_timestamps=False
 ):
     # replace padded labels by the padding token
     for idx in range(len(labels)):
         labels[idx][labels[idx] == -100] = tokenizer.pad_token_id
 
-    pred_str = tokenizer.batch_decode(preds, skip_special_tokens=True, decode_with_timestamps=return_timestamps)
+    pred_str = tokenizer.batch_decode(preds, skip_special_tokens=False, decode_with_timestamps=return_timestamps)
     # we do not want to group tokens when computing the metrics
     label_str = tokenizer.batch_decode(labels, skip_special_tokens=True)
 
-    # space punctuation for orthographic WER (c.f. ESB paper https://arxiv.org/abs/2210.13352)
-    spaced_pred_str = [
-        pred_str[i].replace(punctuation, f" {punctuation} ")
-        for punctuation in all_punctuation
-        for i in range(len(pred_str))
-    ]
-    spaced_label_str = [
-        label_str[i].replace(punctuation, f" {punctuation} ")
-        for punctuation in all_punctuation
-        for i in range(len(label_str))
-    ]
-    wer_ortho = 100 * metric.compute(predictions=spaced_pred_str, references=spaced_label_str)
-
     # normalize everything and re-compute the WER
-    normalizer = EnglishTextNormalizer(tokenizer.english_spelling_normalizer)
     norm_pred_str = [normalizer(pred) for pred in pred_str]
     norm_label_str = [normalizer(label) for label in label_str]
     # for logging, we need the pred/labels to match the norm_pred/norm_labels, so discard any filtered samples here
@@ -147,4 +178,4 @@ def compute_metrics(
 
     wer = 100 * metric.compute(predictions=norm_pred_str, references=norm_label_str)
 
-    return {"wer": wer, "wer_ortho": wer_ortho}, pred_str, label_str, norm_pred_str, norm_label_str, file_ids
+    return {"wer": wer}, pred_str, label_str, norm_pred_str, norm_label_str, file_ids

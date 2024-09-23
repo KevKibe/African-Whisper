@@ -252,13 +252,13 @@ class Trainer:
 
 
 
-# def filter_eot_tokens(preds, decoder_eot_token_id):
-#     for idx in range(len(preds)):
-#         # remove the EOT tokens to get the 'true' token length
-#         token_ids = [token for token in preds[idx] if token != decoder_eot_token_id]
-#         token_ids = token_ids + [decoder_eot_token_id]
-#         preds[idx] = token_ids
-#     return preds
+def filter_eot_tokens(preds, decoder_eot_token_id):
+    for idx in range(len(preds)):
+        # remove the EOT tokens to get the 'true' token length
+        token_ids = [token for token in preds[idx] if token != decoder_eot_token_id]
+        token_ids = token_ids + [decoder_eot_token_id]
+        preds[idx] = token_ids
+    return preds
 
 
 def training_schedule(
@@ -281,6 +281,7 @@ def training_schedule(
     timestamp_position,
     data_splits,
     dataset_config_name,
+    normalizer,
     logging_steps=None,
     preprocessing_batch_size=None,
     per_device_eval_batch_size=None,
@@ -291,13 +292,6 @@ def training_schedule(
     generation_num_beams=None,
     return_timestamps=False
 ):
-    def filter_eot_tokens(preds):
-        for idx in range(len(preds)):
-            # remove the EOT tokens to get the 'true' token length
-            token_ids = [token for token in preds[idx] if token != decoder_eot_token_id]
-            token_ids = token_ids + [decoder_eot_token_id]
-            preds[idx] = token_ids
-        return preds
 
     per_device_eval_batch_size = int(per_device_eval_batch_size)
 
@@ -413,7 +407,7 @@ def training_schedule(
         if "validation" in split or "test" in split:
             eval_preds = filter_eot_tokens(eval_preds, decoder_eot_token_id)
             wer_metric, pred_str, label_str, norm_pred_str, norm_label_str, eval_ids = compute_metrics(
-                eval_preds, eval_labels, eval_ids, tokenizer
+                eval_preds, eval_labels, eval_ids, tokenizer, normalizer
             )
             wer_desc = " ".join([f"Eval {key}: {value} |" for key, value in wer_metric.items()])
             # Save metrics + predictions
