@@ -17,7 +17,7 @@ from transformers import TrainerCallback
 from .whisper_model_prep import WhisperModelPrep
 from typing import Dict, Any
 from .evaluation import log_pred, log_metric, compute_metrics
-from accelerate.logging import get_logger
+# from accelerate.logging import get_logger
 import warnings
 
 warnings.filterwarnings("ignore")
