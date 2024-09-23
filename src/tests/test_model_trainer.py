@@ -12,7 +12,7 @@ class TestTrainerManager(unittest.TestCase):
         # Common setup for both test cases
         self.model_id = "openai/whisper-tiny"
         process = DataPrep(
-            huggingface_token=os.environ.get("HF_WRITE_TOKEN"),
+            huggingface_token=os.environ.get("HF_TOKEN"),
             dataset_name="mozilla-foundation/common_voice_16_1",
             language_abbr=["yi", "ti"],
             model_id=self.model_id,
@@ -37,7 +37,7 @@ class TestTrainerManager(unittest.TestCase):
 
         # Set up trainers for both streaming and batch datasets
         self.trainer_streaming = Trainer(
-            huggingface_token=os.environ.get("HF_WRITE_TOKEN"),
+            huggingface_token=os.environ.get("HF_TOKEN"),
             model_id=self.model_id,
             dataset=self.dataset_streaming,
             model=model,

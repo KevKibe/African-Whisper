@@ -14,7 +14,7 @@ class TestDatasetManager(unittest.TestCase):
     def setUp(self):
         """Set up the testing environment."""
         self.data_prep = DataPrep(
-            huggingface_token= os.environ.get("HF_WRITE_TOKEN"),
+            huggingface_token= os.environ.get("HF_TOKEN"),
             dataset_name="mozilla-foundation/common_voice_16_1",
             language_abbr=["yi","ti"],
             model_id="openai/whisper-small",
@@ -22,7 +22,7 @@ class TestDatasetManager(unittest.TestCase):
             use_peft=False,
         )
         self.model_prep=WhisperModelPrep("openai/whisper-small", "transcribe", False),
-        self.data_loader=Dataset(os.environ.get("HF_WRITE_TOKEN"), "mozilla-foundation/common_voice_16_1", ["yi", "ti"])
+        self.data_loader=Dataset(os.environ.get("HF_TOKEN"), "mozilla-foundation/common_voice_16_1", ["yi", "ti"])
 
     def test_load_dataset_streaming_true(self):
         """Test the load_dataset method."""

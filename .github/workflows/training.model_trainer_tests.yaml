@@ -42,7 +42,6 @@ jobs:
 
       - name: Run tests
         env:
-          HF_READ_TOKEN: ${{ secrets.HF_READ_TOKEN }}
-          HF_WRITE_TOKEN: ${{ secrets.HF_WRITE_TOKEN }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
           WANDB_TOKEN: ${{ secrets.WANDB_TOKEN }}
         run: pytest src/tests/test_model_trainer.py
