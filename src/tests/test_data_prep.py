@@ -1,4 +1,5 @@
 import unittest
+from datasets import Dataset
 from training.data_prep import DataPrep
 from training.load_data import Dataset
 from training.whisper_model_prep import WhisperModelPrep
@@ -15,15 +16,15 @@ class TestDatasetManager(unittest.TestCase):
         self.data_prep = DataPrep(
             huggingface_token= os.environ.get("HF_WRITE_TOKEN"),
             dataset_name="mozilla-foundation/common_voice_16_1",
-            language_abbr=["yi", "ti"],
+            language_abbr=["yi","ti"],
             model_id="openai/whisper-small",
             processing_task="transcribe",
             use_peft=False,
         )
         self.model_prep=WhisperModelPrep("openai/whisper-small", "transcribe", False),
-        self.data_loader=Dataset(os.environ.get('HF_WRITE_TOKEN'), "mozilla-foundation/common_voice_16_1", ["yi", "ti"])
+        self.data_loader=Dataset(os.environ.get("HF_WRITE_TOKEN"), "mozilla-foundation/common_voice_16_1", ["yi", "ti"])
 
-    def test_load_dataset(self):
+    def test_load_dataset_streaming_true(self):
         """Test the load_dataset method."""
         tokenizer, feature_extractor, processor, model = self.data_prep.prepare_model()
         dataset = self.data_prep.load_dataset(feature_extractor, tokenizer, processor, train_num_samples = 10, test_num_samples=10)
@@ -33,10 +34,29 @@ class TestDatasetManager(unittest.TestCase):
         has_test_sample = any(True for _ in dataset["test"])
         assert has_test_sample, "Test dataset is empty!"
         self.assertIsInstance(dataset, dict)
-        self.assertIsInstance(dataset["train"], IterableDataset)
-        self.assertIsInstance(dataset["test"], IterableDataset)
         self.assertIsNotNone(dataset["train"])
         self.assertIsNotNone(dataset["test"])
+        self.assertIsInstance(dataset["train"], IterableDataset)
+        self.assertIsInstance(dataset["test"], IterableDataset)
+
+
+    def test_load_dataset_streaming_false(self):
+            """Test the load_dataset method."""
+            tokenizer, feature_extractor, processor, model = self.data_prep.prepare_model()
+            dataset = self.data_prep.load_dataset(feature_extractor, tokenizer, processor, streaming=False, train_num_samples=10,
+                                                  test_num_samples=10)
+            has_train_sample = any(True for _ in dataset["train"])
+            assert has_train_sample, "Train dataset is empty!"
+
+            has_test_sample = any(True for _ in dataset["test"])
+            assert has_test_sample, "Test dataset is empty!"
+            self.assertIsInstance(dataset, dict)
+            self.assertIsNotNone(dataset["train"])
+            self.assertIsNotNone(dataset["test"])
+            # self.assertIsInstance(dataset["train"], IterableDataset)
+            # self.assertIsInstance(dataset["test"], IterableDataset)
+
+
 
 if __name__ == '__main__':
     unittest.main()

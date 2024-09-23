@@ -27,9 +27,10 @@ BASE_DEPS = [
     "nltk==3.8.1",
     "torchvision==0.17.2",
     "ctranslate2==4.3.1",
-    "pandas==2.0.3",
+    "pandas==2.2.2",
     "huggingface_hub",
-    "soundfile"
+    "soundfile",
+    "tqdm"
 ]
 
 DEPLOYMENT_DEPS = [
@@ -45,7 +46,7 @@ DEPLOYMENT_DEPS = [
     "nltk==3.8.1",
     "torchvision==0.17.2",
     "ctranslate2==4.3.1",
-    "pandas==2.2.1",
+    "pandas==2.2.2",
 ]
 ALL_DEPS = BASE_DEPS + DEPLOYMENT_DEPS
 

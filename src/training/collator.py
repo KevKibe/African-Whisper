@@ -56,7 +56,7 @@ class DataCollatorSpeechSeq2SeqWithPadding:
 
 
 @dataclass
-class DataCollatorSpeechSeq2SeqWithPadding:
+class DataCollatorSpeechSeq2SeqWithPaddingPS:
     """
     Data collator that will dynamically pad the inputs received.
     Args:

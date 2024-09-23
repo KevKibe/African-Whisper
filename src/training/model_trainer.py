@@ -1,3 +1,4 @@
+import logging
 import os
 from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer, WhisperForConditionalGeneration
 from .collator import DataCollatorSpeechSeq2SeqWithPadding
@@ -225,6 +226,12 @@ class Trainer:
             tokenizer=self.feature_processor.feature_extractor,
             callbacks=[ShuffleCallback()],
         )
+        data_loader = trainer.get_train_dataloader()
+        for batch in data_loader:
+            if batch is None or len(batch) == 0:
+                logging.warning("Empty batch found!")
+                break
+            logging.info("Batch contains data:", batch)
         tokenizer = self.model_prep.initialize_tokenizer()
         processor = self.model_prep.initialize_processor()
         tokenizer.save_pretrained(training_args.output_dir)

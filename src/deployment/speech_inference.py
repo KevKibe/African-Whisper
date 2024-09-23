@@ -88,7 +88,6 @@ class SpeechTranscriptionPipeline:
         batch_size (int): Number of audio segments to process per batch.
         chunk_size (int): Duration of each audio chunk for processing.
         huggingface_token (str): Read token for accessing Huggingface API.
-        model_name (str): Name of the model to be used for transcription.
     """
     def __init__(self,
                  audio_file_path: str,

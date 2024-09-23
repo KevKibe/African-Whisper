@@ -5,7 +5,7 @@ from transformers import (
     WhisperForConditionalGeneration,
 )
 from transformers.models.whisper.english_normalizer import BasicTextNormalizer, EnglishTextNormalizer
-from huggingface_hub import HfFolder, create_repo, get_full_repo_name, snapshot_download, upload_folder, Repository
+from huggingface_hub import create_repo, get_full_repo_name, Repository
 from pathlib import Path
 import numpy as np
 import datasets
@@ -13,7 +13,6 @@ import os
 from datasets import (
     DatasetDict,
     IterableDatasetDict,
-    load_dataset,
 )
 from soundfile import LibsndfileError
 from datasets.arrow_dataset import table_iter
@@ -24,7 +23,10 @@ from .audio_data_processor import AudioDataProcessor
 from typing import Tuple, List
 import warnings
 warnings.filterwarnings("ignore")
+
 logger = get_logger(__name__)
+import logging
+logger = logging.getLogger(__name__)
 
 class DataPrep:
     """
@@ -136,21 +138,15 @@ class DataPrep:
             train_num_samples = train_num_samples,
             test_num_samples = test_num_samples
         )
-        print(f"Training dataset size: {self.data_loader.count_examples(dataset['train'])}")
-        print(f"Test dataset size: {self.data_loader.count_examples(dataset['test'])}")
+        logger.info(f"Training dataset size: {self.data_loader.count_examples(dataset['train'])}")
+        logger.info(f"Test dataset size: {self.data_loader.count_examples(dataset['test'])}")
         processor = AudioDataProcessor(dataset, feature_extractor, tokenizer, processor)
         dataset['train']= dataset['train'].map(processor.resampled_dataset, remove_columns=list(next(iter(dataset['train'])).keys()))
         dataset['test']= dataset['test'].map(processor.resampled_dataset)
-        # if streaming = False:
-        #     os.makedirs(self.dataset_name, exist_ok=True)
-        #     dataset['train'].save_to_disk(os.path.join(self.dataset_name, "train_data"))
-        #     dataset['test'].save_to_disk(os.path.join(self.dataset_name, "test_data"))
-        # else:
-
         return dataset
 
 
-
+##########################
 
 def preprocess_datasets(
     model,

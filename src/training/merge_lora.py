@@ -1,6 +1,10 @@
 from transformers import WhisperForConditionalGeneration
 from peft import PeftModel, PeftConfig
 import argparse
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class Merger:
     def merge_lora_weights(hf_model_id, huggingface_token):
@@ -20,7 +24,7 @@ class Merger:
         model = model.merge_and_unload()
         model.train(False)
         model.push_to_hub(repo_id=hf_model_id, token=huggingface_token)
-        print(f"{hf_model_id} LoRA weights merged")
+        logging.info(f"{hf_model_id} LoRA weights merged")
 
 
 def main():

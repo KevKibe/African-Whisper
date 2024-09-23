@@ -27,7 +27,7 @@ class Dataset:
         self.huggingface_token = huggingface_token
         self.dataset_name = dataset_name
         self.language_abbr = language_abbr
-    
+
     def load_dataset(self, streaming: bool = True, train_num_samples: int = None, test_num_samples: int = None) -> dict:
         """Load datasets for each language abbreviation and concatenate train/test splits.
 
@@ -41,15 +41,36 @@ class Dataset:
         test_num_samples (int, optional): The maximum number of test samples to load from each dataset.
             For example, if test_num_samples = 100, then 100 samples will be loaded from each dataset's test split.
             If None, the entire test split will be loaded.
-            
+
         Returns:
             dict: A dictionary containing concatenated train and test splits for each language.
         """
         data = {}
         for lang in self.language_abbr:
-            dataset = load_dataset(self.dataset_name, lang, streaming=streaming, token=self.huggingface_token, trust_remote_code=True)
-            train_split = dataset['train'].take(train_num_samples)
-            test_split = dataset['test'].take(test_num_samples)
+            train_dataset = load_dataset(self.dataset_name,
+                                         lang,
+                                         split='train',
+                                         streaming=streaming,
+                                         token=self.huggingface_token,
+                                         trust_remote_code=True)
+            test_dataset = load_dataset(self.dataset_name,
+                                        lang,
+                                        split='test',
+                                        streaming=streaming,
+                                        token=self.huggingface_token,
+                                        trust_remote_code=True)
+            if streaming:
+                train_split = train_dataset.take(train_num_samples) if train_num_samples else train_dataset
+                test_split = test_dataset.take(test_num_samples) if test_num_samples else test_dataset
+
+            else:
+
+                train_split = train_dataset if not train_num_samples or len(train_dataset) < train_num_samples else \
+                    train_dataset.select(range(train_num_samples))
+
+                test_split = test_dataset if not test_num_samples or len(test_dataset) < test_num_samples else \
+                    test_dataset.select(range(test_num_samples))
+
             if "train" in data:
                 data["train"] = concatenate_datasets([data["train"], train_split])
             else:
@@ -58,8 +79,10 @@ class Dataset:
                 data["test"] = concatenate_datasets([data["test"], test_split])
             else:
                 data["test"] = test_split
+
         return data
-    
+
+
     def count_examples(self, dataset: IterableDataset) -> int:
         """
         Count the number of examples in the dataset.
