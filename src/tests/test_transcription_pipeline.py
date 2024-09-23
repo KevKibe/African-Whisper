@@ -75,7 +75,8 @@ class TestSpeechTranscriptionPipelineManager(unittest.TestCase):
         transcription = self.speech_transcription_pipeline.transcribe_audio(model=self.asr_model)
         aligned_transcription = self.speech_transcription_pipeline.align_transcription(transcription_result=transcription)
         
-        diarized_audio = self.speech_transcription_pipeline.diarize_audio(alignment_result=aligned_transcription)
+        diarized_audio = self.speech_transcription_pipeline.diarize_audio(alignment_result=aligned_transcription, num_speakers = 1, min_speakers = 1,
+                      max_speakers = 3)
 
         self.assertIsNotNone(diarized_audio, "The diarized audio should not be None.")
         

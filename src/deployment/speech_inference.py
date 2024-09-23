@@ -154,6 +154,7 @@ class SpeechTranscriptionPipeline:
 
     def diarize_audio(self,
                       alignment_result: Dict,
+                      num_speakers: int = 1,
                       min_speakers: int = 1,
                       max_speakers: int = 3) -> Dict:
         """
@@ -161,6 +162,7 @@ class SpeechTranscriptionPipeline:
 
         Args:
             alignment_result (Dict): Alignment result to be diarized.
+            num_speakers (int, optional): Number of speakers. Defaults to 1.
             min_speakers (int, optional): Minimum number of speakers. Defaults to 1.
             max_speakers (int, optional): Maximum number of speakers. Defaults to 3.
 
@@ -168,7 +170,7 @@ class SpeechTranscriptionPipeline:
             Dict: Diarization result with speakers assigned to segments.
         """
         diarize_model = DiarizationPipeline(token=self.huggingface_token, device=self.device)
-        diarize_segments = diarize_model(self.audio, min_speakers=min_speakers, max_speakers=max_speakers)
+        diarize_segments = diarize_model(self.audio, num_speakers = num_speakers, min_speakers=min_speakers, max_speakers=max_speakers)
         diarization_result = assign_word_speakers(diarize_segments, alignment_result)
         return diarization_result
 
