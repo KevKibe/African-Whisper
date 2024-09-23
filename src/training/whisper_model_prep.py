@@ -1,11 +1,7 @@
-from transformers import WhisperFeatureExtractor, WhisperTokenizer, WhisperProcessor
-from transformers import WhisperForConditionalGeneration
 from peft import prepare_model_for_kbit_training
 from peft import LoraConfig, get_peft_model
 import warnings
 from transformers import (
-    HfArgumentParser,
-    Seq2SeqTrainingArguments,
     WhisperConfig,
     WhisperFeatureExtractor,
     WhisperForConditionalGeneration,
@@ -151,13 +147,13 @@ def load_model_ps(
         task="transcribe",
 ):
     if dtype == "float16":
-        mixed_precision = "fp16"
+        # mixed_precision = "fp16"
         torch_dtype = torch.float16
     elif dtype == "bfloat16":
-        mixed_precision = "bf16"
+        # mixed_precision = "bf16"
         torch_dtype = torch.bfloat16
     else:
-        mixed_precision = "no"
+        # mixed_precision = "no"
         torch_dtype = torch.float32
 
     config = WhisperConfig.from_pretrained(

@@ -8,6 +8,7 @@ from transformers.models.whisper.english_normalizer import BasicTextNormalizer, 
 from huggingface_hub import create_repo, get_full_repo_name, Repository
 from pathlib import Path
 import numpy as np
+import logging
 import datasets
 import os
 from datasets import (
@@ -16,7 +17,7 @@ from datasets import (
 )
 from soundfile import LibsndfileError
 from datasets.arrow_dataset import table_iter
-from accelerate.logging import get_logger
+# from accelerate.logging import get_logger
 from .load_data import Dataset
 from .whisper_model_prep import WhisperModelPrep
 from .audio_data_processor import AudioDataProcessor
@@ -24,8 +25,7 @@ from typing import Tuple, List
 import warnings
 warnings.filterwarnings("ignore")
 
-logger = get_logger(__name__)
-import logging
+# logger = get_logger(__name__)
 logger = logging.getLogger(__name__)
 
 class DataPrep:
@@ -191,11 +191,11 @@ def preprocess_datasets(
     model_input_name = feature_extractor.model_input_names[0]
     id_column_name = id_column_name
     speaker_id_column_name = speaker_id_column_name
-    normalizer = (
-        BasicTextNormalizer()
-        if language is not None
-        else EnglishTextNormalizer(tokenizer.english_spelling_normalizer)
-    )
+    # normalizer = (
+    #     BasicTextNormalizer()
+    #     if language is not None
+    #     else EnglishTextNormalizer(tokenizer.english_spelling_normalizer)
+    # )
 
     timestamp_position = 3 if is_multilingual else 1
     decoder_prev_token_id = tokenizer.convert_tokens_to_ids("<|startofprev|>")
@@ -355,12 +355,12 @@ def preprocess_datasets(
             else:
                 repo_name = hub_model_id
             create_repo(repo_name, repo_type="dataset", exist_ok=True, token=token)
-            repo = Repository(
-                output_dir,
-                clone_from=repo_name,
-                token=token,
-                repo_type="dataset",
-            )
+            # repo = Repository(
+            #     output_dir,
+            #     clone_from=repo_name,
+            #     token=token,
+            #     repo_type="dataset",
+            # )
 
             # Ensure large txt files can be pushed to the Hub with git-lfs
             with open(os.path.join(output_dir, ".gitattributes"), "r+") as f:
