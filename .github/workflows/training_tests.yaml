@@ -1,4 +1,4 @@
-name: Test Data and Model Prep Modules
+name: Test Data Loading and Processing Modules
 
 on: [pull_request]
 
@@ -44,4 +44,4 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
           WANDB_TOKEN: ${{ secrets.WANDB_TOKEN }}
-        run: pytest src/tests/test_audio_processor.py src/tests/test_data_prep.py src/tests/test_load_dataset.py 
+        run: pytest -vv src/tests/test_audio_processor.py src/tests/test_data_prep.py src/tests/test_load_dataset.py
