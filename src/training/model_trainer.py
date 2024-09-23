@@ -252,13 +252,13 @@ class Trainer:
 
 
 
-def filter_eot_tokens(preds, decoder_eot_token_id):
-    for idx in range(len(preds)):
-        # remove the EOT tokens to get the 'true' token length
-        token_ids = [token for token in preds[idx] if token != decoder_eot_token_id]
-        token_ids = token_ids + [decoder_eot_token_id]
-        preds[idx] = token_ids
-    return preds
+# def filter_eot_tokens(preds, decoder_eot_token_id):
+#     for idx in range(len(preds)):
+#         # remove the EOT tokens to get the 'true' token length
+#         token_ids = [token for token in preds[idx] if token != decoder_eot_token_id]
+#         token_ids = token_ids + [decoder_eot_token_id]
+#         preds[idx] = token_ids
+#     return preds
 
 
 def training_schedule(
@@ -291,6 +291,13 @@ def training_schedule(
     generation_num_beams=None,
     return_timestamps=False
 ):
+    def filter_eot_tokens(preds):
+        for idx in range(len(preds)):
+            # remove the EOT tokens to get the 'true' token length
+            token_ids = [token for token in preds[idx] if token != decoder_eot_token_id]
+            token_ids = token_ids + [decoder_eot_token_id]
+            preds[idx] = token_ids
+        return preds
 
     per_device_eval_batch_size = int(per_device_eval_batch_size)
 
@@ -344,6 +351,7 @@ def training_schedule(
             collate_fn=data_collator,
             num_workers=dataloader_num_workers,
             pin_memory=True,
+
         )
         file_loader = DataLoader(
             file_ids_dataset[split],
@@ -379,6 +387,7 @@ def training_schedule(
                         pred_ids, skip_special_tokens=False, decode_with_timestamps=return_timestamps
                     )
                 )
+                assert len(pred_str) == len(eval_ids), "Mismatch between predictions and eval ids."
                 csv_data = [[eval_ids[i], pred_str[i]] for i in range(len(eval_preds))]
 
                 with open(output_csv, "w", encoding="UTF8", newline="") as f:
