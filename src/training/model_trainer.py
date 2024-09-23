@@ -6,6 +6,7 @@ import evaluate
 import torch
 import time
 import csv
+import sys
 from tqdm import tqdm
 from huggingface_hub import upload_folder
 from torch.utils.data import DataLoader
@@ -20,7 +21,8 @@ from accelerate.logging import get_logger
 import warnings
 
 warnings.filterwarnings("ignore")
-logger = get_logger(__name__)
+logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+logger = logging.getLogger(__name__)
 
 class ShuffleCallback(TrainerCallback):
     def on_epoch_begin(self, args, state, control, train_dataloader, **kwargs):

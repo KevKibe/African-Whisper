@@ -67,6 +67,7 @@ processed_dataset = process.load_dataset(
     feature_extractor=feature_extractor,
     tokenizer=tokenizer,
     processor=feature_processor,
+    streaming=True,
     train_num_samples = None,     # Optional: int - Number of samples to load into training dataset, default the whole training set.
     test_num_samples = None )     # Optional: int - Number of samples to load into test dataset, default the whole test set.
                                   # Set None to load the entire dataset

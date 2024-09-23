@@ -9,6 +9,7 @@ from huggingface_hub import create_repo, get_full_repo_name
 from pathlib import Path
 import numpy as np
 import logging
+import sys
 import datasets
 import os
 from datasets import (
@@ -26,7 +27,9 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # logger = get_logger(__name__)
+logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger(__name__)
+
 
 class DataPrep:
     """

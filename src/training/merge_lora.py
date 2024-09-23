@@ -2,8 +2,9 @@ from transformers import WhisperForConditionalGeneration
 from peft import PeftModel, PeftConfig
 import argparse
 import logging
+import sys
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger(__name__)
 
 class Merger:
