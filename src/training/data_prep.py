@@ -8,8 +8,6 @@ from transformers import (
 from huggingface_hub import create_repo, get_full_repo_name
 from pathlib import Path
 import numpy as np
-import logging
-import sys
 import datasets
 import os
 from datasets import (
@@ -18,7 +16,7 @@ from datasets import (
 )
 from soundfile import LibsndfileError
 from datasets.arrow_dataset import table_iter
-# from accelerate.logging import get_logger
+from accelerate.logging import get_logger
 from .load_data import Dataset
 from .whisper_model_prep import WhisperModelPrep
 from .audio_data_processor import AudioDataProcessor
@@ -26,9 +24,8 @@ from typing import Tuple, List
 import warnings
 warnings.filterwarnings("ignore")
 
-# logger = get_logger(__name__)
-logging.basicConfig(level=logging.INFO, stream=sys.stdout)
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
+
 
 
 class DataPrep:
@@ -141,8 +138,8 @@ class DataPrep:
             train_num_samples = train_num_samples,
             test_num_samples = test_num_samples
         )
-        logger.info(f"Training dataset size: {self.data_loader.count_examples(dataset['train'])}")
-        logger.info(f"Test dataset size: {self.data_loader.count_examples(dataset['test'])}")
+        print(f"Training dataset size: {self.data_loader.count_examples(dataset['train'])}")
+        print(f"Test dataset size: {self.data_loader.count_examples(dataset['test'])}")
         processor = AudioDataProcessor(dataset, feature_extractor, tokenizer, processor)
         dataset['train']= dataset['train'].map(processor.resampled_dataset, remove_columns=list(next(iter(dataset['train'])).keys()))
         dataset['test']= dataset['test'].map(processor.resampled_dataset)

@@ -1,12 +1,10 @@
-import logging
 import os
 from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer, WhisperForConditionalGeneration
-from .collator import DataCollatorSpeechSeq2SeqWithPadding
+from .collator import DataCollatorSpeechSeq2SeqWithPadding, DataCollatorSpeechSeq2SeqWithPaddingPS
 import evaluate
 import torch
 import time
 import csv
-import sys
 from tqdm import tqdm
 from huggingface_hub import upload_folder
 from torch.utils.data import DataLoader
@@ -17,12 +15,12 @@ from transformers import TrainerCallback
 from .whisper_model_prep import WhisperModelPrep
 from typing import Dict, Any
 from .evaluation import log_pred, log_metric, compute_metrics
-# from accelerate.logging import get_logger
+from accelerate.logging import get_logger
 import warnings
 
 warnings.filterwarnings("ignore")
-logging.basicConfig(level=logging.INFO, stream=sys.stdout)
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
+
 
 class ShuffleCallback(TrainerCallback):
     def on_epoch_begin(self, args, state, control, train_dataloader, **kwargs):
@@ -231,9 +229,9 @@ class Trainer:
         data_loader = trainer.get_train_dataloader()
         for batch in data_loader:
             if batch is None or len(batch) == 0:
-                logging.warning("Empty batch found!")
+                print("Empty batch found!")
                 break
-            logging.info("Batch contains data:", batch)
+            print("Batch contains data:", batch)
         tokenizer = self.model_prep.initialize_tokenizer()
         processor = self.model_prep.initialize_processor()
         tokenizer.save_pretrained(training_args.output_dir)
@@ -296,7 +294,7 @@ def training_schedule(
 
     per_device_eval_batch_size = int(per_device_eval_batch_size)
 
-    data_collator = DataCollatorSpeechSeq2SeqWithPadding(
+    data_collator = DataCollatorSpeechSeq2SeqWithPaddingPS(
         processor=processor,
         decoder_start_token_id=model.config.decoder_start_token_id,  # <|startoftranscript|>
         input_padding="longest",
