@@ -1,10 +1,18 @@
 ## Troubleshooting Tips
 
-- If you encounter trouble installing `africanwhisper` package on Kaggle, see: <br>
-[Issue #142](https://github.com/KevKibe/African-Whisper/issues/142)
+- If you encounter trouble installing `africanwhisper` package on Kaggle, and encounter the error:
+```commandline
+ERROR: Could not install packages due to an OSError: [Errno 2] No such file or directory: '/opt/conda/lib/python3.10/site-packages/aiohttp-3.9.1.dist-info/METADATA'
+```
+Execute this command before installing the package:
+```commandline
+!rm /opt/conda/lib/python3.10/site-packages/aiohttp-3.9.1.dist-info -rdf
+```
+see [Issue #142](https://github.com/KevKibe/African-Whisper/issues/142) for more info.
+
 
 - If you encounter this error installing `africanwhisper` package on Colab:
-```
+```commandline
 ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
 spacy 3.7.4 requires typer<0.10.0,>=0.3.0, but you have typer 0.12.3 which is incompatible.
 torchtext 0.18.0 requires torch>=2.3.0, but you have torch 2.2.2 which is incompatible.
@@ -15,4 +23,11 @@ WARNING: The following packages were previously imported in this runtime:
   [pydevd_plugins]
 You must restart the runtime in order to use newly installed versions.
 ```
-- Restart the kernel and continue with the next step.
+restart the kernel and continue with the next step.
+
+- If you encounter the error:
+```commandline
+TypeError: expected string or bytes-like object
+```
+upgrade `pandas` version to `2.2.2` and restart kernel 
+
