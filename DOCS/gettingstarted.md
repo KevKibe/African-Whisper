@@ -114,7 +114,7 @@ trainer.train(
 from training.merge_lora import Merger
 
 # Merge PEFT fine-tuned model weights with the base model weights
-Merger.merge_lora_weights(hf_model_id="your-finetuned-model-name-on-huggingface-hub", huggingface_write_token = " ")
+Merger.merge_lora_weights(hf_model_id="your-finetuned-model-name-on-huggingface-hub", huggingface_token = " ")
 ```
 
 ## Step 7: Test Model using an Audio File
