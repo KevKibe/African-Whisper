@@ -1,4 +1,4 @@
-name: Test training.model_trainer Module.
+name: Test training.model_prep Module.
 
 on: [pull_request]
 
@@ -42,7 +42,6 @@ jobs:
 
       - name: Run tests
         env:
-            HF_READ_TOKEN: ${{ secrets.HF_READ_TOKEN }}
-            HF_WRITE_TOKEN: ${{ secrets.HF_WRITE_TOKEN }}
+            HF_TOKEN: ${{ secrets.HF_TOKEN }}
             WANDB_TOKEN: ${{ secrets.WANDB_TOKEN }}
-        run: pytest src/tests/test_model_prep.py
+        run: pytest -vv src/tests/test_model_prep.py

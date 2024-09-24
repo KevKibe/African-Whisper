@@ -40,7 +40,7 @@ class ModelOptimization:
         else:
             print(f"Model {self.model_name} is already in CTranslate2 format")
 
-    def load_transcription_model(self) -> object:
+    def load_transcription_model(self, beam_size: int = 5, language = None) -> object:
         """
         Loads the ASR model for transcription.
 
@@ -48,7 +48,7 @@ class ModelOptimization:
             object: Loaded ASR model.
         """
         asr_options = {
-            "beam_size": 5,
+            "beam_size": beam_size,
             "patience": 1.0,
             "length_penalty": 1.0,
             "temperatures": 0,
@@ -61,14 +61,15 @@ class ModelOptimization:
             "suppress_numerals": True,
         }
         model_dir = None
-        compute_type = "bfloat16" if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else "float32"
+        # compute_type = "bfloat16" if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else "float16"
+        compute_type = "float16" if torch.cuda.is_available() else "float32"
         model = load_asr_model(
             whisper_arch = self.model_name,
             device=self.device,
-            device_index=0,
+            device_index=0, #for multi-gpu processing
             download_root=model_dir,
             compute_type=compute_type,
-            language=None,
+            language=language,
             asr_options=asr_options,
             vad_options={"vad_onset": 0.500, "vad_offset": 0.363},
             threads=8
@@ -88,7 +89,6 @@ class SpeechTranscriptionPipeline:
         batch_size (int): Number of audio segments to process per batch.
         chunk_size (int): Duration of each audio chunk for processing.
         huggingface_token (str): Read token for accessing Huggingface API.
-        model_name (str): Name of the model to be used for transcription.
     """
     def __init__(self,
                  audio_file_path: str,
@@ -101,7 +101,7 @@ class SpeechTranscriptionPipeline:
         self.device = 0 if torch.cuda.is_available() else "cpu"
         self.batch_size = batch_size
         self.chunk_size = chunk_size
-        self.huggingface_token = huggingface_token
+        self.huggingface_token = huggingface_token,
 
 
     def transcribe_audio(self, model) -> Dict:
@@ -155,6 +155,7 @@ class SpeechTranscriptionPipeline:
 
     def diarize_audio(self,
                       alignment_result: Dict,
+                      num_speakers: int = 1,
                       min_speakers: int = 1,
                       max_speakers: int = 3) -> Dict:
         """
@@ -162,6 +163,7 @@ class SpeechTranscriptionPipeline:
 
         Args:
             alignment_result (Dict): Alignment result to be diarized.
+            num_speakers (int, optional): Number of speakers. Defaults to 1.
             min_speakers (int, optional): Minimum number of speakers. Defaults to 1.
             max_speakers (int, optional): Maximum number of speakers. Defaults to 3.
 
@@ -169,7 +171,7 @@ class SpeechTranscriptionPipeline:
             Dict: Diarization result with speakers assigned to segments.
         """
         diarize_model = DiarizationPipeline(token=self.huggingface_token, device=self.device)
-        diarize_segments = diarize_model(self.audio, min_speakers=min_speakers, max_speakers=max_speakers)
+        diarize_segments = diarize_model(self.audio, num_speakers = num_speakers, min_speakers=min_speakers, max_speakers=max_speakers)
         diarization_result = assign_word_speakers(diarize_segments, alignment_result)
         return diarization_result
 

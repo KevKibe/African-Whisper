@@ -2,6 +2,7 @@ from transformers import PreTrainedTokenizer
 from typing import Dict, Any
 import librosa
 import warnings
+import datasets
 warnings.filterwarnings("ignore")
 
 class AudioDataProcessor:
@@ -51,3 +52,13 @@ class AudioDataProcessor:
 
         return sample
 
+def resample_raw_datasets(
+        raw_datasets,
+        audio_column_name,
+        feature_extractor
+):
+    raw_datasets = raw_datasets.cast_column(
+        audio_column_name,
+        datasets.features.Audio(sampling_rate=feature_extractor.sampling_rate),
+    )
+    return raw_datasets

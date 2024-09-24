@@ -8,6 +8,7 @@ class TestDatasetManager(unittest.TestCase):
     def setUp(self):
         """Initialize the test setup with an instance of WhisperModelPrep."""
         self.model_prep = WhisperModelPrep(
+            language=["af"],
             model_id="openai/whisper-small",
             processing_task="transcribe",
             use_peft=False

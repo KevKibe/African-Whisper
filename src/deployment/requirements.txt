@@ -8,7 +8,7 @@ python-dotenv==1.0.1
 faster-whisper==1.0.3
 pyannote.audio==3.1.1
 nltk==3.8.1
-torchvision==0.17.2
+torchvision
 ctranslate2==4.1.0
-pandas==2.2.1
+pandas==2.2.2
 python-multipart==0.0.9

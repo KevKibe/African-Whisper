@@ -19,7 +19,7 @@ class TestSpeechTranscriptionPipelineManager(unittest.TestCase):
         speech transcription pipeline required for testing.
         """
         self.model_name = "openai/whisper-small"
-        self.huggingface_token = os.environ.get("HF_WRITE_TOKEN")
+        self.huggingface_token = os.environ.get("HF_TOKEN")
         self.device = 0 if torch.cuda.is_available() else "cpu"
         
         self.model_initialization = ModelOptimization(model_name=self.model_name)
@@ -75,7 +75,8 @@ class TestSpeechTranscriptionPipelineManager(unittest.TestCase):
         transcription = self.speech_transcription_pipeline.transcribe_audio(model=self.asr_model)
         aligned_transcription = self.speech_transcription_pipeline.align_transcription(transcription_result=transcription)
         
-        diarized_audio = self.speech_transcription_pipeline.diarize_audio(alignment_result=aligned_transcription)
+        diarized_audio = self.speech_transcription_pipeline.diarize_audio(alignment_result=aligned_transcription, num_speakers = 1, min_speakers = 1,
+                      max_speakers = 3)
 
         self.assertIsNotNone(diarized_audio, "The diarized audio should not be None.")
         

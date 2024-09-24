@@ -2,6 +2,7 @@ from transformers import WhisperForConditionalGeneration
 from peft import PeftModel, PeftConfig
 import argparse
 
+
 class Merger:
     def merge_lora_weights(hf_model_id, huggingface_token):
         """

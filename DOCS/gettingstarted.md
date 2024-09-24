@@ -4,6 +4,7 @@
 ## Usage Demo on Colab(v0.9.12)
 - Refer to documentation below for updated instructions and guides.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/NHSV8ZyhMVA?si=6217bgwGGUavm-Nq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ## Prerequisites
 
 - Sign up to HuggingFace and get your token keys use this [guide](https://huggingface.co/docs/hub/en/security-tokens).
@@ -66,6 +67,7 @@ processed_dataset = process.load_dataset(
     feature_extractor=feature_extractor,
     tokenizer=tokenizer,
     processor=feature_processor,
+    streaming=True,
     train_num_samples = None,     # Optional: int - Number of samples to load into training dataset, default the whole training set.
     test_num_samples = None )     # Optional: int - Number of samples to load into test dataset, default the whole test set.
                                   # Set None to load the entire dataset
@@ -112,7 +114,7 @@ trainer.train(
 from training.merge_lora import Merger
 
 # Merge PEFT fine-tuned model weights with the base model weights
-Merger.merge_lora_weights(hf_model_id="your-finetuned-model-name-on-huggingface-hub", huggingface_write_token = " ")
+Merger.merge_lora_weights(hf_model_id="your-finetuned-model-name-on-huggingface-hub", huggingface_token = " ")
 ```
 
 ## Step 7: Test Model using an Audio File

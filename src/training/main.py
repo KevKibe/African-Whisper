@@ -34,6 +34,12 @@ def parse_args():
         help="Number of testing samples in the dataset",
     )
     parser.add_argument(
+        "--streaming",
+        type=bool,
+        default=True,
+        help="Load dataset in streaming or Batch mode",
+    )
+    parser.add_argument(
         "--language_abbr",
         nargs='+',
         required=True,
@@ -99,13 +105,16 @@ if __name__ == "__main__":
 
     dataset = process.load_dataset(feature_extractor, 
                                    tokenizer, 
-                                   feature_processor, 
+                                   feature_processor,
+                                   streaming = args.streaming,
                                    train_num_samples = args.train_num_samples,
                                    test_num_samples = args.test_num_samples)
     trainer = Trainer(
+
         huggingface_token=args.huggingface_token,
         model_id=args.model_id,
         dataset=dataset,
+        language = args.language_abbr,
         model=model,
         feature_processor=feature_processor,
         feature_extractor=feature_extractor,
