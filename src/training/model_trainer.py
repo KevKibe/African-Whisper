@@ -13,7 +13,7 @@ from transformers.trainer_pt_utils import IterableDatasetShard
 from torch.utils.data import IterableDataset
 from transformers import TrainerCallback
 from .whisper_model_prep import WhisperModelPrep
-from typing import Dict, Any, List
+from typing import Dict, Any
 from .evaluation import log_pred, log_metric, compute_metrics
 from accelerate.logging import get_logger
 import warnings
