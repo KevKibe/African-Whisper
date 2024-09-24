@@ -52,7 +52,7 @@ ALL_DEPS = BASE_DEPS + DEPLOYMENT_DEPS
 
 setup(
     name="africanwhisper",
-    version="0.9.12",
+    version="0.9.13",
     author="Kevin Kibe",
     author_email="keviinkibe@gmail.com",
     package_dir={"": "src"},
@@ -71,7 +71,7 @@ setup(
     long_description_content_type="text/markdown",
     license = "MIT",
     python_requires=">=3.9",
-    install_requires = BASE_DEPS,
+    # install_requires = BASE_DEPS,
     extras_require={
         "all": ALL_DEPS,
         "training": BASE_DEPS,
