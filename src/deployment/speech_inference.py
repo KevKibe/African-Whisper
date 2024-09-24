@@ -40,7 +40,7 @@ class ModelOptimization:
         else:
             print(f"Model {self.model_name} is already in CTranslate2 format")
 
-    def load_transcription_model(self) -> object:
+    def load_transcription_model(self, beam_size: int = 5) -> object:
         """
         Loads the ASR model for transcription.
 
@@ -48,7 +48,7 @@ class ModelOptimization:
             object: Loaded ASR model.
         """
         asr_options = {
-            "beam_size": 5,
+            "beam_size": beam_size,
             "patience": 1.0,
             "length_penalty": 1.0,
             "temperatures": 0,
@@ -93,6 +93,8 @@ class SpeechTranscriptionPipeline:
                  audio_file_path: str,
                  task: str,
                  huggingface_token: str,
+                 num_workers: int,
+                 language: str = None,
                  batch_size: int = 32,
                  chunk_size: int = 30) -> None:
         self.audio = load_audio(audio_file_path)
@@ -100,7 +102,9 @@ class SpeechTranscriptionPipeline:
         self.device = 0 if torch.cuda.is_available() else "cpu"
         self.batch_size = batch_size
         self.chunk_size = chunk_size
-        self.huggingface_token = huggingface_token
+        self.huggingface_token = huggingface_token,
+        self.language = language,
+        self.num_workers = num_workers
 
 
     def transcribe_audio(self, model) -> Dict:
@@ -118,6 +122,8 @@ class SpeechTranscriptionPipeline:
             batch_size=self.batch_size,
             chunk_size=self.chunk_size,
             task=self.task,
+            language = self.language,
+            num_workers = self.num_workers,
             print_progress=True
         )
         return transcription_result
