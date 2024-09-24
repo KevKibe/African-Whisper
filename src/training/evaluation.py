@@ -1,7 +1,5 @@
 import evaluate
 import warnings
-import string
-from transformers.models.whisper.english_normalizer import EnglishTextNormalizer
 from typing import List, Dict
 import numpy as np
 warnings.filterwarnings("ignore")
