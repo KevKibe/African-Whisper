@@ -131,7 +131,7 @@ class WhisperModelPrep:
             model.config.use_cache = True
             model.generation_config.language = self.language if self.processing_task == "transcribe" else "en"
             model.generation_config.task = self.processing_task
-            model.to("cuda")
+            model = model.to("cuda") if torch.cuda.is_available() else model
         return model
 
 
