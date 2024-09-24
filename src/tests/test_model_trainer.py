@@ -37,6 +37,7 @@ class TestTrainerManager(unittest.TestCase):
 
         # Set up trainers for both streaming and batch datasets
         self.trainer_streaming = Trainer(
+            language=["af"],
             huggingface_token=os.environ.get("HF_TOKEN"),
             model_id=self.model_id,
             dataset=self.dataset_streaming,
@@ -49,6 +50,7 @@ class TestTrainerManager(unittest.TestCase):
             processing_task="translate"
         )
         self.trainer_batch = Trainer(
+            language =["af"],
             huggingface_token="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",
             model_id=self.model_id,
             dataset=self.dataset_batch,

@@ -110,9 +110,11 @@ if __name__ == "__main__":
                                    train_num_samples = args.train_num_samples,
                                    test_num_samples = args.test_num_samples)
     trainer = Trainer(
+
         huggingface_token=args.huggingface_token,
         model_id=args.model_id,
         dataset=dataset,
+        language = args.language_abbr,
         model=model,
         feature_processor=feature_processor,
         feature_extractor=feature_extractor,
