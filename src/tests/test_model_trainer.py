@@ -14,7 +14,7 @@ class TestTrainerManager(unittest.TestCase):
         process = DataPrep(
             huggingface_token=os.environ.get("HF_TOKEN"),
             dataset_name="mozilla-foundation/common_voice_16_1",
-            language_abbr=["yi", "ti"],
+            language_abbr=["af"],
             model_id=self.model_id,
             processing_task="transcribe",
             use_peft=False,
