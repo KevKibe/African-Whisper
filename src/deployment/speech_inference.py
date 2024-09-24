@@ -68,7 +68,7 @@ class ModelOptimization:
             device=self.device,
             device_index=0,
             download_root=model_dir,
-            compute_type="float16",
+            compute_type=compute_type,
             language=language,
             asr_options=asr_options,
             vad_options={"vad_onset": 0.500, "vad_offset": 0.363},
