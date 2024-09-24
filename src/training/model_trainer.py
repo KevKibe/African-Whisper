@@ -235,7 +235,7 @@ class Trainer:
             if batch is None or len(batch) == 0:
                 print("Empty batch found!")
                 break
-            print("Batch contains data:", batch)
+            print("Batch contains data")
         tokenizer = self.model_prep.initialize_tokenizer()
         processor = self.model_prep.initialize_processor()
         tokenizer.save_pretrained(training_args.output_dir)
