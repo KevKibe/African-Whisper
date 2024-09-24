@@ -66,7 +66,7 @@ class ModelOptimization:
         model = load_asr_model(
             whisper_arch = self.model_name,
             device=self.device,
-            device_index=0,
+            device_index=0, #for multi-gpu processing
             download_root=model_dir,
             compute_type=compute_type,
             language=language,
