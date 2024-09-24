@@ -98,14 +98,14 @@ class WhisperModelPrep:
             WhisperForConditionalGeneration: The configured Whisper model ready for conditional generation tasks.
 
         """
-
+        processor = self.initialize_processor()
         if self.use_peft:
             model = WhisperForConditionalGeneration.from_pretrained(
                 self.model_id,
                 load_in_8bit=True,
                 device_map="auto",
             )
-            model.config.forced_decoder_ids = WhisperProcessor.get_decoder_prompt_ids(language=self.language, task=self.processing_task)
+            model.config.forced_decoder_ids = processor.get_decoder_prompt_ids(language=self.language, task=self.processing_task)
             # model.config.suppress_tokens = []
             model.config.use_cache = True
             model.generation_config.language = self.language if self.processing_task == "transcribe" else "en"
@@ -126,7 +126,7 @@ class WhisperModelPrep:
                 self.model_id,
                 low_cpu_mem_usage = True
             )
-            model.config.forced_decoder_ids = WhisperProcessor.get_decoder_prompt_ids(language=self.language, task=self.processing_task)
+            model.config.forced_decoder_ids = processor.get_decoder_prompt_ids(language=self.language, task=self.processing_task)
             # model.config.suppress_tokens = []
             model.config.use_cache = True
             model.generation_config.language = self.language if self.processing_task == "transcribe" else "en"
