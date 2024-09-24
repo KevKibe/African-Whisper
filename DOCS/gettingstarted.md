@@ -81,23 +81,30 @@ from training.model_trainer import Trainer
 
 # Initialize the Trainer class and train the model
 trainer = Trainer(
-    huggingface_token,
-    model_id,
-    processed_dataset,
-    model,
-    feature_processor,
-    feature_extractor,
-    tokenizer,
-    wandb_api_key,
-    use_peft,
-    processing_task
+    huggingface_token = huggingface_token,
+    model_id = model_id,
+    dataset =processed_dataset,
+    model= model,
+    feature_processor= feature_processor,
+    feature_extractor= feature_extractor,
+    tokenizer= tokenizer,
+    wandb_api_key= wandb_api_key,
+    use_peft=use_peft,
+    processing_task=processing_task,
+    language = language_abbr
 )
 trainer.train(
-    max_steps=100,                              
-    learning_rate=1e-3,                        
-    per_device_train_batch_size=8,              # Adjust based on available RAM; increase if more RAM is available
-    per_device_eval_batch_size=8,               # Adjust based on available RAM; increase if more RAM is available
-    optim="adamw_bnb_8bit"  
+    warmup_steps=10,
+    max_steps=500,
+    learning_rate=0.0001,
+    lr_scheduler_type="constant_with_warmup",
+    per_device_train_batch_size=32,              # Adjust based on available RAM; increase if more RAM is available
+    per_device_eval_batch_size=32,               # Adjust based on available RAM; increase if more RAM is available
+    optim="adamw_bnb_8bit",
+    save_steps=100,
+    logging_steps=100,
+    eval_steps=100,
+    gradient_checkpointing=True,
 )
 
 # Optional parameters for training:
