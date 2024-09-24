@@ -61,9 +61,10 @@ class DataPrep:
         self.processing_task = processing_task
         self.use_peft = use_peft
         self.model_prep = WhisperModelPrep(
-            self.model_id,
-            self.processing_task,
-            self.use_peft,
+            language = self.language_abbr,
+            model_id=self.model_id,
+            processing_task=self.processing_task,
+            use_peft=self.use_peft,
         )
         self.data_loader = Dataset(
             self.huggingface_token, self.dataset_name, self.language_abbr

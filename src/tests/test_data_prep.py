@@ -21,7 +21,11 @@ class TestDatasetManager(unittest.TestCase):
             processing_task="transcribe",
             use_peft=False,
         )
-        self.model_prep=WhisperModelPrep("openai/whisper-small", "transcribe", False),
+        self.model_prep=WhisperModelPrep(
+            language= ["yi","ti"],
+            model_id="openai/whisper-small",
+            processing_task="transcribe",
+            use_peft=False),
         self.data_loader=Dataset(os.environ.get("HF_TOKEN"), "mozilla-foundation/common_voice_16_1", ["yi", "ti"])
 
     def test_load_dataset_streaming_true(self):

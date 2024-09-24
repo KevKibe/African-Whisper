@@ -29,6 +29,7 @@ class WhisperModelPrep:
     def __init__(
         self,
         model_id: str,
+        language: list,
         processing_task: str,
         use_peft: bool,
     ):
@@ -42,7 +43,9 @@ class WhisperModelPrep:
             processing_task (str, optional): Task for the Whisper model.
 
         """
+
         self.model_id = model_id
+        self.language = language[0]
         self.processing_task = processing_task
         self.use_peft = use_peft
 
@@ -102,10 +105,10 @@ class WhisperModelPrep:
                 load_in_8bit=True,
                 device_map="auto",
             )
-            model.config.forced_decoder_ids = None
-            model.config.suppress_tokens = []
-            model.config.use_cache = False
-            model.generation_config.language = "en"
+            model.config.forced_decoder_ids = WhisperProcessor.get_decoder_prompt_ids(language=self.language, task=self.processing_task)
+            # model.config.suppress_tokens = []
+            model.config.use_cache = True
+            model.generation_config.language = self.language if self.processing_task == "transcribe" else "en"
             model.generation_config.task = self.processing_task
             model = prepare_model_for_kbit_training(model)
             config = LoraConfig(
@@ -121,15 +124,19 @@ class WhisperModelPrep:
             print("PEFT optimization is not enabled.")
             model = WhisperForConditionalGeneration.from_pretrained(
                 self.model_id,
-                # low_cpu_mem_usage = True
+                low_cpu_mem_usage = True
             )
-            model.config.forced_decoder_ids = None
-            model.config.suppress_tokens = []
-            model.config.use_cache = False
-            model.generation_config.language = "en"
+            model.config.forced_decoder_ids = WhisperProcessor.get_decoder_prompt_ids(language=self.language, task=self.processing_task)
+            # model.config.suppress_tokens = []
+            model.config.use_cache = True
+            model.generation_config.language = self.language if self.processing_task == "transcribe" else "en"
             model.generation_config.task = self.processing_task
-            # model.to("cuda")
+            model.to("cuda")
         return model
+
+
+#################################
+
 
 def load_model_ps(
         model_name_or_path,

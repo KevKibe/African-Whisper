@@ -13,7 +13,7 @@ from transformers.trainer_pt_utils import IterableDatasetShard
 from torch.utils.data import IterableDataset
 from transformers import TrainerCallback
 from .whisper_model_prep import WhisperModelPrep
-from typing import Dict, Any
+from typing import Dict, Any, List
 from .evaluation import log_pred, log_metric, compute_metrics
 from accelerate.logging import get_logger
 import warnings
@@ -42,6 +42,7 @@ class Trainer:
         huggingface_token: str,
         model_id: str,
         dataset: dict,
+        language: list,
         model: WhisperForConditionalGeneration,
         feature_processor,
         feature_extractor,
@@ -73,9 +74,10 @@ class Trainer:
         self.huggingface_token = huggingface_token
         self.use_peft = use_peft
         self.model_prep = WhisperModelPrep(
-            self.model_id,
-            processing_task,
-            self.use_peft
+            model_id=self.model_id,
+            processing_task=processing_task,
+            use_peft=self.use_peft,
+            language=language
         )
 
     def compute_metrics(self, pred) -> dict:

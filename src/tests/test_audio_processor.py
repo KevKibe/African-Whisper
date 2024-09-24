@@ -38,6 +38,7 @@ class TestAudioDataProcessor(unittest.TestCase):
 
         # Initialize model preparation
         self.model_prep = WhisperModelPrep(
+            language = ["yi", "ti"],
             model_id="openai/whisper-tiny",
             processing_task="transcribe",
             use_peft=False
