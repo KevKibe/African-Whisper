@@ -374,7 +374,7 @@ def training_schedule(
                 batches.write(f"Saving transcriptions for split {split} step {step}")
                 accelerator.wait_for_everyone()
                 pred_ids = eval_preds[-(len(eval_preds) - len(pred_str)):]
-                pred_ids = filter_eot_tokens(pred_ids)
+                pred_ids = filter_eot_tokens(pred_ids, decoder_eot_token_id)
                 pred_str.extend(
                     tokenizer.batch_decode(
                         pred_ids, skip_special_tokens=False, decode_with_timestamps=return_timestamps
@@ -402,9 +402,9 @@ def training_schedule(
         # compute WER metric for eval sets
         wer_desc = ""
         if "validation" in split or "test" in split:
-            eval_preds = filter_eot_tokens(eval_preds)
+            eval_preds = filter_eot_tokens(eval_preds, decoder_eot_token_id)
             wer_metric, pred_str, label_str, norm_pred_str, norm_label_str, eval_ids = compute_metrics(
-                eval_preds, eval_labels, eval_ids
+                eval_preds, eval_labels, eval_ids, tokenizer, normalizer
             )
             wer_desc = " ".join([f"Eval {key}: {value} |" for key, value in wer_metric.items()])
             # Save metrics + predictions
@@ -424,7 +424,7 @@ def training_schedule(
             )
         else:
             pred_ids = eval_preds[-(len(eval_preds) - len(pred_str)):]
-            pred_ids = filter_eot_tokens(pred_ids)
+            pred_ids = filter_eot_tokens(pred_ids, decoder_eot_token_id)
             pred_str.extend(
                 tokenizer.batch_decode(pred_ids, skip_special_tokens=False, decode_with_timestamps=return_timestamps)
             )
