@@ -61,13 +61,13 @@ class ModelOptimization:
             "suppress_numerals": True,
         }
         model_dir = None
-        compute_type = "bfloat16" if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else "float32"
+        # compute_type = "bfloat16" if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else "float16"
         model = load_asr_model(
             whisper_arch = self.model_name,
             device=self.device,
             device_index=0,
             download_root=model_dir,
-            compute_type=compute_type,
+            compute_type="float16",
             language=language,
             asr_options=asr_options,
             vad_options={"vad_onset": 0.500, "vad_offset": 0.363},
