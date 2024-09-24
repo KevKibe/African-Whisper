@@ -25,7 +25,7 @@ BASE_DEPS = [
     "python-dotenv==1.0.1",
     "pyannote-audio==3.2.0",
     "nltk==3.8.1",
-    "torchvision==0.17.2",
+    "torchvision",
     "ctranslate2==4.3.1",
     "pandas==2.2.2",
     "huggingface_hub",
@@ -34,7 +34,7 @@ BASE_DEPS = [
 ]
 
 DEPLOYMENT_DEPS = [
-    "torch==2.3.1",
+    "torch",
     "transformers==4.42.3",
     "pydantic==2.7.3",
     "prometheus-client==0.20.0",
@@ -44,7 +44,7 @@ DEPLOYMENT_DEPS = [
     "faster-whisper==1.0.3",
     "pyannote-audio==3.2.0",
     "nltk==3.8.1",
-    "torchvision==0.17.2",
+    "torchvision",
     "ctranslate2==4.3.1",
     "pandas==2.2.2",
 ]
