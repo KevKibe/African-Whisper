@@ -317,9 +317,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#usage_demo_on_colabv025" class="md-nav__link">
+  <a href="#usage_demo_on_colabv0912" class="md-nav__link">
     <span class="md-ellipsis">
-      Usage Demo on Colab(v0.2.5)
+      Usage Demo on Colab(v0.9.12)
     </span>
   </a>
   
@@ -512,9 +512,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#usage_demo_on_colabv025" class="md-nav__link">
+  <a href="#usage_demo_on_colabv0912" class="md-nav__link">
     <span class="md-ellipsis">
-      Usage Demo on Colab(v0.2.5)
+      Usage Demo on Colab(v0.9.12)
     </span>
   </a>
   
@@ -611,11 +611,11 @@
 
 
 <h1 id="getting_started">🚀 Getting Started<a class="headerlink" href="#getting_started" title="Permanent link">&para;</a></h1>
-<h2 id="usage_demo_on_colabv025">Usage Demo on Colab(v0.2.5)<a class="headerlink" href="#usage_demo_on_colabv025" title="Permanent link">&para;</a></h2>
+<h2 id="usage_demo_on_colabv0912">Usage Demo on Colab(v0.9.12)<a class="headerlink" href="#usage_demo_on_colabv0912" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Refer to documentation below for updated instructions and guides.</li>
 </ul>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/qj48Chu4i4k?si=Rm8GDFzqjQAvb4fd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/NHSV8ZyhMVA?si=6217bgwGGUavm-Nq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
@@ -679,38 +679,45 @@
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># Initialize the Trainer class and train the model</span>
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">huggingface_token</span><span class="p">,</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">model_id</span><span class="p">,</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">processed_dataset</span><span class="p">,</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">model</span><span class="p">,</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="n">feature_processor</span><span class="p">,</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="n">feature_extractor</span><span class="p">,</span>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="n">tokenizer</span><span class="p">,</span>
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="n">wandb_api_key</span><span class="p">,</span>
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="n">use_peft</span><span class="p">,</span>
-<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="n">processing_task</span>
-<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="p">)</span>
-<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">(</span>
-<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>    <span class="n">max_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>                              
-<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>                        
-<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    <span class="n">per_device_train_batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>              <span class="c1"># Adjust based on available RAM; increase if more RAM is available</span>
-<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>    <span class="n">per_device_eval_batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>               <span class="c1"># Adjust based on available RAM; increase if more RAM is available</span>
-<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>    <span class="n">optim</span><span class="o">=</span><span class="s2">&quot;adamw_bnb_8bit&quot;</span>  
-<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="p">)</span>
-<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>
-<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="c1"># Optional parameters for training:</span>
-<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="c1">#     max_steps (int): The maximum number of training steps (default is 100).</span>
-<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="c1">#     learning_rate (float): The learning rate for training (default is 1e-5).</span>
-<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="c1">#     per_device_train_batch_size (int): The batch size per GPU for training (default is 8).</span>
-<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="c1">#     per_device_eval_batch_size (int): The batch size per GPU for evaluation (default is 8).</span>
-<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="c1">#     optim (str): The optimizer used for training (default is &quot;adamw_bnb_8bit&quot;)</span>
-<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="c1"># See more configurable parameters https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Seq2SeqTrainingArguments</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">huggingface_token</span> <span class="o">=</span> <span class="n">huggingface_token</span><span class="p">,</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">model_id</span> <span class="o">=</span> <span class="n">model_id</span><span class="p">,</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">dataset</span> <span class="o">=</span><span class="n">processed_dataset</span><span class="p">,</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">model</span><span class="o">=</span> <span class="n">model</span><span class="p">,</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="n">feature_processor</span><span class="o">=</span> <span class="n">feature_processor</span><span class="p">,</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="n">feature_extractor</span><span class="o">=</span> <span class="n">feature_extractor</span><span class="p">,</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="n">tokenizer</span><span class="o">=</span> <span class="n">tokenizer</span><span class="p">,</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="n">wandb_api_key</span><span class="o">=</span> <span class="n">wandb_api_key</span><span class="p">,</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="n">use_peft</span><span class="o">=</span><span class="n">use_peft</span><span class="p">,</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="n">processing_task</span><span class="o">=</span><span class="n">processing_task</span><span class="p">,</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    <span class="n">language</span> <span class="o">=</span> <span class="n">language_abbr</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="p">)</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">(</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    <span class="n">warmup_steps</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    <span class="n">max_steps</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>    <span class="n">lr_scheduler_type</span><span class="o">=</span><span class="s2">&quot;constant_with_warmup&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>    <span class="n">per_device_train_batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>              <span class="c1"># Adjust based on available RAM; increase if more RAM is available</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>    <span class="n">per_device_eval_batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>               <span class="c1"># Adjust based on available RAM; increase if more RAM is available</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>    <span class="n">optim</span><span class="o">=</span><span class="s2">&quot;adamw_bnb_8bit&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>    <span class="n">save_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>    <span class="n">logging_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>    <span class="n">eval_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>    <span class="n">gradient_checkpointing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="p">)</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a><span class="c1"># Optional parameters for training:</span>
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="c1">#     max_steps (int): The maximum number of training steps (default is 100).</span>
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a><span class="c1">#     learning_rate (float): The learning rate for training (default is 1e-5).</span>
+<a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a><span class="c1">#     per_device_train_batch_size (int): The batch size per GPU for training (default is 8).</span>
+<a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a><span class="c1">#     per_device_eval_batch_size (int): The batch size per GPU for evaluation (default is 8).</span>
+<a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a><span class="c1">#     optim (str): The optimizer used for training (default is &quot;adamw_bnb_8bit&quot;)</span>
+<a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a><span class="c1"># See more configurable parameters https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Seq2SeqTrainingArguments</span>
 </code></pre></div>
 <h2 id="step_6_merge_lora_weightsif_peft_was_used">Step 6: Merge LoRA weights(if PEFT was used)<a class="headerlink" href="#step_6_merge_lora_weightsif_peft_was_used" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span> <span class="nn">training.merge_lora</span> <span class="kn">import</span> <span class="n">Merger</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># Merge PEFT fine-tuned model weights with the base model weights</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">Merger</span><span class="o">.</span><span class="n">merge_lora_weights</span><span class="p">(</span><span class="n">hf_model_id</span><span class="o">=</span><span class="s2">&quot;your-finetuned-model-name-on-huggingface-hub&quot;</span><span class="p">,</span> <span class="n">huggingface_write_token</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">Merger</span><span class="o">.</span><span class="n">merge_lora_weights</span><span class="p">(</span><span class="n">hf_model_id</span><span class="o">=</span><span class="s2">&quot;your-finetuned-model-name-on-huggingface-hub&quot;</span><span class="p">,</span> <span class="n">huggingface_token</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="step_7_test_model_using_an_audio_file">Step 7: Test Model using an Audio File<a class="headerlink" href="#step_7_test_model_using_an_audio_file" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span> <span class="nn">deployment.speech_inference</span> <span class="kn">import</span> <span class="n">SpeechTranscriptionPipeline</span><span class="p">,</span> <span class="n">ModelOptimization</span>
