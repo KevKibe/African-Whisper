@@ -1,9 +1,9 @@
 
 # 🚀 Getting Started
 
-## Usage Demo on Colab(v0.2.5)
+## Usage Demo on Colab(v0.9.12)
 - Refer to documentation below for updated instructions and guides.
-<iframe width="560" height="315" src="https://www.youtube.com/embed/qj48Chu4i4k?si=Rm8GDFzqjQAvb4fd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/NHSV8ZyhMVA?si=6217bgwGGUavm-Nq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Prerequisites
 
