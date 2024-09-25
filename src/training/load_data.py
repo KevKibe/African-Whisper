@@ -1,4 +1,4 @@
-from datasets import load_dataset, IterableDataset, concatenate_datasets
+from datasets import load_dataset, IterableDatasetDict, concatenate_datasets
 import warnings
 from typing import List
 from datasets import DatasetDict
