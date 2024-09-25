@@ -1,7 +1,7 @@
-from datasets import load_dataset, IterableDataset, concatenate_datasets
+from datasets import load_dataset, IterableDatasetDict, concatenate_datasets
 import warnings
 from typing import List
-from datasets import IterableDatasetDict, DatasetDict
+from datasets import DatasetDict
 from huggingface_hub import HfFolder
 warnings.filterwarnings("ignore")
 
@@ -82,8 +82,8 @@ class Dataset:
 
         return data
 
-
-    def count_examples(self, dataset: IterableDataset) -> int:
+    @staticmethod
+    def count_examples(dataset: dict) -> tuple:
         """
         Count the number of examples in the dataset.
 
@@ -91,12 +91,14 @@ class Dataset:
             dataset (IterableDataset): The dataset to count examples from.
 
         Returns:
-            int: The number of examples in the dataset.
+            train_samples: The number of training examples in the dataset.
+            test_samples: The number of test examples in the dataset.
         """
-        count = 0
-        for _ in dataset:
-            count += 1
-        return count
+        train_samples = list(dataset["train"])
+        test_samples = list(dataset["test"])
+        train_samples = len(train_samples)
+        test_samples = len(test_samples)
+        return train_samples, test_samples
 
 
 def load_and_validate_ps_datasets(

@@ -139,8 +139,9 @@ class DataPrep:
             train_num_samples = train_num_samples,
             test_num_samples = test_num_samples
         )
-        print(f"Training dataset size: {self.data_loader.count_examples(dataset['train'])}")
-        print(f"Test dataset size: {self.data_loader.count_examples(dataset['test'])}")
+        train_count, test_count = self.data_loader.count_examples(dataset)
+        print(f"Training dataset size: {train_count}")
+        print(f"Test dataset size: {test_count}")
         processor = AudioDataProcessor(dataset, feature_extractor, tokenizer, processor)
         dataset['train']= dataset['train'].map(processor.resampled_dataset, remove_columns=list(next(iter(dataset['train'])).keys()))
         dataset['test']= dataset['test'].map(processor.resampled_dataset)

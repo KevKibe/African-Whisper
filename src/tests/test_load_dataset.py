@@ -30,16 +30,28 @@ class TestDatasetManager(unittest.TestCase):
 
     def test_count_examples(self):
         """Test counting examples in a dataset."""
+
         # Arrange
         class MockDataset:
-            """A mock dataset class to simulate iteration."""
-            def __iter__(self):
-                return iter(range(10))
+            """A mock dataset class to simulate a dictionary-like structure with 'train' and 'test'."""
+
+            def __init__(self):
+                self.data = {
+                    "train": list(range(10)),  # Simulating 10 training examples
+                    "test": list(range(5))  # Simulating 5 testing examples
+                }
+
+            def __getitem__(self, key):
+                return self.data[key]
+
+        mock_dataset = MockDataset()
+
         # Act
-        count = self.dataset_manager.count_examples(MockDataset())
+        train_count, test_count = self.dataset_manager.count_examples(mock_dataset)
 
         # Assert
-        self.assertEqual(count, 10, "The count of examples should be equal to 10.")
+        self.assertEqual(train_count, 10, "The count of training examples should be equal to 10.")
+        self.assertEqual(test_count, 5, "The count of testing examples should be equal to 5.")
 
     def test_dataset_structure(self):
         """Test the structure of the loaded dataset."""
