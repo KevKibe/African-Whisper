@@ -36,10 +36,10 @@ class TestDatasetManager(unittest.TestCase):
             def __iter__(self):
                 return iter(range(10))
         # Act
-        count = self.dataset_manager.count_examples(MockDataset())
+        train_count, test_count = self.dataset_manager.count_examples(MockDataset())
 
         # Assert
-        self.assertEqual(count, 10, "The count of examples should be equal to 10.")
+        self.assertEqual(train_count, 10, "The count of examples should be equal to 10.")
 
     def test_dataset_structure(self):
         """Test the structure of the loaded dataset."""
