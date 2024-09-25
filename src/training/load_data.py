@@ -1,7 +1,7 @@
 from datasets import load_dataset, IterableDataset, concatenate_datasets
 import warnings
 from typing import List
-from datasets import IterableDatasetDict, DatasetDict
+from datasets import DatasetDict
 from huggingface_hub import HfFolder
 warnings.filterwarnings("ignore")
 
@@ -83,7 +83,7 @@ class Dataset:
         return data
 
     @staticmethod
-    def count_examples(dataset:dict) -> tuple:
+    def count_examples(dataset: dict) -> tuple:
         """
         Count the number of examples in the dataset.
 
