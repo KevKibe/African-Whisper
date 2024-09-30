@@ -407,9 +407,13 @@ def training_schedule(
         wer_desc = ""
         if "validation" in split or "test" in split:
             eval_preds = filter_eot_tokens(eval_preds, decoder_eot_token_id)
+            print(f"Length of raw_datasets split :{len(raw_datasets[split])} before compute metrics")
+            print(f"Before compute metrics pred_str: {len(pred_str)}, eval pred: {len(eval_preds)}")
             wer_metric, pred_str, label_str, norm_pred_str, norm_label_str, eval_ids = compute_metrics(
                 eval_preds, eval_labels, eval_ids, tokenizer, normalizer
             )
+            print(f"After compute metrics pred_str: {len(pred_str)}, eval pred: {len(eval_preds)}")
+            print(f"Length of raw_datasets split :{len(raw_datasets[split])} after compute metrics")
             wer_desc = " ".join([f"Eval {key}: {value} |" for key, value in wer_metric.items()])
             # Save metrics + predictions
             log_metric(
@@ -445,6 +449,9 @@ def training_schedule(
         logger.info(wer_desc)
 
         if not streaming:
+            print(f"Length of raw_datasets split :{len(raw_datasets[split])}")
+            print(f"Length of pred str :{len(pred_str)}")
+            print(f"Length of eval predsr :{len(eval_preds)}")
             raw_datasets[split] = raw_datasets[split].add_column("whisper_transcript", pred_str)
             raw_datasets[split] = raw_datasets[split].add_column("eval_preds", eval_preds)
 
