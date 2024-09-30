@@ -104,7 +104,7 @@ def compute_metrics(
         file_ids,
         tokenizer,
         normalizer,
-        return_timestamps=False
+        return_timestamps=True
 ):
     # replace padded labels by the padding token
     for idx in range(len(labels)):
