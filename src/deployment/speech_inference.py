@@ -131,7 +131,7 @@ class SpeechTranscriptionPipeline:
             compression_ratio_threshold=2.4,
             log_prob_threshold=-1,
             no_speech_threshold=0.6,
-            vad_filter=False,
+            vad_filter=True,
             word_timestamps=True
         )
         return transcription_result
