@@ -40,7 +40,7 @@ class ModelOptimization:
         else:
             print(f"Model {self.model_name} is already in CTranslate2 format")
 
-    def load_transcription_model(self, beam_size: int = 5, language = None, whisper_arch: str = None) -> object:
+    def load_transcription_model(self, beam_size: int = 5, language = None) -> object:
         """
         Loads the ASR model for transcription.
 
@@ -64,7 +64,7 @@ class ModelOptimization:
         # compute_type = "bfloat16" if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else "float16"
         compute_type = "float16" if torch.cuda.is_available() else "float32"
         model = load_asr_model(
-            whisper_arch = whisper_arch or self.model_name,
+            whisper_arch = self.model_name,
             device=self.device,
             device_index=0, #for multi-gpu processing
             download_root=model_dir,
