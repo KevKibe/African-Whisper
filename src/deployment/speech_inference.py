@@ -94,6 +94,7 @@ class SpeechTranscriptionPipeline:
                  audio_file_path: str,
                  task: str,
                  huggingface_token: str,
+                 language: str = None,
                  batch_size: int = 32,
                  chunk_size: int = 30) -> None:
         self.audio = load_audio(audio_file_path)
@@ -102,6 +103,7 @@ class SpeechTranscriptionPipeline:
         self.batch_size = batch_size
         self.chunk_size = chunk_size
         self.huggingface_token = huggingface_token,
+        self.language = language
 
 
     def transcribe_audio(self, model) -> Dict:
@@ -119,7 +121,19 @@ class SpeechTranscriptionPipeline:
             batch_size=self.batch_size,
             chunk_size=self.chunk_size,
             task=self.task,
-            print_progress=True
+            print_progress=True,
+            initial_prompt="",
+            beam_size=5,
+            temperature=0,
+            language=self.language,
+            length_penalty=1,
+            condition_on_previous_text=True,
+            prompt_reset_on_temperature=0.5,
+            compression_ratio_threshold=2.4,
+            log_prob_threshold=-1,
+            no_speech_threshold=0.6,
+            vad_filter=False,
+            word_timestamps=True
         )
         return transcription_result
 
