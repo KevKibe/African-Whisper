@@ -122,7 +122,6 @@ class SpeechTranscriptionPipeline:
             chunk_size=self.chunk_size,
             task=self.task,
             print_progress=True,
-            initial_prompt="",
             beam_size=5,
             temperature=0,
             language=self.language,
