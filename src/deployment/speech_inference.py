@@ -122,17 +122,17 @@ class SpeechTranscriptionPipeline:
             chunk_size=self.chunk_size,
             task=self.task,
             print_progress=True,
-            beam_size=5,
-            temperature=0,
-            language=self.language,
-            length_penalty=1,
-            condition_on_previous_text=True,
-            prompt_reset_on_temperature=0.5,
-            compression_ratio_threshold=2.4,
-            log_prob_threshold=-1,
-            no_speech_threshold=0.6,
-            vad_filter=True,
-            word_timestamps=True
+            # beam_size=5,
+            # temperature=0,
+            # language=self.language,
+            # length_penalty=1,
+            # condition_on_previous_text=True,
+            # prompt_reset_on_temperature=0.5,
+            # compression_ratio_threshold=2.4,
+            # log_prob_threshold=-1,
+            # no_speech_threshold=0.6,
+            # vad_filter=True,
+            # word_timestamps=True
         )
         return transcription_result
 
