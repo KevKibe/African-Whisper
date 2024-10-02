@@ -40,6 +40,10 @@ def load_asr_model(whisper_arch,
                          compute_type=compute_type,
                          download_root=download_root,
                          cpu_threads=threads)
+    if whisper_arch == "openai/whisper-large-v3" or "openai/whisper-large-v3-turbo":
+        model.feature_extractor.mel_filters = model.feature_extractor.get_mel_filters(
+            model.feature_extractor.sampling_rate, model.feature_extractor.n_fft, n_mels=128)
+
     if language is not None:
         tokenizer = faster_whisper.tokenizer.Tokenizer(model.hf_tokenizer, model.model.is_multilingual, language=language)
     else:
