@@ -13,7 +13,7 @@ BASE_DEPS = [
     "accelerate==0.31.0",
     "peft==0.11.1",
     "numpy==1.26.4",
-    "wandb==0.17.4",
+    "wandb==0.18.3",
     "holoviews==1.18.3",
     "panel==1.3.8",
     "tf-keras==2.16.0",
