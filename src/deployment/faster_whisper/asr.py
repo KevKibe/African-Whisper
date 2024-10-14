@@ -139,15 +139,19 @@ class FasterWhisperPipeline(Pipeline):
 
     def preprocess(self, audio):
         audio = audio['inputs']
-        if self.model.whisper_arch == ["openai/whisper-large-v3", "openai/whisper-large-v3-turbo"]:
-            model_n_mels = 128  # Use 128 mels for Whisper v3 and v3-turbo models
-        else:
-            model_n_mels = self.model.feat_kwargs.get("feature_size", 80)
-        features = log_mel_spectrogram(
-            audio,
-            n_mels=model_n_mels,
-            padding=N_SAMPLES - audio.shape[0],
-        )
+        try:
+            features = log_mel_spectrogram(
+                audio,
+                n_mels=80,
+                padding=N_SAMPLES - audio.shape[0],
+            )
+        except Exception as e:
+            print(f"Error encountered with n_mels=80: {e}. Retrying with n_mels=128.")
+            features = log_mel_spectrogram(
+                audio,
+                n_mels=128,
+                padding=N_SAMPLES - audio.shape[0],
+            )
         return {'inputs': features}
 
     def _forward(self, model_inputs):
@@ -247,13 +251,15 @@ class FasterWhisperPipeline(Pipeline):
     def detect_language(self, audio: np.ndarray):
         if audio.shape[0] < N_SAMPLES:
             print("Warning: audio is shorter than 30s, language detection may be inaccurate.")
-        if self.model.whisper_arch == ["openai/whisper-large-v3", "openai/whisper-large-v3-turbo"]:
-            model_n_mels = 128  # Use 128 mels for Whisper v3 and v3-turbo models
-        else:
-            model_n_mels = self.model.feat_kwargs.get("feature_size", 80)
-        segment = log_mel_spectrogram(audio[: N_SAMPLES],
-                                      n_mels=model_n_mels,
-                                      padding=0 if audio.shape[0] >= N_SAMPLES else N_SAMPLES - audio.shape[0])
+        try:
+            segment = log_mel_spectrogram(audio[: N_SAMPLES],
+                                          n_mels=80,
+                                          padding=0 if audio.shape[0] >= N_SAMPLES else N_SAMPLES - audio.shape[0])
+        except Exception as e:
+            print(f"Error encountered with n_mels=80: {e}. Retrying with n_mels=128.")
+            segment = log_mel_spectrogram(audio[: N_SAMPLES],
+                                          n_mels=128,
+                                          padding=0 if audio.shape[0] >= N_SAMPLES else N_SAMPLES - audio.shape[0])
         encoder_output = self.model.encode(segment)
         results = self.model.model.detect_language(encoder_output)
         language_token, language_probability = results[0][0]

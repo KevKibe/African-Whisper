@@ -1,3 +1,5 @@
+from tensorflow.python.debug.lib.debug_events_reader import Execution
+
 from .asr import WhisperModel, FasterWhisperPipeline
 from typing import Optional
 import faster_whisper
@@ -40,7 +42,14 @@ def load_asr_model(whisper_arch,
                          compute_type=compute_type,
                          download_root=download_root,
                          cpu_threads=threads)
-    if whisper_arch == "openai/whisper-large-v3" or "openai/whisper-large-v3-turbo":
+    try:
+        model.feature_extractor.mel_filters = model.feature_extractor.get_mel_filters(
+            model.feature_extractor.sampling_rate,
+            model.feature_extractor.n_fft,
+            n_mels=80
+        )
+    except Exception as e:
+        print(f"Error encountered with n_mels=80: {e}. Retrying with n_mels=128.")
         model.feature_extractor.mel_filters = model.feature_extractor.get_mel_filters(
             model.feature_extractor.sampling_rate,
             model.feature_extractor.n_fft,
