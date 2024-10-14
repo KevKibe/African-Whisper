@@ -18,7 +18,8 @@ def load_asr_model(whisper_arch,
                vad_options=None,
                model : Optional[WhisperModel] = None,
                download_root=None,
-               threads=4):
+               threads=4,
+               is_v3_architecture=False):
     '''Load a Whisper model for inference.
     Args:
         whisper_arch: str - The name of the Whisper model to load.
@@ -42,18 +43,18 @@ def load_asr_model(whisper_arch,
                          compute_type=compute_type,
                          download_root=download_root,
                          cpu_threads=threads)
-    try:
-        model.feature_extractor.mel_filters = model.feature_extractor.get_mel_filters(
-            model.feature_extractor.sampling_rate,
-            model.feature_extractor.n_fft,
-            n_mels=80
-        )
-    except Exception as e:
-        print(f"Error encountered with n_mels=80: {e}. Retrying with n_mels=128.")
+
+    if is_v3_architecture:
         model.feature_extractor.mel_filters = model.feature_extractor.get_mel_filters(
             model.feature_extractor.sampling_rate,
             model.feature_extractor.n_fft,
             n_mels=128
+        )
+    else:
+        model.feature_extractor.mel_filters = model.feature_extractor.get_mel_filters(
+            model.feature_extractor.sampling_rate,
+            model.feature_extractor.n_fft,
+            n_mels=80
         )
 
     if language is not None:
@@ -120,4 +121,5 @@ def load_asr_model(whisper_arch,
         language=language,
         suppress_numerals=suppress_numerals,
         vad_params=default_vad_options,
+        is_v3_architecture=is_v3_architecture
     )

@@ -40,7 +40,7 @@ class ModelOptimization:
         else:
             print(f"Model {self.model_name} is already in CTranslate2 format")
 
-    def load_transcription_model(self, beam_size: int = 5, language = None) -> object:
+    def load_transcription_model(self, beam_size: int = 5, language = None, is_v3_architecture = False) -> object:
         """
         Loads the ASR model for transcription.
 
@@ -72,7 +72,8 @@ class ModelOptimization:
             language=language,
             asr_options=asr_options,
             vad_options={"vad_onset": 0.500, "vad_offset": 0.363},
-            threads=8
+            threads=8,
+            is_v3_architecture=is_v3_architecture
         )
         return model
 
