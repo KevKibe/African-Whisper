@@ -141,6 +141,9 @@ model = model_optimizer.load_transcription_model()
 # For fine-tuning v3 or v3-turbo models or a fine-tuned version of them, specify is_v3_architecture=True
 # Example:
 # model = model_optimizer.load_transcription_model(is_v3_architecture=True)
+# Optional language parameter, else model will automatically detect language.
+# Example:
+# model = model_optimizer.load_transcription_model(language='en')
 
 # Initiate the transcription model
 inference = SpeechTranscriptionPipeline(
