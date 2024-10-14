@@ -139,13 +139,13 @@ class FasterWhisperPipeline(Pipeline):
 
     def preprocess(self, audio):
         audio = audio['inputs']
-        if getattr(self.model, 'model_type', '') in ["openai/whisper-large-v3", "openai/whisper-large-v3-turbo"]:
+        if self.model.whisper_arch == ["openai/whisper-large-v3", "openai/whisper-large-v3-turbo"]:
             model_n_mels = 128  # Use 128 mels for Whisper v3 and v3-turbo models
         else:
             model_n_mels = self.model.feat_kwargs.get("feature_size", 80)
         features = log_mel_spectrogram(
             audio,
-            n_mels=128,
+            n_mels=model_n_mels,
             padding=N_SAMPLES - audio.shape[0],
         )
         return {'inputs': features}
@@ -247,12 +247,12 @@ class FasterWhisperPipeline(Pipeline):
     def detect_language(self, audio: np.ndarray):
         if audio.shape[0] < N_SAMPLES:
             print("Warning: audio is shorter than 30s, language detection may be inaccurate.")
-        if getattr(self.model, 'model_type', '') in ["openai/whisper-large-v3", "openai/whisper-large-v3-turbo"]:
+        if self.model.whisper_arch == ["openai/whisper-large-v3", "openai/whisper-large-v3-turbo"]:
             model_n_mels = 128  # Use 128 mels for Whisper v3 and v3-turbo models
         else:
             model_n_mels = self.model.feat_kwargs.get("feature_size", 80)
         segment = log_mel_spectrogram(audio[: N_SAMPLES],
-                                      n_mels=128,
+                                      n_mels=model_n_mels,
                                       padding=0 if audio.shape[0] >= N_SAMPLES else N_SAMPLES - audio.shape[0])
         encoder_output = self.model.encode(segment)
         results = self.model.model.detect_language(encoder_output)
