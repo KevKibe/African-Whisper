@@ -42,10 +42,15 @@ class ModelOptimization:
 
     def load_transcription_model(self, beam_size: int = 5, language = None, is_v3_architecture = False) -> object:
         """
-        Loads the ASR model for transcription.
+        Loads and returns the ASR model for transcription with specified parameters.
+
+        Args:
+            beam_size (int): Number of beams for beam search decoding. Default is 5.
+            language (str, optional): Language code for the model. If None, defaults to automatic detection.
+            is_v3_architecture (bool): Specifies if the model uses the v3 architecture.
 
         Returns:
-            object: Loaded ASR model.
+            object: The loaded ASR model.
         """
         asr_options = {
             "beam_size": beam_size,
@@ -123,17 +128,6 @@ class SpeechTranscriptionPipeline:
             chunk_size=self.chunk_size,
             task=self.task,
             print_progress=True,
-            # beam_size=5,
-            # temperature=0,
-            # language=self.language,
-            # length_penalty=1,
-            # condition_on_previous_text=True,
-            # prompt_reset_on_temperature=0.5,
-            # compression_ratio_threshold=2.4,
-            # log_prob_threshold=-1,
-            # no_speech_threshold=0.6,
-            # vad_filter=True,
-            # word_timestamps=True
         )
         return transcription_result
 
