@@ -139,7 +139,7 @@ class FasterWhisperPipeline(Pipeline):
 
     def preprocess(self, audio):
         audio = audio['inputs']
-        if self.model.name in ["openai/whisper-large-v3", "openai/whisper-large-v3-turbo"]:
+        if getattr(self.model, 'model_type', '') in ["openai/whisper-large-v3", "openai/whisper-large-v3-turbo"]:
             model_n_mels = 128  # Use 128 mels for Whisper v3 and v3-turbo models
         else:
             model_n_mels = self.model.feat_kwargs.get("feature_size", 80)
@@ -247,7 +247,7 @@ class FasterWhisperPipeline(Pipeline):
     def detect_language(self, audio: np.ndarray):
         if audio.shape[0] < N_SAMPLES:
             print("Warning: audio is shorter than 30s, language detection may be inaccurate.")
-        if self.model.name in ["openai/whisper-large-v3", "openai/whisper-large-v3-turbo"]:
+        if getattr(self.model, 'model_type', '') in ["openai/whisper-large-v3", "openai/whisper-large-v3-turbo"]:
             model_n_mels = 128  # Use 128 mels for Whisper v3 and v3-turbo models
         else:
             model_n_mels = self.model.feat_kwargs.get("feature_size", 80)
