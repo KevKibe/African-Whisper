@@ -16,20 +16,28 @@ def load_asr_model(whisper_arch,
                vad_options=None,
                model : Optional[WhisperModel] = None,
                download_root=None,
-               threads=4):
-    '''Load a Whisper model for inference.
+               threads=4,
+               is_v3_architecture=False):
+    """
+    Loads and returns a Whisper ASR model for inference.
+
     Args:
-        whisper_arch: str - The name of the Whisper model to load.
-        device: str - The device to load the model on.
-        compute_type: str - The compute type to use for the model.
-        options: dict - A dictionary of options to use for the model.
-        language: str - The language of the model. (use English for now)
-        model: Optional[WhisperModel] - The WhisperModel instance to use.
-        download_root: Optional[str] - The root directory to download the model to.
-        threads: int - The number of cpu threads to use per worker, e.g. will be multiplied by num workers.
+        whisper_arch (str): Name of the Whisper model architecture to load.
+        device (str): Device to load the model on (e.g., "cuda" or "cpu").
+        device_index (int): Index of the device, if applicable. Default is 0.
+        compute_type (str): Type of compute precision to use (e.g., "float16").
+        asr_options (dict, optional): Additional ASR-specific options.
+        language (str, optional): Language code for the model. Defaults to None.
+        vad_model (optional): Voice Activity Detection model instance, if used.
+        vad_options (dict, optional): Options for VAD, if applicable.
+        model (WhisperModel, optional): Preloaded WhisperModel instance, if available.
+        download_root (str, optional): Directory path for downloading model files.
+        threads (int): Number of CPU threads per worker. Default is 4.
+        is_v3_architecture (bool): Indicates whether the model uses the v3 architecture.
+
     Returns:
-        A Whisper pipeline.
-    '''
+        object: The Whisper model pipeline for ASR inference.
+    """
 
     if whisper_arch.endswith(".en"):
         language = "en"
@@ -40,6 +48,20 @@ def load_asr_model(whisper_arch,
                          compute_type=compute_type,
                          download_root=download_root,
                          cpu_threads=threads)
+
+    if is_v3_architecture:
+        model.feature_extractor.mel_filters = model.feature_extractor.get_mel_filters(
+            model.feature_extractor.sampling_rate,
+            model.feature_extractor.n_fft,
+            n_mels=128
+        )
+    else:
+        model.feature_extractor.mel_filters = model.feature_extractor.get_mel_filters(
+            model.feature_extractor.sampling_rate,
+            model.feature_extractor.n_fft,
+            n_mels=80
+        )
+
     if language is not None:
         tokenizer = faster_whisper.tokenizer.Tokenizer(model.hf_tokenizer, model.model.is_multilingual, language=language)
     else:
@@ -104,4 +126,5 @@ def load_asr_model(whisper_arch,
         language=language,
         suppress_numerals=suppress_numerals,
         vad_params=default_vad_options,
+        is_v3_architecture=is_v3_architecture
     )

@@ -40,12 +40,17 @@ class ModelOptimization:
         else:
             print(f"Model {self.model_name} is already in CTranslate2 format")
 
-    def load_transcription_model(self, beam_size: int = 5, language = None) -> object:
+    def load_transcription_model(self, beam_size: int = 5, language = None, is_v3_architecture = False) -> object:
         """
-        Loads the ASR model for transcription.
+        Loads and returns the ASR model for transcription with specified parameters.
+
+        Args:
+            beam_size (int): Number of beams for beam search decoding. Default is 5.
+            language (str, optional): Language code for the model. If None, defaults to automatic detection.
+            is_v3_architecture (bool): Specifies if the model uses the v3 architecture.
 
         Returns:
-            object: Loaded ASR model.
+            object: The loaded ASR model.
         """
         asr_options = {
             "beam_size": beam_size,
@@ -72,7 +77,8 @@ class ModelOptimization:
             language=language,
             asr_options=asr_options,
             vad_options={"vad_onset": 0.500, "vad_offset": 0.363},
-            threads=8
+            threads=8,
+            is_v3_architecture=is_v3_architecture
         )
         return model
 
@@ -94,6 +100,7 @@ class SpeechTranscriptionPipeline:
                  audio_file_path: str,
                  task: str,
                  huggingface_token: str,
+                 language: str = None,
                  batch_size: int = 32,
                  chunk_size: int = 30) -> None:
         self.audio = load_audio(audio_file_path)
@@ -102,6 +109,7 @@ class SpeechTranscriptionPipeline:
         self.batch_size = batch_size
         self.chunk_size = chunk_size
         self.huggingface_token = huggingface_token,
+        self.language = language
 
 
     def transcribe_audio(self, model) -> Dict:
@@ -119,7 +127,7 @@ class SpeechTranscriptionPipeline:
             batch_size=self.batch_size,
             chunk_size=self.chunk_size,
             task=self.task,
-            print_progress=True
+            print_progress=True,
         )
         return transcription_result
 
