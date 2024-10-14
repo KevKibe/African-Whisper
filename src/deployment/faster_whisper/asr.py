@@ -255,12 +255,14 @@ class FasterWhisperPipeline(Pipeline):
             segment = log_mel_spectrogram(audio[: N_SAMPLES],
                                           n_mels=80,
                                           padding=0 if audio.shape[0] >= N_SAMPLES else N_SAMPLES - audio.shape[0])
+            encoder_output = self.model.encode(segment)
         except Exception as e:
             print(f"Error encountered with n_mels=80: {e}. Retrying with n_mels=128.")
             segment = log_mel_spectrogram(audio[: N_SAMPLES],
                                           n_mels=128,
                                           padding=0 if audio.shape[0] >= N_SAMPLES else N_SAMPLES - audio.shape[0])
-        encoder_output = self.model.encode(segment)
+            encoder_output = self.model.encode(segment)
+
         results = self.model.model.detect_language(encoder_output)
         language_token, language_probability = results[0][0]
         language = language_token[2:-2]
