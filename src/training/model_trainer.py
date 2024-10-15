@@ -251,9 +251,9 @@ class Trainer:
 
         # Prepare learning rate scheduler
         num_update_steps_per_epoch = len(train_dataloader) // gradient_accumulation_steps
+        num_train_epochs = 3
+        num_warmup_steps = 0
         if max_steps is None:
-            num_train_epochs =3
-            num_warmup_steps=0
             max_steps = num_train_epochs * num_update_steps_per_epoch
         else:
             num_train_epochs = max_steps // num_update_steps_per_epoch + 1
