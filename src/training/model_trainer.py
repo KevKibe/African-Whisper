@@ -11,11 +11,12 @@ from torch.utils.data import DataLoader
 from .wandb_callback import WandbProgressResultsCallback
 from transformers.trainer_pt_utils import IterableDatasetShard
 from torch.utils.data import IterableDataset
-from transformers import TrainerCallback
+from transformers import TrainerCallback, get_scheduler
 from .whisper_model_prep import WhisperModelPrep
 from typing import Dict, Any
 from .evaluation import log_pred, log_metric, compute_metrics
 from accelerate.logging import get_logger
+from accelerate import Accelerator
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -124,127 +125,107 @@ class Trainer:
         ).input_features[0]
         return {"spectrogram": specs}
 
+    from accelerate import Accelerator
+    from transformers import get_scheduler
+    from tqdm.auto import tqdm
+
     def train(self,
-        output_dir: str = None,
-        max_steps: int = 100,
-        learning_rate: float = 1e-5,
-        lr_scheduler_type="constant_with_warmup",
-        per_device_train_batch_size: int = 8,
-        per_device_eval_batch_size: int = 8,
-        optim: str = "adamw_bnb_8bit",
-        gradient_accumulation_steps: int =1,
-        gradient_checkpointing: bool = True,
-        fp16: bool = torch.cuda.is_available(),
-        evaluation_strategy: str = "steps",
-        predict_with_generate: bool = True,
-        generation_max_length: int = 225,
-        save_steps: int = 25,
-        eval_steps: int = 25,
-        logging_steps: int = 25,
-        load_best_model_at_end: bool = True,
-        metric_for_best_model: str = "wer",
-        greater_is_better: bool = False,
-        push_to_hub: bool = True,
-        hub_strategy: str = "checkpoint",
-        save_safetensors: bool = True,
-        resume_from_checkpoint: str = "last-checkpoint",
-        report_to: str = "wandb",
-        remove_unused_columns: bool = False,
-        ignore_data_skip: bool = True,
-        **kwargs):
-        """
-        Trains the model using the specified configurations.
+              num_train_epochs: int = 3,
+              max_steps: int = None,
+              learning_rate: float = 5e-5,
+              weight_decay: float = 0.0,
+              lr_scheduler_type: str = "linear",
+              num_warmup_steps: int = 0,
+              per_device_train_batch_size: int = 8,
+              per_device_eval_batch_size: int = 8,
+              gradient_accumulation_steps: int = 1,
+              eval_steps: int = 500,
+              output_dir: str = None,
+              **kwargs):
 
-        Args:
-            output_dir (str): The output directory where the model predictions and checkpoints will be written.
-            max_steps (int, optional): The maximum number of training steps. Defaults to 100.
-            learning_rate (float, optional): The learning rate for the training process. Defaults to 1e-5.
-            per_device_train_batch_size (int, optional): The batch size per GPU during training. Defaults to 8.
-            per_device_eval_batch_size (int, optional): The batch size per GPU during evaluation. Defaults to 8.
-            optim (str, optional): The optimizer to use for training. Defaults to "adamw_bnb_8bit".
-            gradient_accumulation_steps (int, optional): The number of steps to accumulate gradients before performing an optimization step. Defaults to 1.
-            gradient_checkpointing (bool, optional): Whether to use gradient checkpointing to save memory at the expense of slower backward pass. Defaults to True.
-            fp16 (bool, optional): Whether to use 16-bit (mixed) precision training instead of 32-bit training.
-            evaluation_strategy (str, optional): The evaluation strategy to adopt during training. "steps": Evaluate every `eval_steps`. Defaults to "steps".
-            predict_with_generate (bool, optional): Whether to use generate to calculate generative metrics (ROUGE, BLEU). Defaults to True.
-            generation_max_length (int, optional): The maximum length of the sequence to be generated. Defaults to 225.
-            save_steps (int, optional): The number of training steps before saving the model. Defaults to 25.
-            eval_steps (int, optional): The number of training steps before evaluating the model. Defaults to 25.
-            logging_steps (int, optional): The number of training steps before logging the training info. Defaults to 25.
-            load_best_model_at_end (bool, optional): Whether to load the best model found during training at the end of training. Defaults to True.
-            metric_for_best_model (str, optional): The metric to use to compare two different models. Defaults to "wer".
-            greater_is_better (bool, optional): Whether a larger metric value indicates a better model. Defaults to False.
-            push_to_hub (bool, optional): Whether to push the model to the Hugging Face model hub at the end of training. Defaults to True.
-            hub_strategy (str, optional): The hub strategy to use for model checkpointing. Defaults to "checkpoint".
-            save_safetensors (bool, optional): Whether to save tensors in a safe format. Defaults to False.
-            resume_from_checkpoint (str, optional): The path to a checkpoint from which to resume training. Defaults to "last-checkpoint".
-            report_to (str, optional): The list of integrations to report the results and logs to. Defaults to "wandb".
-            remove_unused_columns (bool, optional): Whether to remove columns not required by the model when using a dataset. Defaults to False.
-            ignore_data_skip (bool, optional): Whether to skip data loading issues when the dataset is being created. Defaults to True.
-            **kwargs: Additional keyword arguments to be passed to the `Seq2SeqTrainingArguments` constructor https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Seq2SeqTrainingArguments.
-        """
-        data_collator = DataCollatorSpeechSeq2SeqWithPadding(
-            processor=self.feature_processor
-        )
-        output_dir = f"../{self.model_id}-finetuned"
-        training_args = Seq2SeqTrainingArguments(
-            output_dir=output_dir,
-            per_device_train_batch_size=per_device_train_batch_size,
-            gradient_accumulation_steps=gradient_accumulation_steps,
-            learning_rate=learning_rate,
-            lr_scheduler_type=lr_scheduler_type,
-            max_steps=max_steps,
-            gradient_checkpointing=gradient_checkpointing,
-            fp16=fp16,
-            optim=optim,
-            evaluation_strategy=evaluation_strategy,
-            per_device_eval_batch_size=per_device_eval_batch_size,
-            predict_with_generate=predict_with_generate,
-            generation_max_length=generation_max_length,
-            save_steps=save_steps,
-            eval_steps=eval_steps,
-            logging_steps=logging_steps,
-            load_best_model_at_end=load_best_model_at_end,
-            metric_for_best_model=metric_for_best_model,
-            greater_is_better=greater_is_better,
-            push_to_hub=push_to_hub,
-            hub_token=self.huggingface_token,
-            hub_strategy = hub_strategy,
-            save_safetensors = save_safetensors,
-            resume_from_checkpoint  = resume_from_checkpoint,
-            report_to=report_to,
-            remove_unused_columns=remove_unused_columns,
-            ignore_data_skip=ignore_data_skip,
-            **kwargs
+        # Initialize accelerator
+        accelerator = Accelerator(gradient_accumulation_steps=gradient_accumulation_steps)
+
+        # Prepare datasets and dataloaders
+        train_dataloader = self.get_train_dataloader(per_device_train_batch_size)
+        eval_dataloader = self.get_eval_dataloader(per_device_eval_batch_size)
+
+        # Prepare model
+        model = self.model
+
+        # Prepare optimizer
+        optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
+
+        # Prepare everything with our `accelerator`
+        model, optimizer, train_dataloader, eval_dataloader = accelerator.prepare(
+            model, optimizer, train_dataloader, eval_dataloader
         )
 
-        eval_dataset = self.dataset["test"].map(self.compute_spectrograms)
+        # Prepare learning rate scheduler
+        num_update_steps_per_epoch = len(train_dataloader) // gradient_accumulation_steps
+        if max_steps is None:
+            max_steps = num_train_epochs * num_update_steps_per_epoch
+        else:
+            num_train_epochs = max_steps // num_update_steps_per_epoch + 1
 
-        trainer = Seq2SeqTrainer(
-            args=training_args,
-            model=self.model,
-            train_dataset=self.dataset["train"],
-            eval_dataset=eval_dataset,
-            data_collator=data_collator,
-            compute_metrics=self.compute_metrics,
-            tokenizer=self.feature_processor.feature_extractor,
-            callbacks=[ShuffleCallback()],
+        lr_scheduler = get_scheduler(
+            name=lr_scheduler_type,
+            optimizer=optimizer,
+            num_warmup_steps=num_warmup_steps,
+            num_training_steps=max_steps,
         )
-        data_loader = trainer.get_train_dataloader()
-        for batch in data_loader:
-            if batch is None or len(batch) == 0:
-                print("Empty batch found!")
-                break
-            # print("Batch contains data")
-        tokenizer = self.model_prep.initialize_tokenizer()
-        processor = self.model_prep.initialize_processor()
-        tokenizer.save_pretrained(training_args.output_dir)
-        processor.save_pretrained(training_args.output_dir)
-        progress_callback = WandbProgressResultsCallback(
-            trainer, eval_dataset, tokenizer
+
+        # Training loop
+        total_batch_size = per_device_train_batch_size * accelerator.num_processes * gradient_accumulation_steps
+        progress_bar = tqdm(range(max_steps), disable=not accelerator.is_local_main_process)
+        completed_steps = 0
+
+        for epoch in range(num_train_epochs):
+            model.train()
+            for step, batch in enumerate(train_dataloader):
+                with accelerator.accumulate(model):
+                    outputs = model(**batch)
+                    loss = outputs.loss
+                    accelerator.backward(loss)
+                    optimizer.step()
+                    lr_scheduler.step()
+                    optimizer.zero_grad()
+
+                if accelerator.sync_gradients:
+                    progress_bar.update(1)
+                    completed_steps += 1
+
+                if completed_steps >= max_steps:
+                    break
+
+                if completed_steps % eval_steps == 0:
+                    model.eval()
+                    losses = []
+                    for eval_step, eval_batch in enumerate(eval_dataloader):
+                        with torch.no_grad():
+                            outputs = model(**eval_batch)
+                        loss = outputs.loss
+                        losses.append(accelerator.gather(loss.repeat(per_device_eval_batch_size)))
+
+                    losses = torch.cat(losses)
+                    try:
+                        eval_loss = torch.mean(losses)
+                        accelerator.print(f"Step {completed_steps}: Eval Loss: {eval_loss}")
+                    except:
+                        pass
+
+                    model.train()
+
+        # Save the final model
+        accelerator.wait_for_everyone()
+        unwrapped_model = accelerator.unwrap_model(model)
+        unwrapped_model.save_pretrained(
+            output_dir,
+            is_main_process=accelerator.is_main_process,
+            save_function=accelerator.save
         )
-        trainer.add_callback(progress_callback)
-        trainer.train()
+
+        return unwrapped_model
 
 
 
