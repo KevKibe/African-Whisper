@@ -11,6 +11,7 @@ from transformers import (
     BitsAndBytesConfig
 )
 import torch
+from accelerate import Accelerator
 warnings.filterwarnings("ignore")
 
 class WhisperModelPrep:
@@ -108,12 +109,20 @@ class WhisperModelPrep:
             quant_config = BitsAndBytesConfig(
                 load_in_8bit=True,
             )
-            model = WhisperForConditionalGeneration.from_pretrained(
-                self.model_id,
-                quantization_config=quant_config,
-                device_map=device_map,
-                attn_implementation=attn_implementation
+            accelerator = Accelerator(
+                mixed_precision="bf16",
+                deepspeed_plugin=None,
+                fsdp_plugin=None,
+                gradient_accumulation_steps=1,
+                log_with=None,
             )
+            model = WhisperForConditionalGeneration.from_pretrained(
+                    self.model_id,
+                    quantization_config=quant_config,
+                    device_map=device_map,
+                    attn_implementation=attn_implementation
+                )
+            model = accelerator.prepare(model)
             model.config.forced_decoder_ids = processor.get_decoder_prompt_ids(task=self.processing_task)
             # model.config.suppress_tokens = []
             model.config.use_cache = True
