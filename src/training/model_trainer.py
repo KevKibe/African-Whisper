@@ -235,8 +235,8 @@ class Trainer:
         accelerator = Accelerator(gradient_accumulation_steps=gradient_accumulation_steps)
 
         # Prepare datasets and dataloaders
-        train_dataloader = trainer.get_train_dataloader(per_device_train_batch_size)
-        eval_dataloader = trainer.get_eval_dataloader(per_device_eval_batch_size)
+        train_dataloader = trainer.get_train_dataloader()
+        eval_dataloader = trainer.get_eval_dataloader()
 
         # Prepare model
         model = self.model
