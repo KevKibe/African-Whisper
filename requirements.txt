@@ -26,3 +26,4 @@ pandas==2.2.2
 fastapi==0.111.0
 uvicorn==0.30.1
 tqdm
+flash-attn==2.6.3

@@ -30,7 +30,8 @@ BASE_DEPS = [
     "pandas==2.2.2",
     "huggingface_hub",
     "soundfile",
-    "tqdm"
+    "tqdm",
+    "flash-attn==2.6.3"
 ]
 
 DEPLOYMENT_DEPS = [
@@ -47,6 +48,7 @@ DEPLOYMENT_DEPS = [
     "torchvision",
     "ctranslate2==4.3.1",
     "pandas==2.2.2",
+    "flash-attn==2.6.3"
 ]
 ALL_DEPS = BASE_DEPS + DEPLOYMENT_DEPS
 
