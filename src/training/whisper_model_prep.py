@@ -8,7 +8,7 @@ from transformers import (
     WhisperProcessor,
     WhisperTokenizerFast,
     WhisperTokenizer,
-
+    BitsAndBytesConfig
 )
 import torch
 warnings.filterwarnings("ignore")
@@ -100,19 +100,16 @@ class WhisperModelPrep:
         """
         processor = self.initialize_processor()
         if self.use_peft:
+            quant_config = BitsAndBytesConfig(
+                load_in_8bit=True,
+            )
             model = WhisperForConditionalGeneration.from_pretrained(
                 self.model_id,
-                load_in_8bit=True,
+                quantization_config=quant_config,
                 device_map="auto",
-                # attn_implementation="sdpa"
+                attn_implementation="flash_attention_2"
             )
             print(model.config)
-            model = WhisperForConditionalGeneration.from_pretrained(
-                self.model_id,
-                load_in_8bit=True,
-                device_map="auto",
-                attn_implementation="sdpa"
-            )
             model.config.forced_decoder_ids = processor.get_decoder_prompt_ids(task=self.processing_task)
             # model.config.suppress_tokens = []
             model.config.use_cache = True
