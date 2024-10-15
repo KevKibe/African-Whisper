@@ -47,7 +47,8 @@ def load_asr_model(whisper_arch,
                          device_index=device_index,
                          compute_type=compute_type,
                          download_root=download_root,
-                         cpu_threads=threads)
+                         cpu_threads=threads,
+                         attn_implementation="flash")
 
     if is_v3_architecture:
         model.feature_extractor.mel_filters = model.feature_extractor.get_mel_filters(

@@ -104,6 +104,14 @@ class WhisperModelPrep:
                 self.model_id,
                 load_in_8bit=True,
                 device_map="auto",
+                # attn_implementation="sdpa"
+            )
+            print(model.config)
+            model = WhisperForConditionalGeneration.from_pretrained(
+                self.model_id,
+                load_in_8bit=True,
+                device_map="auto",
+                attn_implementation="sdpa"
             )
             model.config.forced_decoder_ids = processor.get_decoder_prompt_ids(task=self.processing_task)
             # model.config.suppress_tokens = []
