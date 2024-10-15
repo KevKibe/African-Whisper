@@ -246,7 +246,7 @@ class Trainer:
 
         # Prepare everything with our `accelerator`
         model, optimizer, train_dataloader, eval_dataloader = accelerator.prepare(
-            model, optimizer, train_dataloader, eval_dataloader
+            [model], [optimizer], [train_dataloader], [eval_dataloader]
         )
 
         # Prepare learning rate scheduler
