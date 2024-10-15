@@ -17,7 +17,8 @@ def load_asr_model(whisper_arch,
                model : Optional[WhisperModel] = None,
                download_root=None,
                threads=4,
-               is_v3_architecture=False):
+               is_v3_architecture=False,
+               attn_implementation="sdpa"):
     """
     Loads and returns a Whisper ASR model for inference.
 
@@ -34,7 +35,7 @@ def load_asr_model(whisper_arch,
         download_root (str, optional): Directory path for downloading model files.
         threads (int): Number of CPU threads per worker. Default is 4.
         is_v3_architecture (bool): Indicates whether the model uses the v3 architecture.
-
+        attn_implementation : (str) Specifies the attention mechanism to use within the model.
     Returns:
         object: The Whisper model pipeline for ASR inference.
     """
@@ -48,7 +49,7 @@ def load_asr_model(whisper_arch,
                          compute_type=compute_type,
                          download_root=download_root,
                          cpu_threads=threads,
-                         attn_implementation="flash_attention_2")
+                         attn_implementation=attn_implementation)
 
     if is_v3_architecture:
         model.feature_extractor.mel_filters = model.feature_extractor.get_mel_filters(

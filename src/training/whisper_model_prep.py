@@ -86,7 +86,7 @@ class WhisperModelPrep:
             self.model_id, self.processing_task
         )
 
-    def initialize_model(self, attn_implementation=None) -> WhisperForConditionalGeneration:
+    def initialize_model(self, attn_implementation=None, device_map="auto") -> WhisperForConditionalGeneration:
         """Initializes and retrieves the Whisper model configured for conditional generation.
 
         This method sets up the Whisper model with specific configurations, ensuring it is
@@ -97,11 +97,11 @@ class WhisperModelPrep:
         ----------
         attn_implementation : str, optional
             Specifies the attention mechanism to use within the model.
-
+        device_map : str or dict, optional, default="auto"
+            Defines how the model layers are distributed across available devices.
         Returns
         -------
             WhisperForConditionalGeneration: The configured Whisper model ready for conditional generation tasks.
-
         """
         processor = self.initialize_processor()
         if self.use_peft:
@@ -111,10 +111,9 @@ class WhisperModelPrep:
             model = WhisperForConditionalGeneration.from_pretrained(
                 self.model_id,
                 quantization_config=quant_config,
-                device_map="auto",
+                device_map=device_map,
                 attn_implementation=attn_implementation
             )
-            print(model.config)
             model.config.forced_decoder_ids = processor.get_decoder_prompt_ids(task=self.processing_task)
             # model.config.suppress_tokens = []
             model.config.use_cache = True

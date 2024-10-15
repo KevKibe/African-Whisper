@@ -43,7 +43,8 @@ class DataPrep:
         model_id: str,
         processing_task: str,
         use_peft: bool,
-        attn_implementation:str=None
+        attn_implementation:str=None,
+        device_map: str = "auto"
     ):
         """
         Initializes the Trainer with the necessary configuration and loads the evaluation metric.
@@ -55,6 +56,7 @@ class DataPrep:
             model_id (str): Model ID for the model to be used in training.
             processing_task (str): The processing task to be performed (e.g., "transcribe").
             attn_implementation : (str) Specifies the attention mechanism to use within the model.
+            device_map : str or dict, optional, default="auto" Defines how the model layers are distributed across available devices.
         """
         self.huggingface_token = huggingface_token
         self.dataset_name = dataset_name
@@ -72,6 +74,7 @@ class DataPrep:
             self.huggingface_token, self.dataset_name, self.language_abbr
         )
         self.attn_implementation=attn_implementation
+        self.device_map=device_map
 
     def prepare_model(
         self,
@@ -93,7 +96,7 @@ class DataPrep:
         self.tokenizer = self.model_prep.initialize_tokenizer()
         self.feature_extractor = self.model_prep.initialize_feature_extractor()
         self.feature_processor = self.model_prep.initialize_processor()
-        self.model = self.model_prep.initialize_model(attn_implementation=self.attn_implementation)
+        self.model = self.model_prep.initialize_model(attn_implementation=self.attn_implementation, device_map=self.device_map)
         return (
             self.tokenizer,
             self.feature_extractor,
