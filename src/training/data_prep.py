@@ -43,6 +43,7 @@ class DataPrep:
         model_id: str,
         processing_task: str,
         use_peft: bool,
+        attn_implementation:str=None
     ):
         """
         Initializes the Trainer with the necessary configuration and loads the evaluation metric.
@@ -53,6 +54,7 @@ class DataPrep:
             language_abbr (str): Language abbreviation for the dataset.
             model_id (str): Model ID for the model to be used in training.
             processing_task (str): The processing task to be performed (e.g., "transcribe").
+            attn_implementation : (str) Specifies the attention mechanism to use within the model.
         """
         self.huggingface_token = huggingface_token
         self.dataset_name = dataset_name
@@ -69,6 +71,7 @@ class DataPrep:
         self.data_loader = Dataset(
             self.huggingface_token, self.dataset_name, self.language_abbr
         )
+        self.attn_implementation=attn_implementation
 
     def prepare_model(
         self,
@@ -90,7 +93,7 @@ class DataPrep:
         self.tokenizer = self.model_prep.initialize_tokenizer()
         self.feature_extractor = self.model_prep.initialize_feature_extractor()
         self.feature_processor = self.model_prep.initialize_processor()
-        self.model = self.model_prep.initialize_model()
+        self.model = self.model_prep.initialize_model(attn_implementation=self.attn_implementation)
         return (
             self.tokenizer,
             self.feature_extractor,

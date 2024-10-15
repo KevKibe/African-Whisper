@@ -86,12 +86,17 @@ class WhisperModelPrep:
             self.model_id, self.processing_task
         )
 
-    def initialize_model(self) -> WhisperForConditionalGeneration:
+    def initialize_model(self, attn_implementation=None) -> WhisperForConditionalGeneration:
         """Initializes and retrieves the Whisper model configured for conditional generation.
 
         This method sets up the Whisper model with specific configurations, ensuring it is
         ready for use in tasks such as transcription or translation, depending on the
         processing task specified during the class initialization.
+
+        Parameters
+        ----------
+        attn_implementation : str, optional
+            Specifies the attention mechanism to use within the model.
 
         Returns
         -------
@@ -107,7 +112,7 @@ class WhisperModelPrep:
                 self.model_id,
                 quantization_config=quant_config,
                 device_map="auto",
-                attn_implementation="flash_attention_2"
+                attn_implementation=attn_implementation
             )
             print(model.config)
             model.config.forced_decoder_ids = processor.get_decoder_prompt_ids(task=self.processing_task)
