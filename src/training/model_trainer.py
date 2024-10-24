@@ -185,13 +185,6 @@ class Trainer:
             ignore_data_skip (bool, optional): Whether to skip data loading issues when the dataset is being created. Defaults to True.
             **kwargs: Additional keyword arguments to be passed to the `Seq2SeqTrainingArguments` constructor https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Seq2SeqTrainingArguments.
         """
-        accelerator = Accelerator(
-            mixed_precision="bf16",
-            deepspeed_plugin=None,
-            fsdp_plugin=None,
-            gradient_accumulation_steps=1,
-            log_with=None,
-        )
         data_collator = DataCollatorSpeechSeq2SeqWithPadding(
             processor=self.feature_processor
         )
