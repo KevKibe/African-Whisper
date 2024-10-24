@@ -157,8 +157,8 @@ transcription = inference.transcribe_audio(model=model)
 print(transcription)
 
 # To get transcriptions with speaker labels
-alignment_result = inference.align_transcription(transcription) # Optional parameter alignment_model: if the default wav2vec alignment model is not available e.g 
-diarization_result = inference.diarize_audio(alignment_result)
+alignment_result = inference.align_transcription(transcription) # Optional parameter `alignment_model`: if the default wav2vec alignment model is not available e.g "thinkKenya/wav2vec2-large-xls-r-300m-sw" for swahili
+diarization_result = inference.diarize_audio(alignment_result) # Optional parameter `diarization_model`: default is "pyannote/speaker-diarization-3.1"
 print(diarization_result)
 
 #To generate subtitles(.srt format), will be saved in root directory

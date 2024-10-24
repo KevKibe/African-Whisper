@@ -11,7 +11,7 @@ warnings.filterwarnings("ignore")
 class DiarizationPipeline:
     def __init__(
         self,
-        model_name="pyannote/speaker-diarization-3.1",
+        model_name,
         token=None,
         device: Optional[Union[str, torch.device]] = "cpu",
     ):
