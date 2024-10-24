@@ -18,7 +18,7 @@ scipy==1.12.0
 tensorflow-probability==0.24.0
 faster-whisper==1.0.3
 python-dotenv==1.0.1
-pyannote.audio==3.2.0
+pyannote.audio==3.3.2
 nltk==3.8.1
 torchvision
 ctranslate2==4.4.0
