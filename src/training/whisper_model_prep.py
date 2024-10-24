@@ -1,5 +1,5 @@
-from peft import prepare_model_for_kbit_training
-from peft import LoraConfig, get_peft_model
+# from peft import prepare_model_for_kbit_training
+# from peft import LoraConfig, get_peft_model
 import warnings
 from transformers import (
     WhisperConfig,
@@ -8,7 +8,7 @@ from transformers import (
     WhisperProcessor,
     WhisperTokenizerFast,
     WhisperTokenizer,
-    BitsAndBytesConfig
+    # BitsAndBytesConfig
 )
 import torch
 warnings.filterwarnings("ignore")
