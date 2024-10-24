@@ -11,7 +11,6 @@ from transformers import (
     BitsAndBytesConfig
 )
 import torch
-from accelerate import Accelerator
 warnings.filterwarnings("ignore")
 
 class WhisperModelPrep:
