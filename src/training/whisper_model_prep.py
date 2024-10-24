@@ -122,7 +122,8 @@ class WhisperModelPrep:
                     device_map=device_map,
                     attn_implementation=attn_implementation
                 )
-            model = accelerator.prepare(model)
+            device = accelerator.device
+            model.to(device)
             model.config.forced_decoder_ids = processor.get_decoder_prompt_ids(task=self.processing_task)
             # model.config.suppress_tokens = []
             model.config.use_cache = True
