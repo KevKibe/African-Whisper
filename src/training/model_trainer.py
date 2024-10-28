@@ -42,7 +42,7 @@ class Trainer:
         huggingface_token: str,
         model_id: str,
         train_dataset,
-        validation_dataset,
+        evaluation_dataset,
         language: list,
         model: WhisperForConditionalGeneration,
         feature_processor,
@@ -221,13 +221,13 @@ class Trainer:
             **kwargs
         )
 
-        eval_dataset = self.validation_dataset.map(self.compute_spectrograms)
+
 
         trainer = Seq2SeqTrainer(
             args=training_args,
             model=self.model,
             train_dataset=self.train_dataset,
-            eval_dataset=eval_dataset,
+            eval_dataset=self.evaluation_dataset,
             data_collator=data_collator,
             compute_metrics=self.compute_metrics,
             tokenizer=self.feature_processor.feature_extractor,
@@ -244,7 +244,7 @@ class Trainer:
         tokenizer.save_pretrained(training_args.output_dir)
         processor.save_pretrained(training_args.output_dir)
         progress_callback = WandbProgressResultsCallback(
-            trainer, eval_dataset, tokenizer
+            trainer, self.evaluation_dataset, tokenizer
         )
         trainer.add_callback(progress_callback)
         trainer.train()

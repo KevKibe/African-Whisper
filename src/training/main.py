@@ -136,14 +136,23 @@ if __name__ == "__main__":
                                    train_num_samples = args.train_num_samples,
                                    test_num_samples = args.test_num_samples)
 
+    def compute_spectrograms(example):
+        waveform = example["audio"]["array"]
+        specs = feature_extractor(
+            waveform, sampling_rate=16000, padding="do_not_pad"
+        ).input_features[0]
+        return {"spectrogram": specs}
+
+
+    eval_dataset = dataset['test'].map(compute_spectrograms)
+    eval_ds = split_dataset_by_node(eval_dataset, rank=args.rank, world_size=args.world_size)
     train_ds = split_dataset_by_node(dataset['train'], rank=args.rank, world_size=args.world_size)
-    val_ds = split_dataset_by_node(dataset['test'], rank=args.rank, world_size=args.world_size)
-    device= torch.device('cuda', args.rank)
+
     def collate_fn(examples):
         input_ids = []
         for example in examples:
             input_ids.append(example['id'])
-        return torch.LongTensor(input_ids).to(device)
+        return torch.LongTensor(input_ids).to(device=torch.device('cuda', args.rank))
 
     train_dl = DataLoader(
         train_ds,
@@ -152,9 +161,9 @@ if __name__ == "__main__":
         drop_last=True,
         collate_fn=collate_fn,
     )
-    val_dl = DataLoader(val_ds, batch_size=3, drop_last=False, collate_fn=collate_fn)
+    eval_dl = DataLoader(eval_ds, batch_size=3, drop_last=False, collate_fn=collate_fn)
     print(train_dl)
-    print(val_dl)
+    print(eval_dl)
     # for x in train_dl:
     #     print({'rank': args.rank, 'id': x})
 
@@ -162,7 +171,7 @@ if __name__ == "__main__":
         huggingface_token=args.huggingface_token,
         model_id=args.model_id,
         train_dataset=train_dl,
-        validation_dataset=val_dl,
+        evaluation_dataset=eval_dl,
         language = args.language_abbr,
         model=model,
         feature_processor=feature_processor,
