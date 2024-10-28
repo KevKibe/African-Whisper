@@ -152,31 +152,34 @@ if __name__ == "__main__":
         drop_last=True,
         collate_fn=collate_fn,
     )
+    val_dl = DataLoader(val_ds, batch_size=3, drop_last=False, collate_fn=collate_fn)
     print(train_dl)
-    for x in train_dl:
-        print({'rank': args.rank, 'id': x})
+    print(val_dl)
+    # for x in train_dl:
+    #     print({'rank': args.rank, 'id': x})
 
-    # trainer = Trainer(
-    #     huggingface_token=args.huggingface_token,
-    #     model_id=args.model_id,
-    #     dataset=dataset,
-    #     language = args.language_abbr,
-    #     model=model,
-    #     feature_processor=feature_processor,
-    #     feature_extractor=feature_extractor,
-    #     tokenizer=tokenizer,
-    #     wandb_api_key=args.wandb_api_key,
-    #     use_peft=args.use_peft,
-    #     processing_task=args.processing_task
-    # )
-    # trainer.train(
-    #     max_steps=args.max_steps,
-    #     per_device_train_batch_size=args.train_batch_size,
-    #     per_device_eval_batch_size=args.eval_batch_size,
-    #     save_steps=args.save_eval_logging_steps,
-    #     eval_steps=args.save_eval_logging_steps,
-    #     logging_steps=args.save_eval_logging_steps,
-    # )
+    trainer = Trainer(
+        huggingface_token=args.huggingface_token,
+        model_id=args.model_id,
+        train_dataset=train_dl,
+        validation_dataset=val_dl,
+        language = args.language_abbr,
+        model=model,
+        feature_processor=feature_processor,
+        feature_extractor=feature_extractor,
+        tokenizer=tokenizer,
+        wandb_api_key=args.wandb_api_key,
+        use_peft=args.use_peft,
+        processing_task=args.processing_task
+    )
+    trainer.train(
+        max_steps=args.max_steps,
+        per_device_train_batch_size=args.train_batch_size,
+        per_device_eval_batch_size=args.eval_batch_size,
+        save_steps=args.save_eval_logging_steps,
+        eval_steps=args.save_eval_logging_steps,
+        logging_steps=args.save_eval_logging_steps,
+    )
 
 
 # !python src/training/main.py --huggingface_token "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" \

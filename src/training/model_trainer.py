@@ -41,7 +41,8 @@ class Trainer:
         self,
         huggingface_token: str,
         model_id: str,
-        dataset: dict,
+        train_dataset,
+        validation_dataset,
         language: list,
         model: WhisperForConditionalGeneration,
         feature_processor,
@@ -65,7 +66,8 @@ class Trainer:
             processing_task (str): task for the Whisper model to execute. Translate or Transcribe
         """
         os.environ["WANDB_API_KEY"] = wandb_api_key
-        self.dataset = dataset
+        self.train_dataset = train_dataset
+        self.validation_dataset = validation_dataset
         self.model = model
         self.model_id = model_id
         self.tokenizer = tokenizer
@@ -219,12 +221,12 @@ class Trainer:
             **kwargs
         )
 
-        eval_dataset = self.dataset["test"].map(self.compute_spectrograms)
+        eval_dataset = self.validation_dataset.map(self.compute_spectrograms)
 
         trainer = Seq2SeqTrainer(
             args=training_args,
             model=self.model,
-            train_dataset=self.dataset["train"],
+            train_dataset=self.train_dataset,
             eval_dataset=eval_dataset,
             data_collator=data_collator,
             compute_metrics=self.compute_metrics,
