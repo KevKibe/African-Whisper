@@ -160,12 +160,11 @@ if __name__ == "__main__":
         num_workers=8,
         drop_last=True,
         collate_fn=collate_fn,
+        ad=True
     )
     eval_dl = DataLoader(eval_ds, batch_size=3, drop_last=False, collate_fn=collate_fn)
     print(train_dl)
     print(eval_dl)
-    # for x in train_dl:
-    #     print({'rank': args.rank, 'id': x})
 
     trainer = Trainer(
         huggingface_token=args.huggingface_token,
