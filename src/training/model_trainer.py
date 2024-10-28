@@ -233,11 +233,11 @@ class Trainer:
             tokenizer=self.feature_processor.feature_extractor,
             callbacks=[ShuffleCallback()],
         )
-        data_loader = trainer.get_train_dataloader()
-        for batch in data_loader:
-            if batch is None or len(batch) == 0:
-                print("Empty batch found!")
-                break
+        # data_loader = trainer.get_train_dataloader()
+        # for batch in data_loader:
+        #     if batch is None or len(batch) == 0:
+        #         print("Empty batch found!")
+        #         break
             # print("Batch contains data")
         tokenizer = self.model_prep.initialize_tokenizer()
         processor = self.model_prep.initialize_processor()
