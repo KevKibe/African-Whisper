@@ -74,7 +74,7 @@ def parse_args():
     )
     parser.add_argument(
         "--attn_implementation",
-        type=str,
+        # type=str,
         help="Specifies the attention mechanism to use within the model.",
     )
     parser.add_argument(
