@@ -1,6 +1,6 @@
 import argparse
-from .data_prep import DataPrep
-from .model_trainer import Trainer
+from training.data_prep import DataPrep
+from training.model_trainer import Trainer
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -96,7 +96,7 @@ def parse_args():
     parser.add_argument(
         "--max_steps",
         type=int,
-        help="The number of training steps before saving the model, evaluating the model and logging the training info. Defaults to 25",
+        help="The maximum number of training steps. Defaults to 100.",
     )
 
     return parser.parse_args()
