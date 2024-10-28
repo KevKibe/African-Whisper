@@ -44,7 +44,8 @@ class DataPrep:
         processing_task: str,
         use_peft: bool,
         attn_implementation:str=None,
-        device_map: str = "auto"
+        device_map: str = "auto",
+        accelerator=None
     ):
         """
         Initializes the Trainer with the necessary configuration and loads the evaluation metric.
@@ -75,6 +76,7 @@ class DataPrep:
         )
         self.attn_implementation=attn_implementation
         self.device_map=device_map
+        self.accelerator=accelerator
 
     def prepare_model(
         self,
@@ -96,7 +98,7 @@ class DataPrep:
         self.tokenizer = self.model_prep.initialize_tokenizer()
         self.feature_extractor = self.model_prep.initialize_feature_extractor()
         self.feature_processor = self.model_prep.initialize_processor()
-        self.model = self.model_prep.initialize_model(attn_implementation=self.attn_implementation, device_map=self.device_map)
+        self.model = self.model_prep.initialize_model(attn_implementation=self.attn_implementation, device_map=self.device_map, accelerator=self.accelerator)
         return (
             self.tokenizer,
             self.feature_extractor,

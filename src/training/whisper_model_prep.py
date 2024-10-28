@@ -1,5 +1,5 @@
-# from peft import prepare_model_for_kbit_training
-# from peft import LoraConfig, get_peft_model
+from peft import prepare_model_for_kbit_training
+from peft import LoraConfig, get_peft_model
 import warnings
 from transformers import (
     WhisperConfig,
@@ -8,7 +8,7 @@ from transformers import (
     WhisperProcessor,
     WhisperTokenizerFast,
     WhisperTokenizer,
-    # BitsAndBytesConfig
+    BitsAndBytesConfig
 )
 import torch
 warnings.filterwarnings("ignore")
@@ -86,69 +86,59 @@ class WhisperModelPrep:
             self.model_id, self.processing_task
         )
 
-    def initialize_model(self, attn_implementation=None, device_map="auto") -> WhisperForConditionalGeneration:
+    def initialize_model(self, attn_implementation=None, device_map="auto",
+                         accelerator=None) -> WhisperForConditionalGeneration:
         """Initializes and retrieves the Whisper model configured for conditional generation.
 
-        This method sets up the Whisper model with specific configurations, ensuring it is
-        ready for use in tasks such as transcription or translation, depending on the
-        processing task specified during the class initialization.
+    This method sets up the Whisper model with specific configurations, ensuring it is
+    ready for use in tasks such as transcription or translation, depending on the
+    processing task specified during the class initialization.
 
-        Parameters
-        ----------
-        attn_implementation : str, optional
-            Specifies the attention mechanism to use within the model.
-        device_map : str or dict, optional, default="auto"
-            Defines how the model layers are distributed across available devices.
-        Returns
-        -------
-            WhisperForConditionalGeneration: The configured Whisper model ready for conditional generation tasks.
-        """
+    Parameters
+    ----------
+    attn_implementation : str, optional
+        Specifies the attention mechanism to use within the model.
+    device_map : str or dict, optional, default="auto"
+        Defines how the model layers are distributed across available devices.
+    accelerator : Accelerator, optional
+        The Accelerator instance for handling device placement and distributed training.
+    Returns
+    -------
+        WhisperForConditionalGeneration: The configured Whisper model ready for conditional generation tasks.
+    """
         processor = self.initialize_processor()
         if self.use_peft:
-            quant_config = BitsAndBytesConfig(
-                load_in_8bit=True,
-            )
-            # accelerator = Accelerator(
-            #     mixed_precision="bf16",
-            #     deepspeed_plugin=None,
-            #     fsdp_plugin=None,
-            #     gradient_accumulation_steps=1,
-            #     log_with=None,
-            # )
+            quant_config = BitsAndBytesConfig(load_in_8bit=True)
             model = WhisperForConditionalGeneration.from_pretrained(
-                    self.model_id,
-                    quantization_config=quant_config,
-                    device_map=device_map,
-                    attn_implementation=attn_implementation
-                )
-            # model = accelerator.prepare(model)
+                self.model_id,
+                quantization_config=quant_config,
+                device_map=device_map,
+                attn_implementation=attn_implementation
+            )
             model.config.forced_decoder_ids = processor.get_decoder_prompt_ids(task=self.processing_task)
-            # model.config.suppress_tokens = []
             model.config.use_cache = True
             model.generation_config.language = self.language if self.processing_task == "transcribe" else "en"
             model.generation_config.task = self.processing_task
             model = prepare_model_for_kbit_training(model)
-            config = LoraConfig(
-                r=32,
-                lora_alpha=64,
-                target_modules=["q_proj", "v_proj"],
-                lora_dropout=0.05,
-                bias="none",
-            )
+            config = LoraConfig(r=32, lora_alpha=64, target_modules=["q_proj", "v_proj"], lora_dropout=0.05,
+                                bias="none")
             model = get_peft_model(model, config)
-            model.print_trainable_parameters()
         else:
             print("PEFT optimization is not enabled.")
             model = WhisperForConditionalGeneration.from_pretrained(
                 self.model_id,
-                low_cpu_mem_usage = True
+                low_cpu_mem_usage=True,
+                device_map=device_map if torch.cuda.is_available() else None
             )
             model.config.forced_decoder_ids = processor.get_decoder_prompt_ids(task=self.processing_task)
-            # model.config.suppress_tokens = []
             model.config.use_cache = True
             model.generation_config.language = self.language if self.processing_task == "transcribe" else "en"
             model.generation_config.task = self.processing_task
-            model = model.to("cuda") if torch.cuda.is_available() else model
+
+        model.to(accelerator.device)
+        if self.use_peft:
+            model.print_trainable_parameters()
+
         return model
 
 
