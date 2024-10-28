@@ -67,7 +67,7 @@ class Trainer:
         """
         os.environ["WANDB_API_KEY"] = wandb_api_key
         self.train_dataset = train_dataset
-        self.validation_dataset = evaluation_dataset
+        self.evaluation_dataset = evaluation_dataset
         self.model = model
         self.model_id = model_id
         self.tokenizer = tokenizer
