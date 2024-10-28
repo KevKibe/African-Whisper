@@ -152,6 +152,7 @@ if __name__ == "__main__":
         drop_last=True,
         collate_fn=collate_fn,
     )
+    print(train_dl)
     for x in train_dl:
         print({'rank': args.rank, 'id': x})
 
