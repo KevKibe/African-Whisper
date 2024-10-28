@@ -68,9 +68,21 @@ def parse_args():
         help="True to train your model using PEFT method, False for full finetuning",
     )
     parser.add_argument(
-        "--max_steps",
-        type=int,
-        help="The maximum number of training steps. Defaults to 100",
+        "--attn_implementation",
+        type=str,
+        help="Specifies the attention mechanism to use within the model.",
+    )
+    parser.add_argument(
+        "--attn_implementation",
+        type=str,
+        help="Specifies the attention mechanism to use within the model.",
+    )
+    parser.add_argument(
+    "--device_map",
+    type=lambda x: eval(x) if isinstance(x, str) and x.startswith("{") else str,
+    default="auto",
+    help=
+        "Specifies how model layers are distributed across available devices."
     )
     parser.add_argument(
         "--train_batch_size",
@@ -100,6 +112,9 @@ if __name__ == "__main__":
         model_id=args.model_id,
         processing_task=args.processing_task,
         use_peft=args.use_peft,
+        attn_implementation=args.attn_implementation,
+        device_map =args.device_map,
+        accelerator = None
     )
     tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
 
@@ -129,5 +144,5 @@ if __name__ == "__main__":
         per_device_eval_batch_size=args.eval_batch_size,
         save_steps=args.save_eval_logging_steps,
         eval_steps=args.save_eval_logging_steps,
-        logging_steps=args.save_eval_logging_steps
+        logging_steps=args.save_eval_logging_steps,
     )
