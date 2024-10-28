@@ -98,11 +98,6 @@ def parse_args():
         type=int,
         help="The number of training steps before saving the model, evaluating the model and logging the training info. Defaults to 25",
     )
-    parser.add_argument(
-        "--max_steps",
-        type=int,
-        help="The number of training steps before saving the model, evaluating the model and logging the training info. Defaults to 25",
-    )
 
     return parser.parse_args()
 
