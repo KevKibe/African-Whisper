@@ -2,7 +2,6 @@ import argparse
 from .data_prep import DataPrep
 from .model_trainer import Trainer
 import warnings
-
 warnings.filterwarnings("ignore")
 
 def parse_args():
@@ -70,11 +69,6 @@ def parse_args():
     parser.add_argument(
         "--attn_implementation",
         type=str,
-        help="Specifies the attention mechanism to use within the model.",
-    )
-    parser.add_argument(
-        "--attn_implementation",
-        # type=str,
         help="Specifies the attention mechanism to use within the model.",
     )
     parser.add_argument(

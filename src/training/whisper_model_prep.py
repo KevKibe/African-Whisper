@@ -123,22 +123,19 @@ class WhisperModelPrep:
             config = LoraConfig(r=32, lora_alpha=64, target_modules=["q_proj", "v_proj"], lora_dropout=0.05,
                                 bias="none")
             model = get_peft_model(model, config)
+            model.print_trainable_parameters()
         else:
             print("PEFT optimization is not enabled.")
             model = WhisperForConditionalGeneration.from_pretrained(
                 self.model_id,
-                low_cpu_mem_usage=True,
-                device_map=device_map if torch.cuda.is_available() else None
+                low_cpu_mem_usage=True
             )
             model.config.forced_decoder_ids = processor.get_decoder_prompt_ids(task=self.processing_task)
+            # model.config.suppress_tokens = []
             model.config.use_cache = True
             model.generation_config.language = self.language if self.processing_task == "transcribe" else "en"
             model.generation_config.task = self.processing_task
-
-        model.to(accelerator.device)
-        if self.use_peft:
-            model.print_trainable_parameters()
-
+            model = model.to("cuda") if torch.cuda.is_available() else model
         return model
 
 
