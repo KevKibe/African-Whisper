@@ -1,6 +1,9 @@
 import argparse
+import torch
 from .data_prep import DataPrep
 from .model_trainer import Trainer
+from datasets.distributed import split_dataset_by_node
+from torch.utils.data import Dataset, DataLoader
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -35,7 +38,7 @@ def parse_args():
     parser.add_argument(
         "--streaming",
         type=bool,
-        default=False,
+        default=True,
         help="Load dataset in streaming or Batch mode",
     )
     parser.add_argument(
@@ -77,6 +80,16 @@ def parse_args():
     default="auto",
     help=
         "Specifies how model layers are distributed across available devices."
+    )
+    parser.add_argument(
+        "--world_size",
+        type=int,
+        help=" ",
+    )
+    parser.add_argument(
+        "--rank",
+        type=int,
+        help=" ",
     )
     parser.add_argument(
         "--train_batch_size",
@@ -122,28 +135,47 @@ if __name__ == "__main__":
                                    streaming = args.streaming,
                                    train_num_samples = args.train_num_samples,
                                    test_num_samples = args.test_num_samples)
-    trainer = Trainer(
 
-        huggingface_token=args.huggingface_token,
-        model_id=args.model_id,
-        dataset=dataset,
-        language = args.language_abbr,
-        model=model,
-        feature_processor=feature_processor,
-        feature_extractor=feature_extractor,
-        tokenizer=tokenizer,
-        wandb_api_key=args.wandb_api_key,
-        use_peft=args.use_peft,
-        processing_task=args.processing_task
+    train_ds = split_dataset_by_node(dataset['train'], rank=args.rank, world_size=args.world_size)
+    val_ds = split_dataset_by_node(dataset['test'], rank=args.rank, world_size=args.world_size)
+    device= torch.device('cuda', args.rank)
+    def collate_fn(examples):
+        input_ids = []
+        for example in examples:
+            input_ids.append(example['id'])
+        return torch.LongTensor(input_ids).to(device)
+
+    train_dl = DataLoader(
+        train_ds,
+        batch_size=3,
+        num_workers=8,
+        drop_last=True,
+        collate_fn=collate_fn,
     )
-    trainer.train(
-        max_steps=args.max_steps,
-        per_device_train_batch_size=args.train_batch_size,
-        per_device_eval_batch_size=args.eval_batch_size,
-        save_steps=args.save_eval_logging_steps,
-        eval_steps=args.save_eval_logging_steps,
-        logging_steps=args.save_eval_logging_steps,
-    )
+    for x in train_dl:
+        print({'rank': args.rank, 'id': x})
+
+    # trainer = Trainer(
+    #     huggingface_token=args.huggingface_token,
+    #     model_id=args.model_id,
+    #     dataset=dataset,
+    #     language = args.language_abbr,
+    #     model=model,
+    #     feature_processor=feature_processor,
+    #     feature_extractor=feature_extractor,
+    #     tokenizer=tokenizer,
+    #     wandb_api_key=args.wandb_api_key,
+    #     use_peft=args.use_peft,
+    #     processing_task=args.processing_task
+    # )
+    # trainer.train(
+    #     max_steps=args.max_steps,
+    #     per_device_train_batch_size=args.train_batch_size,
+    #     per_device_eval_batch_size=args.eval_batch_size,
+    #     save_steps=args.save_eval_logging_steps,
+    #     eval_steps=args.save_eval_logging_steps,
+    #     logging_steps=args.save_eval_logging_steps,
+    # )
 
 
 # !python src/training/main.py --huggingface_token "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" \
