@@ -1,6 +1,6 @@
 import argparse
-from training.data_prep import DataPrep
-from training.model_trainer import Trainer
+from .data_prep import DataPrep
+from .model_trainer import Trainer
 import warnings
 warnings.filterwarnings("ignore")
 
