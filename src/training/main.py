@@ -160,7 +160,7 @@ if __name__ == "__main__":
         num_workers=8,
         drop_last=True,
         collate_fn=collate_fn,
-        ad=True
+        pin_memory=True
     )
     eval_dl = DataLoader(eval_ds, batch_size=3, drop_last=False, collate_fn=collate_fn)
     print(train_dl)
