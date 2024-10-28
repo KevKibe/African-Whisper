@@ -113,8 +113,7 @@ if __name__ == "__main__":
         processing_task=args.processing_task,
         use_peft=args.use_peft,
         attn_implementation=args.attn_implementation,
-        device_map =args.device_map,
-        accelerator = None
+        device_map =args.device_map
     )
     tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
 
@@ -146,3 +145,20 @@ if __name__ == "__main__":
         eval_steps=args.save_eval_logging_steps,
         logging_steps=args.save_eval_logging_steps,
     )
+
+
+# !python src/training/main.py --huggingface_token "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" \
+#                       --dataset_name "mozilla-foundation/common_voice_16_1" \
+#                       --language_abbr "sw" \
+#                       --model_id "openai/whisper-small" \
+#                       --train_num_samples 20 \
+#                       --test_num_samples 10 \
+#                       --streaming True \
+#                       --processing_task "transcribe" \
+#                       --wandb_api_key "e0fda284061622e0f7858d6c684281d48fa05ecf" \
+#                       -- use_peft True \
+#                       --attn_implementation "sdpa" \
+#                       --device_map "auto" \
+#                       --train_batch_size 16 \
+#                       --eval_batch_size 16 \
+#                       --save_eval_logging_steps 50
