@@ -35,7 +35,7 @@ def parse_args():
     parser.add_argument(
         "--streaming",
         type=bool,
-        default=True,
+        default=False,
         help="Load dataset in streaming or Batch mode",
     )
     parser.add_argument(
