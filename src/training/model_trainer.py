@@ -228,7 +228,7 @@ class Trainer:
             model=self.model,
             train_dataset=self.train_dataset,
             eval_dataset=self.evaluation_dataset,
-            data_collator=data_collator,
+            # data_collator=data_collator,
             compute_metrics=self.compute_metrics,
             tokenizer=self.feature_processor.feature_extractor,
             callbacks=[ShuffleCallback()],
