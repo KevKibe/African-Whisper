@@ -73,7 +73,7 @@ def parse_args():
     )
     parser.add_argument(
     "--device_map",
-    type=lambda x: eval(x) if isinstance(x, str) and x.startswith("{") else str,
+    type=str,
     default="auto",
     help=
         "Specifies how model layers are distributed across available devices."
