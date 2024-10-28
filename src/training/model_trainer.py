@@ -243,10 +243,10 @@ class Trainer:
         processor = self.model_prep.initialize_processor()
         tokenizer.save_pretrained(training_args.output_dir)
         processor.save_pretrained(training_args.output_dir)
-        progress_callback = WandbProgressResultsCallback(
-            trainer, self.evaluation_dataset, tokenizer
-        )
-        trainer.add_callback(progress_callback)
+        # progress_callback = WandbProgressResultsCallback(
+        #     trainer, self.evaluation_dataset, tokenizer
+        # )
+        # trainer.add_callback(progress_callback)
         trainer.train()
 
 
