@@ -14,12 +14,30 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Test Distributed Training
-        uses: KevKibe/kaggle-script-action@v1.0.0
+        uses: KevKibe/kaggle-script-action@v1.0.1
         with:
           username: ${{ secrets.KAGGLE_USERNAME }}
           key: ${{ secrets.KAGGLE_KEY }}
           title: "Test Distributed Training"
-          custom_script: 'cd src && accelerate launch --num_processes=2 -m training.main --huggingface_token "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" --dataset_name "mozilla-foundation/common_voice_16_1" --language_abbr "af" --model_id "openai/whisper-small" --train_num_samples 20  --test_num_samples 10 --streaming False  --processing_task "transcribe" --wandb_api_key "e0fda284061622e0f7858d6c684281d48fa05ecf" --attn_implementation "sdpa" --device_map "balanced" --train_batch_size 16 --eval_batch_size 16 --save_eval_logging_steps 10 --max_steps 20 --world_size 2 --rank 1'
+          custom_script: |
+                cd src && accelerate launch --num_processes=2 -m training.main \
+                                  --huggingface_token "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" \
+                                  --dataset_name "mozilla-foundation/common_voice_16_1" \
+                                  --language_abbr "af" \
+                                  --model_id "openai/whisper-small" \
+                                  --train_num_samples 20 \
+                                  --test_num_samples 10 \
+                                  --streaming False \
+                                  --processing_task "transcribe" \
+                                  --wandb_api_key "e0fda284061622e0f7858d6c684281d48fa05ecf" \
+                                  --attn_implementation "sdpa" \
+                                  --device_map "balanced" \
+                                  --train_batch_size 16 \
+                                  --eval_batch_size 16 \
+                                  --save_eval_logging_steps 10 \
+                                  --max_steps 20 \
+                                  --world_size 2 \
+                                  --rank 1
           enable_internet: true
           enable_gpu: true
           enable_tpu: false
