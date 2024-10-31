@@ -21,7 +21,7 @@ jobs:
           title: "Test Distributed Training"
           working_dir: "src"
           custom_script: 'accelerate launch --num_processes=2 -m training.main \
-                                          --huggingface_token "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 \
+                                          --huggingface_token "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" \
                                           --dataset_name "mozilla-foundation/common_voice_16_1" \
                                           --language_abbr "af" \
                                           --model_id "openai/whisper-small" \
