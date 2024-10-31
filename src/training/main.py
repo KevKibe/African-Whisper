@@ -4,6 +4,8 @@ from .data_prep import DataPrep
 from .model_trainer import Trainer
 from datasets.distributed import split_dataset_by_node
 from torch.utils.data import Dataset, DataLoader
+from torch.utils.data.distributed import DistributedSampler
+from transformers import Seq2SeqTrainer, Seq2SeqTrainingArguments
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -148,21 +150,72 @@ if __name__ == "__main__":
     eval_ds = split_dataset_by_node(eval_dataset, rank=args.rank, world_size=args.world_size)
     train_ds = split_dataset_by_node(dataset['train'], rank=args.rank, world_size=args.world_size)
 
-    def collate_fn(examples):
-        input_ids = []
-        for example in examples:
-            input_ids.append(example['id'])
-        return torch.LongTensor(input_ids).to(device=torch.device('cuda', args.rank))
+
+    class StreamingDataCollator:
+        def __init__(self, feature_processor, device):
+            self.feature_processor = feature_processor
+            self.device = device
+
+        def __call__(self, examples):
+            # Process audio inputs
+            input_features = [example["spectrogram"] for example in examples]
+            input_features = torch.stack(input_features).to(self.device)
+
+            # Process text labels
+            labels = [example["text"] for example in examples]
+            batch = self.feature_processor.tokenizer(
+                labels,
+                padding=True,
+                return_tensors="pt",
+            )
+
+            return {
+                "input_features": input_features,
+                "labels": batch["input_ids"].to(self.device),
+                "attention_mask": batch["attention_mask"].to(self.device)
+            }
+
+
+    class StreamingTrainer(Seq2SeqTrainer):
+        def __init__(self, model, args, train_dataloader, eval_dataloader, **kwargs):
+            super().__init__(model=model, args=args, **kwargs)
+            self._train_dataloader = train_dataloader
+            self._eval_dataloader = eval_dataloader
+
+        def get_train_dataloader(self):
+            return self._train_dataloader
+
+        def get_eval_dataloader(self, eval_dataset=None):
+            return self._eval_dataloader
+
+
+    data_collator = StreamingDataCollator(feature_processor, device=torch.device('cuda', args.rank))
+
+    train_sampler = None
+    if args.world_size > 1:
+        train_sampler = DistributedSampler(
+            train_ds,
+            num_replicas=args.world_size,
+            rank=args.rank,
+            shuffle=True
+        )
 
     train_dl = DataLoader(
         train_ds,
-        batch_size=3,
+        batch_size=16,
+        sampler=train_sampler,
+        collate_fn=data_collator,
         num_workers=8,
         drop_last=True,
-        collate_fn=collate_fn,
         pin_memory=True
     )
-    eval_dl = DataLoader(eval_ds, batch_size=3, drop_last=False, collate_fn=collate_fn)
+    eval_dl = DataLoader(
+        eval_ds,
+        batch_size=16,
+        collate_fn=data_collator,
+        num_workers=8,
+        pin_memory=True
+    )
     print(train_dl)
     print(eval_dl)
 
@@ -181,6 +234,7 @@ if __name__ == "__main__":
         processing_task=args.processing_task
     )
     trainer.train(
+        # collator=data_collator,
         max_steps=args.max_steps,
         per_device_train_batch_size=args.train_batch_size,
         per_device_eval_batch_size=args.eval_batch_size,
