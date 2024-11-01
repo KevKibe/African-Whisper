@@ -137,7 +137,7 @@ class Trainer:
         per_device_eval_batch_size: int = 8,
         optim: str = "adamw_bnb_8bit",
         gradient_accumulation_steps: int =1,
-        gradient_checkpointing: bool = True,
+        gradient_checkpointing: bool = False,
         fp16: bool = torch.cuda.is_available(),
         evaluation_strategy: str = "steps",
         predict_with_generate: bool = True,
