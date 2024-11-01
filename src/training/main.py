@@ -200,37 +200,32 @@ if __name__ == "__main__":
 
 
     def create_dataloaders(dataset, data_collator, batch_size, num_workers):
-        # Calculate max length from training set
-        max_length = 0
-        for batch in DataLoader(dataset['train'], batch_size=100):  # Use larger batch for scanning
-            features = [example['input_features'] for example in batch]
-            batch_max = max(feature.shape[1] for feature in features)
-            max_length = max(max_length, batch_max)
-
-        # Create new collator with fixed max_length
-        fixed_length_collator = DataCollatorForAudioSeq2Seq(
+        # Create collator with dynamic padding (max length set to None)
+        dynamic_length_collator = DataCollatorForAudioSeq2Seq(
             feature_extractor=data_collator.feature_extractor,
             tokenizer=data_collator.tokenizer,
-            padding=True,
-            max_length=max_length
+            padding=True,  # Enable dynamic padding
+            max_length=None  # Allow each batch to pad to the longest sequence
         )
 
+        # Train dataloader
         train_dl = DataLoader(
             dataset['train'],
             batch_size=batch_size,
             num_workers=num_workers,
             drop_last=True,
-            collate_fn=fixed_length_collator,
+            collate_fn=dynamic_length_collator,
             pin_memory=True,
-            shuffle=False
+            shuffle=True  # Shuffle for training
         )
 
+        # Evaluation dataloader
         eval_dl = DataLoader(
             dataset['test'],
             batch_size=batch_size,
             num_workers=num_workers,
             drop_last=False,
-            collate_fn=fixed_length_collator,
+            collate_fn=dynamic_length_collator,
             pin_memory=True,
             shuffle=False
         )
