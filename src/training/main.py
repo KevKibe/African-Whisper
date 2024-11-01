@@ -171,7 +171,7 @@ if __name__ == "__main__":
     data_collator = DataCollatorForAudioSeq2Seq(feature_extractor=feature_extractor, tokenizer=tokenizer)
 
 
-    def compute_spectrograms(self, example):
+    def compute_spectrograms(example):
 
         waveform = example["audio"]["array"]
         specs = feature_extractor(
