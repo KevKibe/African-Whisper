@@ -219,7 +219,7 @@ if __name__ == "__main__":
     def create_dataloaders(dataset, data_collator, batch_size, num_workers):
         # Calculate max length from training set
         max_length = 0
-        for batch in DataLoader(dataset['train'], batch_size=100):  # Use larger batch for scanning
+        for batch in DataLoader(dataset['train'], batch_size=batch_size):  # Use larger batch for scanning
             features = [example['input_features'] for example in batch]
             batch_max = max(feature.shape[1] for feature in features)
             max_length = max(max_length, batch_max)
