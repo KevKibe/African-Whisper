@@ -200,31 +200,50 @@ if __name__ == "__main__":
 
 
     def create_dataloaders(dataset, data_collator, batch_size, num_workers):
-        # Create collator with dynamic padding (max length set to None)
-        dynamic_length_collator = DataCollatorForAudioSeq2Seq(
+        # First create a temporary collator for scanning
+        temp_collator = DataCollatorForAudioSeq2Seq(
             feature_extractor=data_collator.feature_extractor,
             tokenizer=data_collator.tokenizer,
-            padding=True,  # Enable dynamic padding
+            padding=True  # Enable padding for the scanning phase
         )
 
-        # Train dataloader
+        # Calculate max length from training set
+        max_length = 0
+        temp_loader = DataLoader(
+            dataset['train'],
+            batch_size=100,
+            collate_fn=temp_collator  # Use the temporary collator
+        )
+
+        for batch in temp_loader:
+            # Access the padded input_features from the batch
+            batch_max = batch.input_features.shape[1]
+            max_length = max(max_length, batch_max)
+
+        # Create new collator with fixed max_length
+        fixed_length_collator = DataCollatorForAudioSeq2Seq(
+            feature_extractor=data_collator.feature_extractor,
+            tokenizer=data_collator.tokenizer,
+            padding=True,
+            max_length=max_length
+        )
+
         train_dl = DataLoader(
             dataset['train'],
             batch_size=batch_size,
             num_workers=num_workers,
             drop_last=True,
-            collate_fn=dynamic_length_collator,
+            collate_fn=fixed_length_collator,
             pin_memory=True,
-            shuffle=True  # Shuffle for training
+            shuffle=False
         )
 
-        # Evaluation dataloader
         eval_dl = DataLoader(
             dataset['test'],
             batch_size=batch_size,
             num_workers=num_workers,
             drop_last=False,
-            collate_fn=dynamic_length_collator,
+            collate_fn=fixed_length_collator,
             pin_memory=True,
             shuffle=False
         )
