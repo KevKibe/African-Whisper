@@ -154,44 +154,27 @@ if __name__ == "__main__":
 
 
     class DataCollatorForAudioSeq2Seq:
-        def __init__(self, feature_extractor, tokenizer, padding=True, max_length=None):
+        def __init__(self, feature_extractor, tokenizer, padding=True):
             self.feature_extractor = feature_extractor
             self.tokenizer = tokenizer
             self.padding = padding
-            self.max_length = max_length
 
         def __call__(self, examples):
             if not examples:
                 return {}
 
-            # Extract audio input features
+            # Extract audio input features and labels
             input_features = [example['input_features'] for example in examples]
             labels = [example['labels'] for example in examples]
 
-            # If max_length is not set, compute it from the batch
-            if self.max_length is None:
-                self.max_length = max(feature.shape[1] for feature in input_features)
-
-            # Pad all features to max_length
-            padded_features = []
-            for feature in input_features:
-                if feature.shape[1] < self.max_length:
-                    padding_length = self.max_length - feature.shape[1]
-                    padded_feature = torch.nn.functional.pad(
-                        feature, (0, padding_length), mode='constant', value=0
-                    )
-                else:
-                    padded_feature = feature[:, :self.max_length]
-                padded_features.append(padded_feature)
-
-            # Convert to tensor and pad as a batch
+            # Process input features first
             batch = self.feature_extractor.pad(
-                {"input_features": padded_features},
+                {"input_features": input_features},
                 padding=True,
                 return_tensors="pt"
             )
 
-            # Pad labels using tokenizer
+            # Process labels
             labels_batch = self.tokenizer.pad(
                 {"input_ids": labels},
                 padding=True,
