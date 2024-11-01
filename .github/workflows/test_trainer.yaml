@@ -6,7 +6,7 @@ on:
       - add-support-for-multigpu-training
 
 jobs:
-  test_kaggle_action:
+  run_kaggle_script_action:
     runs-on: ubuntu-latest
 
     steps:

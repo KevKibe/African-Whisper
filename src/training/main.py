@@ -142,11 +142,22 @@ if __name__ == "__main__":
 
     data_collator: DataCollatorForSeq2Seq = DataCollatorForSeq2Seq(tokenizer=tokenizer, model=model)
 
+
+    def compute_spectrograms(self, example):
+
+        waveform = example["audio"]["array"]
+        specs = feature_extractor(
+            waveform, sampling_rate=16000, padding="do_not_pad"
+        ).input_features[0]
+        return {"spectrogram": specs}
+
+    eval_dataset = dataset["test"].map(compute_spectrograms)
+
     trainer = Trainer(
         huggingface_token=args.huggingface_token,
         model_id=args.model_id,
         train_dataset=dataset['train'],
-        evaluation_dataset=dataset['test'],
+        evaluation_dataset=eval_dataset,
         language = args.language_abbr,
         model=model,
         feature_processor=feature_processor,
