@@ -158,7 +158,7 @@ if __name__ == "__main__":
     )
     trainer.train(
         collator=data_collator,
-        report_to="None",
+        report_to="none",
         max_steps=args.max_steps,
         per_device_train_batch_size=args.train_batch_size,
         per_device_eval_batch_size=args.eval_batch_size,
@@ -166,20 +166,3 @@ if __name__ == "__main__":
         eval_steps=args.save_eval_logging_steps,
         logging_steps=args.save_eval_logging_steps,
     )
-
-
-# !python src/training/main.py --huggingface_token "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" \
-#                       --dataset_name "mozilla-foundation/common_voice_16_1" \
-#                       --language_abbr "sw" \
-#                       --model_id "openai/whisper-small" \
-#                       --train_num_samples 20 \
-#                       --test_num_samples 10 \
-#                       --streaming True \
-#                       --processing_task "transcribe" \
-#                       --wandb_api_key "e0fda284061622e0f7858d6c684281d48fa05ecf" \
-#                       -- use_peft True \
-#                       --attn_implementation "sdpa" \
-#                       --device_map "auto" \
-#                       --train_batch_size 16 \
-#                       --eval_batch_size 16 \
-#                       --save_eval_logging_steps 50
