@@ -7,6 +7,8 @@ from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.distributed import DistributedSampler
 from transformers import Seq2SeqTrainer, Seq2SeqTrainingArguments
 from transformers import DataCollatorWithPadding
+from accelerate import Accelerator
+
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -120,6 +122,17 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
+    accelerator = Accelerator(
+        mixed_precision="bf16",
+        deepspeed_plugin=None,
+        fsdp_plugin=None,
+        gradient_accumulation_steps=1,
+        log_with=None,
+        device_placement=True,
+        cpu=False,
+        dispatch_batches=False,
+        split_batches=True
+    )
     process = DataPrep(
         huggingface_token=args.huggingface_token,
         dataset_name=args.dataset_name,
@@ -180,6 +193,24 @@ if __name__ == "__main__":
         return {"spectrogram": specs}
 
     eval_dataset = dataset["test"].map(compute_spectrograms)
+
+    train_dl = DataLoader(
+        dataset['train'],
+        batch_size=16,
+        num_workers=8,
+        drop_last=True,
+        collate_fn=data_collator,
+        pin_memory=True
+    )
+
+    eval_dl = DataLoader(
+        eval_dataset,
+        batch_size=16,
+        num_workers=8,
+        drop_last=False,
+        collate_fn=data_collator,
+        pin_memory=True
+    )
 
     trainer = Trainer(
         huggingface_token=args.huggingface_token,
