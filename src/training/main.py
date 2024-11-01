@@ -160,23 +160,42 @@ if __name__ == "__main__":
             self.padding = padding
 
         def __call__(self, examples):
+            # Handle potential empty batches
+            if not examples:
+                return {}
+
             # Extract audio input features
             input_features = [example['input_features'] for example in examples]
             labels = [example['labels'] for example in examples]
 
-            # Pad input features using feature_extractor
+            # Ensure all features in the batch have the same length by padding
+            max_length = max(feature.shape[1] for feature in input_features)
+            padded_features = []
+
+            for feature in input_features:
+                if feature.shape[1] < max_length:
+                    padding_length = max_length - feature.shape[1]
+                    padded_feature = torch.nn.functional.pad(
+                        feature, (0, padding_length), mode='constant', value=0
+                    )
+                    padded_features.append(padded_feature)
+                else:
+                    padded_features.append(feature)
+
+            # Convert to tensor and pad as a batch
             batch = self.feature_extractor.pad(
-                {"input_features": input_features},
+                {"input_features": padded_features},
                 padding=self.padding,
                 return_tensors="pt"
             )
 
             # Pad labels using tokenizer
-            batch['labels'] = self.tokenizer.pad(
+            labels_batch = self.tokenizer.pad(
                 {"input_ids": labels},
                 padding=self.padding,
                 return_tensors="pt"
-            )['input_ids']
+            )
+            batch['labels'] = labels_batch['input_ids']
 
             return batch
 
@@ -194,29 +213,50 @@ if __name__ == "__main__":
 
     eval_dataset = dataset["test"].map(compute_spectrograms)
 
-    train_dl = DataLoader(
-        dataset['train'],
-        batch_size=16,
-        num_workers=8,
-        drop_last=True,
-        collate_fn=data_collator,
-        pin_memory=True
+
+    def create_dataloaders(dataset, data_collator, batch_size, num_workers):
+        train_dl = DataLoader(
+            dataset['train'],
+            batch_size=batch_size,
+            num_workers=num_workers,
+            drop_last=True,
+            collate_fn=data_collator,
+            pin_memory=True,
+            shuffle=False  # Important for IterableDataset
+        )
+
+        eval_dl = DataLoader(
+            dataset['test'],
+            batch_size=batch_size,
+            num_workers=num_workers,
+            drop_last=False,
+            collate_fn=data_collator,
+            pin_memory=True,
+            shuffle=False  # Important for IterableDataset
+        )
+
+        return train_dl, eval_dl
+
+    data_collator = DataCollatorForAudioSeq2Seq(
+        feature_extractor=feature_extractor,
+        tokenizer=tokenizer
     )
 
-    eval_dl = DataLoader(
-        eval_dataset,
-        batch_size=16,
-        num_workers=8,
-        drop_last=False,
-        collate_fn=data_collator,
-        pin_memory=True
+    train_dl, eval_dl = create_dataloaders(
+        dataset=dataset,
+        data_collator=data_collator,
+        batch_size=args.train_batch_size,
+        num_workers=8
     )
+
+    # Prepare the dataloaders for distributed training
+    model, train_dl, eval_dl = accelerator.prepare(model, train_dl, eval_dl)
 
     trainer = Trainer(
         huggingface_token=args.huggingface_token,
         model_id=args.model_id,
         train_dataset=dataset['train'],
-        evaluation_dataset=eval_dataset,
+        evaluation_dataset=dataset['test'],
         language = args.language_abbr,
         model=model,
         feature_processor=feature_processor,
