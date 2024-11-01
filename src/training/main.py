@@ -154,13 +154,13 @@ if __name__ == "__main__":
 
 
     class DataCollatorForAudioSeq2Seq:
-        def __init__(self, feature_extractor, tokenizer, padding=True):
+        def __init__(self, feature_extractor, tokenizer, padding=True, max_length=None):
             self.feature_extractor = feature_extractor
             self.tokenizer = tokenizer
             self.padding = padding
+            self.max_length = max_length
 
         def __call__(self, examples):
-            # Handle potential empty batches
             if not examples:
                 return {}
 
@@ -168,31 +168,33 @@ if __name__ == "__main__":
             input_features = [example['input_features'] for example in examples]
             labels = [example['labels'] for example in examples]
 
-            # Ensure all features in the batch have the same length by padding
-            max_length = max(feature.shape[1] for feature in input_features)
-            padded_features = []
+            # If max_length is not set, compute it from the batch
+            if self.max_length is None:
+                self.max_length = max(feature.shape[1] for feature in input_features)
 
+            # Pad all features to max_length
+            padded_features = []
             for feature in input_features:
-                if feature.shape[1] < max_length:
-                    padding_length = max_length - feature.shape[1]
+                if feature.shape[1] < self.max_length:
+                    padding_length = self.max_length - feature.shape[1]
                     padded_feature = torch.nn.functional.pad(
                         feature, (0, padding_length), mode='constant', value=0
                     )
-                    padded_features.append(padded_feature)
                 else:
-                    padded_features.append(feature)
+                    padded_feature = feature[:, :self.max_length]
+                padded_features.append(padded_feature)
 
             # Convert to tensor and pad as a batch
             batch = self.feature_extractor.pad(
                 {"input_features": padded_features},
-                padding=self.padding,
+                padding=True,
                 return_tensors="pt"
             )
 
             # Pad labels using tokenizer
             labels_batch = self.tokenizer.pad(
                 {"input_ids": labels},
-                padding=self.padding,
+                padding=True,
                 return_tensors="pt"
             )
             batch['labels'] = labels_batch['input_ids']
@@ -215,14 +217,29 @@ if __name__ == "__main__":
 
 
     def create_dataloaders(dataset, data_collator, batch_size, num_workers):
+        # Calculate max length from training set
+        max_length = 0
+        for batch in DataLoader(dataset['train'], batch_size=100):  # Use larger batch for scanning
+            features = [example['input_features'] for example in batch]
+            batch_max = max(feature.shape[1] for feature in features)
+            max_length = max(max_length, batch_max)
+
+        # Create new collator with fixed max_length
+        fixed_length_collator = DataCollatorForAudioSeq2Seq(
+            feature_extractor=data_collator.feature_extractor,
+            tokenizer=data_collator.tokenizer,
+            padding=True,
+            max_length=max_length
+        )
+
         train_dl = DataLoader(
             dataset['train'],
             batch_size=batch_size,
             num_workers=num_workers,
             drop_last=True,
-            collate_fn=data_collator,
+            collate_fn=fixed_length_collator,
             pin_memory=True,
-            shuffle=False  # Important for IterableDataset
+            shuffle=False
         )
 
         eval_dl = DataLoader(
@@ -230,9 +247,9 @@ if __name__ == "__main__":
             batch_size=batch_size,
             num_workers=num_workers,
             drop_last=False,
-            collate_fn=data_collator,
+            collate_fn=fixed_length_collator,
             pin_memory=True,
-            shuffle=False  # Important for IterableDataset
+            shuffle=False
         )
 
         return train_dl, eval_dl
