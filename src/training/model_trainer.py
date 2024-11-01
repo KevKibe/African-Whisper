@@ -128,7 +128,7 @@ class Trainer:
 
 
     def train(self,
-              # collator,
+        collator,
         output_dir: str = None,
         max_steps: int = 100,
         learning_rate: float = 1e-5,
@@ -187,9 +187,9 @@ class Trainer:
             ignore_data_skip (bool, optional): Whether to skip data loading issues when the dataset is being created. Defaults to True.
             **kwargs: Additional keyword arguments to be passed to the `Seq2SeqTrainingArguments` constructor https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Seq2SeqTrainingArguments.
         """
-        data_collator = DataCollatorSpeechSeq2SeqWithPadding(
-            processor=self.feature_processor
-        )
+        # data_collator = DataCollatorSpeechSeq2SeqWithPadding(
+        #     processor=self.feature_processor
+        # )
         output_dir = f"../{self.model_id}-finetuned"
         training_args = Seq2SeqTrainingArguments(
             output_dir=output_dir,
@@ -229,7 +229,7 @@ class Trainer:
             model=self.model,
             train_dataset=self.train_dataset,
             eval_dataset=self.evaluation_dataset,
-            # data_collator=collator,
+            data_collator=collator,
             compute_metrics=self.compute_metrics,
             tokenizer=self.feature_processor.feature_extractor,
             callbacks=[ShuffleCallback()],
@@ -240,10 +240,10 @@ class Trainer:
         #         print("Empty batch found!")
         #         break
             # print("Batch contains data")
-        tokenizer = self.model_prep.initialize_tokenizer()
-        processor = self.model_prep.initialize_processor()
-        tokenizer.save_pretrained(training_args.output_dir)
-        processor.save_pretrained(training_args.output_dir)
+        # tokenizer = self.model_prep.initialize_tokenizer()
+        # processor = self.model_prep.initialize_processor()
+        # tokenizer.save_pretrained(training_args.output_dir)
+        # processor.save_pretrained(training_args.output_dir)
         # progress_callback = WandbProgressResultsCallback(
         #     trainer, self.evaluation_dataset, tokenizer
         # )

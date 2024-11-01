@@ -6,6 +6,7 @@ from datasets.distributed import split_dataset_by_node
 from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.distributed import DistributedSampler
 from transformers import Seq2SeqTrainer, Seq2SeqTrainingArguments
+from transformers import DataCollatorForSeq2Seq
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -138,92 +139,14 @@ if __name__ == "__main__":
                                    train_num_samples = args.train_num_samples,
                                    test_num_samples = args.test_num_samples)
 
-    def compute_spectrograms(example):
-        waveform = example["audio"]["array"]
-        specs = feature_extractor(
-            waveform, sampling_rate=16000, padding="do_not_pad"
-        ).input_features[0]
-        return {"spectrogram": specs}
 
-
-    eval_dataset = dataset['test'].map(compute_spectrograms)
-    eval_ds = split_dataset_by_node(eval_dataset, rank=args.rank, world_size=args.world_size)
-    train_ds = split_dataset_by_node(dataset['train'], rank=args.rank, world_size=args.world_size)
-
-
-    class StreamingDataCollator:
-        def __init__(self, feature_processor, device):
-            self.feature_processor = feature_processor
-            self.device = device
-
-        def __call__(self, examples):
-            # Process audio inputs
-            input_features = [example["spectrogram"] for example in examples]
-            input_features = torch.stack(input_features).to(self.device)
-
-            # Process text labels
-            labels = [example["text"] for example in examples]
-            batch = self.feature_processor.tokenizer(
-                labels,
-                padding=True,
-                return_tensors="pt",
-            )
-
-            return {
-                "input_features": input_features,
-                "labels": batch["input_ids"].to(self.device),
-                "attention_mask": batch["attention_mask"].to(self.device)
-            }
-
-
-    class StreamingTrainer(Seq2SeqTrainer):
-        def __init__(self, model, args, train_dataloader, eval_dataloader, **kwargs):
-            super().__init__(model=model, args=args, **kwargs)
-            self._train_dataloader = train_dataloader
-            self._eval_dataloader = eval_dataloader
-
-        def get_train_dataloader(self):
-            return self._train_dataloader
-
-        def get_eval_dataloader(self, eval_dataset=None):
-            return self._eval_dataloader
-
-
-    data_collator = StreamingDataCollator(feature_processor, device=torch.device('cuda', args.rank))
-
-    train_sampler = None
-    if args.world_size > 1:
-        train_sampler = DistributedSampler(
-            train_ds,
-            num_replicas=args.world_size,
-            rank=args.rank,
-            shuffle=True
-        )
-
-    train_dl = DataLoader(
-        train_ds,
-        batch_size=16,
-        sampler=train_sampler,
-        collate_fn=data_collator,
-        num_workers=8,
-        drop_last=True,
-        pin_memory=True
-    )
-    eval_dl = DataLoader(
-        eval_ds,
-        batch_size=16,
-        collate_fn=data_collator,
-        num_workers=8,
-        pin_memory=True
-    )
-    print(train_dl)
-    print(eval_dl)
+    data_collator: DataCollatorForSeq2Seq = DataCollatorForSeq2Seq(tokenizer=tokenizer, model=model)
 
     trainer = Trainer(
         huggingface_token=args.huggingface_token,
         model_id=args.model_id,
-        train_dataset=train_dl,
-        evaluation_dataset=eval_dl,
+        train_dataset=dataset['train'],
+        evaluation_dataset=dataset['test'],
         language = args.language_abbr,
         model=model,
         feature_processor=feature_processor,
@@ -231,10 +154,11 @@ if __name__ == "__main__":
         tokenizer=tokenizer,
         wandb_api_key=args.wandb_api_key,
         use_peft=args.use_peft,
-        processing_task=args.processing_task
+        processing_task=args.processing_task,
     )
     trainer.train(
-        # collator=data_collator,
+        collator=data_collator,
+        report_to="None",
         max_steps=args.max_steps,
         per_device_train_batch_size=args.train_batch_size,
         per_device_eval_batch_size=args.eval_batch_size,
