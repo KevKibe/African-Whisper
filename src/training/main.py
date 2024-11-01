@@ -6,7 +6,7 @@ from datasets.distributed import split_dataset_by_node
 from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.distributed import DistributedSampler
 from transformers import Seq2SeqTrainer, Seq2SeqTrainingArguments
-from transformers import DataCollatorForSeq2Seq
+from transformers import DataCollatorWithPadding
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -140,7 +140,35 @@ if __name__ == "__main__":
                                    test_num_samples = args.test_num_samples)
 
 
-    data_collator: DataCollatorForSeq2Seq = DataCollatorForSeq2Seq(tokenizer=tokenizer, model=model)
+    class DataCollatorForAudioSeq2Seq:
+        def __init__(self, feature_extractor, tokenizer, padding=True):
+            self.feature_extractor = feature_extractor
+            self.tokenizer = tokenizer
+            self.padding = padding
+
+        def __call__(self, examples):
+            # Extract audio input features
+            input_features = [example['input_features'] for example in examples]
+            labels = [example['labels'] for example in examples]
+
+            # Pad input features using feature_extractor
+            batch = self.feature_extractor.pad(
+                {"input_features": input_features},
+                padding=self.padding,
+                return_tensors="pt"
+            )
+
+            # Pad labels using tokenizer
+            batch['labels'] = self.tokenizer.pad(
+                {"input_ids": labels},
+                padding=self.padding,
+                return_tensors="pt"
+            )['input_ids']
+
+            return batch
+
+
+    data_collator = DataCollatorForAudioSeq2Seq(feature_extractor=feature_extractor, tokenizer=tokenizer)
 
 
     def compute_spectrograms(self, example):
