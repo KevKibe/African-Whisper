@@ -205,7 +205,6 @@ if __name__ == "__main__":
             feature_extractor=data_collator.feature_extractor,
             tokenizer=data_collator.tokenizer,
             padding=True,  # Enable dynamic padding
-            max_length=None  # Allow each batch to pad to the longest sequence
         )
 
         # Train dataloader
