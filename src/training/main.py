@@ -225,7 +225,6 @@ if __name__ == "__main__":
             feature_extractor=data_collator.feature_extractor,
             tokenizer=data_collator.tokenizer,
             padding=True,
-            max_length=max_length
         )
 
         train_dl = DataLoader(
