@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 BASE_DEPS = [
     "transformers==4.42.3",
-    "datasets==2.19.2",
+    "datasets==3.1.0",
     "librosa==0.10.2.post1",
     "evaluate==0.4.1",
     "jiwer==3.0.4",
