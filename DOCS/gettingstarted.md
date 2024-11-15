@@ -137,13 +137,13 @@ audiofile_dir = "location-of-audio-file"                      # filetype should 
 # Optimize model for better results
 model_optimizer = ModelOptimization(model_name=model_name)
 model_optimizer.convert_model_to_optimized_format()
-model = model_optimizer.load_transcription_model() 
-# For fine-tuning v3 or v3-turbo models or a fine-tuned version of them, specify is_v3_architecture=True
-# Example:
-# model = model_optimizer.load_transcription_model(is_v3_architecture=True)
-# Optional language parameter, else model will automatically detect language.
-# Example:
-# model = model_optimizer.load_transcription_model(language='en')
+model = model_optimizer.load_transcription_model()  # For fine-tuning v3 or v3-turbo models or a fine-tuned version of them, specify is_v3_architecture=True
+                                                    # Example:
+                                                    # model = model_optimizer.load_transcription_model(is_v3_architecture=True)
+
+                                                    # Optional language parameter, else model will automatically detect language.
+                                                    # Example:
+                                                    # model = model_optimizer.load_transcription_model(language='en')
 
 # Initiate the transcription model
 inference = SpeechTranscriptionPipeline(
@@ -157,7 +157,7 @@ transcription = inference.transcribe_audio(model=model)
 print(transcription)
 
 # To get transcriptions with speaker labels
-alignment_result = inference.align_transcription(transcription) # Optional parameter alignment_model: if the default wav2vec alignment model is not available e.g 
+alignment_result = inference.align_transcription(transcription) # Optional parameter alignment_model: if the default wav2vec alignment model is not available e.g thinkKenya/wav2vec2-large-xls-r-300m-sw
 diarization_result = inference.diarize_audio(alignment_result)
 print(diarization_result)
 
