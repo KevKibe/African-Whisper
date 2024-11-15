@@ -86,7 +86,8 @@ class TestTrainerManager(unittest.TestCase):
             push_to_hub=False,
             use_cpu=False,
             optim="adamw_hf",
-            per_device_train_batch_size=4
+            per_device_train_batch_size=4,
+            fp16=False
         )
         # Check if output files exist after training
         assert os.path.exists(f"../{self.model_id}-finetuned/preprocessor_config.json")
@@ -104,7 +105,8 @@ class TestTrainerManager(unittest.TestCase):
             report_to=None,
             push_to_hub=False,
             use_cpu=True,
-            optim="adamw_hf"
+            optim="adamw_hf",
+            fp16=False
         )
         # Check if output files exist after training
         assert os.path.exists(f"../{self.model_id}-finetuned/preprocessor_config.json")
