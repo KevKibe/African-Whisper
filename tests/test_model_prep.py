@@ -1,5 +1,5 @@
 import unittest
-from training.whisper_model_prep import WhisperModelPrep
+from src.training.whisper_model_prep import WhisperModelPrep
 from transformers import WhisperFeatureExtractor, WhisperTokenizer, WhisperProcessor, WhisperForConditionalGeneration
 
 class TestDatasetManager(unittest.TestCase):

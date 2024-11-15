@@ -1,6 +1,6 @@
 import unittest
-from training.model_trainer import Trainer
-from training.data_prep import DataPrep
+from src.training.model_trainer import Trainer
+from src.training.data_prep import DataPrep
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -17,7 +17,7 @@ class TestTrainerManager(unittest.TestCase):
             language_abbr=["af"],
             model_id=self.model_id,
             processing_task="transcribe",
-            use_peft=False,
+            use_peft=True,
         )
         tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
 
@@ -47,7 +47,7 @@ class TestTrainerManager(unittest.TestCase):
             tokenizer=tokenizer,
             wandb_api_key=os.environ.get("WANDB_TOKEN"),
             use_peft=False,
-            processing_task="translate"
+            processing_task="transcribe"
         )
         self.trainer_batch = Trainer(
             language =["af"],
@@ -60,7 +60,7 @@ class TestTrainerManager(unittest.TestCase):
             tokenizer=tokenizer,
             wandb_api_key="e0fda284061622e0f7858d6c684281d48fa05ecf",
             use_peft=False,
-            processing_task="translate"
+            processing_task="transcribe"
         )
 
         return super().setUp()
@@ -84,7 +84,7 @@ class TestTrainerManager(unittest.TestCase):
             output_dir=f"../{self.model_id}-finetuned",
             report_to=None,
             push_to_hub=False,
-            use_cpu=True,
+            use_cpu=False,
             optim="adamw_hf",
             per_device_train_batch_size=4
         )

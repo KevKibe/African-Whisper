@@ -44,4 +44,4 @@ jobs:
         env:
             HF_TOKEN: ${{ secrets.HF_TOKEN }}
             WANDB_TOKEN: ${{ secrets.WANDB_TOKEN }}
-        run: pytest -vv src/tests/test_model_prep.py
+        run: pytest -vv tests/test_model_prep.py

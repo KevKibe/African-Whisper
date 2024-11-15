@@ -1,4 +1,4 @@
-name: Ruff formatting 
+name: Run Linting with Ruff on Multiple OS Environments
 
 on: [pull_request]
 
