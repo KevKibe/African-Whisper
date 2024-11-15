@@ -43,4 +43,4 @@ jobs:
       - name: Run tests
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: pytest -vv tests/test_model_trainer.py
+        run: pytest -vv tests/test_model_trainer_cpu.py
