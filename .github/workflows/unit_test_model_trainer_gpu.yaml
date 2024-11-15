@@ -20,7 +20,8 @@ jobs:
           key: ${{ secrets.KAGGLE_KEY }}
           title: "Test PEFT Finetuning"
           custom_script: |
-            pytest -vv tests/test_model_trainer.py
+            huggingface-cli login --token ${{ secrets.HF_TOKEN }}
+            pytest -vv tests/test_model_trainer_gpu.py
           enable_internet: true
           enable_gpu: true
           enable_tpu: false
