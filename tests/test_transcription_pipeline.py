@@ -1,7 +1,7 @@
-import unittest
-from deployment.speech_inference import SpeechTranscriptionPipeline, ModelOptimization
-import torch
 import os
+import torch
+import unittest
+from src.deployment.speech_inference import SpeechTranscriptionPipeline, ModelOptimization
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -24,7 +24,7 @@ class TestSpeechTranscriptionPipelineManager(unittest.TestCase):
         
         self.model_initialization = ModelOptimization(model_name=self.model_name)
         
-        audio_file_path = "src/tests/samples_jfk.wav"
+        audio_file_path = "./tests/samples_jfk.wav"
         task = "transcribe"
         
         self.speech_transcription_pipeline = SpeechTranscriptionPipeline(

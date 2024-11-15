@@ -1,0 +1,26 @@
+name: Test training.model_trainer Module with GPU.
+
+on: [pull_request]
+
+jobs:
+  run_kaggle_script_action:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Execute Tests with GPU Support
+        uses: KevKibe/kaggle-script-action@v1.0.3
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        with:
+          username: ${{ secrets.KAGGLE_USERNAME }}
+          key: ${{ secrets.KAGGLE_KEY }}
+          title: "Test PEFT Finetuning"
+          custom_script: |
+            huggingface-cli login --token ${{ secrets.HF_TOKEN }} && pytest -vv tests/test_model_trainer_gpu.py
+          enable_internet: true
+          enable_gpu: true
+          enable_tpu: false
+          sleep_time: 120

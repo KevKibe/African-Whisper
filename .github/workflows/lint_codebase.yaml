@@ -1,14 +1,11 @@
-name: Ruff formatting 
+name: Run Linting with Ruff
 
 on: [pull_request]
 
 jobs:
-  ruff:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+  run_kaggle_script_action:
+    runs-on: ubuntu-latest
 
-    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

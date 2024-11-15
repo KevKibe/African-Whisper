@@ -1,4 +1,4 @@
-name: Test training.model_prep Module.
+name: Test deployment.speech_inference Module.
 
 on: [pull_request]
 
@@ -17,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x' 
+          python-version: '3.10'
                 
       - name: Install dependencies
         run: |
@@ -42,6 +42,5 @@ jobs:
 
       - name: Run tests
         env:
-            HF_TOKEN: ${{ secrets.HF_TOKEN }}
-            WANDB_TOKEN: ${{ secrets.WANDB_TOKEN }}
-        run: pytest -vv src/tests/test_model_prep.py
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: pytest -vv tests/test_model_optimization.py tests/test_transcription_pipeline.py

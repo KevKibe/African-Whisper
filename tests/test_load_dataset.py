@@ -1,6 +1,6 @@
-import unittest
-from training.load_data import Dataset
 import os
+import unittest
+from src.training.load_data import Dataset
 from dotenv import load_dotenv
 load_dotenv()
 

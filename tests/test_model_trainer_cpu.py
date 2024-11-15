@@ -1,7 +1,7 @@
-import unittest
-from training.model_trainer import Trainer
-from training.data_prep import DataPrep
 import os
+import unittest
+from src.training.model_trainer import Trainer
+from src.training.data_prep import DataPrep
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -45,9 +45,9 @@ class TestTrainerManager(unittest.TestCase):
             feature_processor=feature_processor,
             feature_extractor=feature_extractor,
             tokenizer=tokenizer,
-            wandb_api_key=os.environ.get("WANDB_TOKEN"),
+            wandb_api_key="",
             use_peft=False,
-            processing_task="translate"
+            processing_task="transcribe"
         )
         self.trainer_batch = Trainer(
             language =["af"],
@@ -60,7 +60,7 @@ class TestTrainerManager(unittest.TestCase):
             tokenizer=tokenizer,
             wandb_api_key="e0fda284061622e0f7858d6c684281d48fa05ecf",
             use_peft=False,
-            processing_task="translate"
+            processing_task="transcribe"
         )
 
         return super().setUp()
