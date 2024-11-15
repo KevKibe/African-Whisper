@@ -14,7 +14,6 @@ jobs:
         uses: KevKibe/kaggle-script-action@v1.0.3
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-          WANDB_TOKEN: ${{ secrets.WANDB_TOKEN }}
         with:
           username: ${{ secrets.KAGGLE_USERNAME }}
           key: ${{ secrets.KAGGLE_KEY }}

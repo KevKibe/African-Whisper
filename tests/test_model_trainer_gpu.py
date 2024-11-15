@@ -45,7 +45,7 @@ class TestTrainerManager(unittest.TestCase):
             feature_processor=feature_processor,
             feature_extractor=feature_extractor,
             tokenizer=tokenizer,
-            wandb_api_key=os.environ.get("WANDB_TOKEN"),
+            wandb_api_key="",
             use_peft=False,
             processing_task="transcribe"
         )

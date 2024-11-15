@@ -45,7 +45,7 @@ class TestTrainerManager(unittest.TestCase):
             feature_processor=feature_processor,
             feature_extractor=feature_extractor,
             tokenizer=tokenizer,
-            wandb_api_key=os.environ.get("WANDB_TOKEN"),
+            wandb_api_key="",
             use_peft=False,
             processing_task="transcribe"
         )
@@ -82,7 +82,7 @@ class TestTrainerManager(unittest.TestCase):
             eval_steps=10,
             logging_steps=10,
             output_dir=f"../{self.model_id}-finetuned",
-            report_to=None,
+            report_to=" ",
             push_to_hub=False,
             use_cpu=True,
             optim="adamw_hf",
@@ -101,7 +101,7 @@ class TestTrainerManager(unittest.TestCase):
             eval_steps=10,
             logging_steps=10,
             output_dir=f"../{self.model_id}-finetuned",
-            report_to=None,
+            report_to=" ",
             push_to_hub=False,
             use_cpu=True,
             optim="adamw_hf"
