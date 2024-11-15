@@ -1,7 +1,7 @@
+import os
 import unittest
 from src.training.model_trainer import Trainer
 from src.training.data_prep import DataPrep
-import os
 from dotenv import load_dotenv
 load_dotenv()
 

@@ -1,8 +1,8 @@
+import os
 import unittest
 from src.training.audio_data_processor import AudioDataProcessor
 from src.training.whisper_model_prep import WhisperModelPrep
 from src.training.load_data import Dataset
-import os
 from dotenv import load_dotenv
 load_dotenv()
 

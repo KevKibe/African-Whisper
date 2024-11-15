@@ -1,7 +1,7 @@
+import os
+import torch
 import unittest
 from src.deployment.speech_inference import SpeechTranscriptionPipeline, ModelOptimization
-import torch
-import os
 from dotenv import load_dotenv
 load_dotenv()
 

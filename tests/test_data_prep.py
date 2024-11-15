@@ -1,10 +1,10 @@
+import os
 import unittest
 # from datasets import Dataset
 from src.training.data_prep import DataPrep
 from src.training.load_data import Dataset
 from src.training.whisper_model_prep import WhisperModelPrep
 from datasets import IterableDataset
-import os
 from dotenv import load_dotenv
 load_dotenv()
 
