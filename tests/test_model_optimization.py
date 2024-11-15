@@ -2,7 +2,7 @@ import unittest
 from src.deployment.speech_inference import ModelOptimization
 import torch
 import os
-from deployment.faster_whisper.asr import FasterWhisperPipeline
+from src.deployment.faster_whisper.asr import FasterWhisperPipeline
 
 class TestModelOptimizationManager(unittest.TestCase):
     """Test cases for the ModelOptimization class.
