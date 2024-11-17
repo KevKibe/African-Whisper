@@ -12,3 +12,4 @@ torchvision
 ctranslate2==4.1.0
 pandas==2.2.2
 python-multipart==0.0.9
+numpy==1.26.4
