@@ -14,6 +14,9 @@ up:
 	cd src/deployment && pip install -r requirements.txt && cd .. && python -m deployment.app
 
 deploy:
+	docker-compose -f src/deployment/docker-compose.yaml up
+
+build:
 	docker-compose -f src/deployment/docker-compose.yaml up --build
 
 down:

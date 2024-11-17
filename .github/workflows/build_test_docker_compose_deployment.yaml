@@ -28,8 +28,23 @@ jobs:
 
       - name: Run make deploy command
         run: |
-          make deploy &
+          docker-compose -f src/deployment/docker-compose.yaml up -d
+          docker-compose -f src/deployment/docker-compose.yaml ps
+          sleep 60
 
-      - name: Shut down Docker Compose services
+      - name: Test endpoint
         run: |
-          make down
+          SERVICE_URL="http://localhost:8000"
+          EXPECTED_RESPONSE='{"message":"Hello, World!"}'
+          RESPONSE=$(curl -sSf $SERVICE_URL)
+          if [ "$RESPONSE" == "$EXPECTED_RESPONSE" ]; then
+              echo "Test Passed: Service returned expected response."
+              echo "Expected: $EXPECTED_RESPONSE"
+              echo "Actual: $RESPONSE"
+              exit 0
+          else
+              echo "Test Failed: Service response did not match expected response."
+              echo "Expected: $EXPECTED_RESPONSE"
+              echo "Actual: $RESPONSE"
+              exit 1
+          fi
