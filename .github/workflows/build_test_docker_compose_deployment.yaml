@@ -18,10 +18,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
-      - name: Create .env File
+      - name: Create .env File in Deployment Directory
         run: |
-          cat <<EOF > .env
-          OUTPUT_DIR=/path/to/output
+          mkdir -p deployment
+          cat <<EOF > deployment/.env
+          OUTPUT_DIR=src/
           HUGGINGFACE_TOKEN=${{ secrets.HF_TOKEN }}
           MODEL_NAME="openai/whisper-tiny"
           EOF

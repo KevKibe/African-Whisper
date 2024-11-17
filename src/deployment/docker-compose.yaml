@@ -11,7 +11,6 @@ services:
       - 8000:8000
   prometheus:
     image: prom/prometheus:latest
-    restart: always
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     command:
