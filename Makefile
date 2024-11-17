@@ -15,3 +15,6 @@ up:
 
 deploy:
 	docker-compose -f src/deployment/docker-compose.yaml up --build
+
+down:
+	docker-compose -f src/deployment/docker-compose.yaml down
