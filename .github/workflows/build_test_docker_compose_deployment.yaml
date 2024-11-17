@@ -20,12 +20,12 @@ jobs:
 
       - name: Create .env File in Deployment Directory
         run: |
-          mkdir -p deployment
-          cat <<EOF > deployment/.env
+          cat <<EOF > src/deployment/.env
           OUTPUT_DIR=src/
           HUGGINGFACE_TOKEN=${{ secrets.HF_TOKEN }}
           MODEL_NAME="openai/whisper-tiny"
           EOF
+      
 
       - name: Run make deploy command
         run: |
