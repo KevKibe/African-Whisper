@@ -3,7 +3,7 @@ name: Test training.model_trainer Module on CPU
 on: [pull_request]
 
 jobs:
-  test:
+  unit-test:
     strategy:
       matrix:
         os: [ubuntu-latest, macOS-latest]

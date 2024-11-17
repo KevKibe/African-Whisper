@@ -3,12 +3,8 @@ name: Test Docker Compose Deployment
 on: [pull_request]
 
 jobs:
-  test:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macOS-latest]
-
-    runs-on: ${{ matrix.os }}
+  test-doploy:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository

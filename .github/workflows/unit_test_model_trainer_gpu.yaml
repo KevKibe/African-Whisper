@@ -3,7 +3,7 @@ name: Test training.model_trainer Module with GPU.
 on: [pull_request]
 
 jobs:
-  run_kaggle_script_action:
+  unit-test:
     runs-on: ubuntu-latest
 
     steps:
