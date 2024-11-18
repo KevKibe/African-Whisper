@@ -1,0 +1,50 @@
+name: Test Docker Compose Deployment
+
+on: [pull_request]
+
+jobs:
+  test-doploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Setup Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      - name: Create .env File in Deployment Directory
+        run: |
+          cat <<EOF > src/deployment/.env
+          OUTPUT_DIR=src/
+          HUGGINGFACE_TOKEN=${{ secrets.HF_TOKEN }}
+          MODEL_NAME="openai/whisper-tiny"
+          EOF
+
+      - name: Run make deploy command
+        run: |
+          docker-compose -f src/deployment/docker-compose.yaml up -d
+          docker-compose -f src/deployment/docker-compose.yaml ps
+          sleep 60
+
+      - name: Test endpoint
+        run: |
+          SERVICE_URL="http://localhost:8000"
+          EXPECTED_RESPONSE='{"message":"Hello, World!"}'
+          RESPONSE=$(curl -sSf $SERVICE_URL)
+          if [ "$RESPONSE" == "$EXPECTED_RESPONSE" ]; then
+              echo "Test Passed: Service returned expected response."
+              echo "Expected: $EXPECTED_RESPONSE"
+              echo "Actual: $RESPONSE"
+              exit 0
+          else
+              echo "Test Failed: Service response did not match expected response."
+              echo "Expected: $EXPECTED_RESPONSE"
+              echo "Actual: $RESPONSE"
+              exit 1
+          fi

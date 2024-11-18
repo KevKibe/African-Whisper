@@ -3,7 +3,7 @@ name: Test Data Loading and Processing Modules
 on: [pull_request]
 
 jobs:
-  test:
+  unit-test:
     strategy:
       matrix:
         os: [ubuntu-latest, macOS-latest]

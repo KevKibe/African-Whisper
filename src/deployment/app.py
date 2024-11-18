@@ -167,9 +167,13 @@ async def get_subtitles(file: UploadFile = File(...),
         raise HTTPException(status_code=500, detail=f"Error transcribing audio: {e}")
 
 @app.get("/metrics")
-def metrics():
+async def metrics():
     return Response(
         content = prometheus_client.generate_latest())
+
+@app.get("/")
+async def hello_world():
+    return {"message": "Hello, World!"}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

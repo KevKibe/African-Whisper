@@ -32,7 +32,7 @@ class ModelOptimization:
         """
         Converts the specified model to CTranslate2 format if not already in that format.
         """
-        output_dir = self.model_name
+        output_dir = f"./{self.model_name}"
         if not os.path.exists(output_dir):
             print(f"Converting {self.model_name} model to CTranslate2 format")
             conv = TransformersConverter(model_name_or_path=self.model_name)

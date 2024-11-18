@@ -3,7 +3,7 @@ name: Run Linting with Ruff
 on: [pull_request]
 
 jobs:
-  run_kaggle_script_action:
+  run-lint-check:
     runs-on: ubuntu-latest
 
     steps:

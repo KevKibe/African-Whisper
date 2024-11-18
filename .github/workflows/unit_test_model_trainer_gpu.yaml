@@ -3,7 +3,7 @@ name: Test training.model_trainer Module with GPU.
 on: [pull_request]
 
 jobs:
-  run_kaggle_script_action:
+  unit-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Execute Tests with GPU Support
-        uses: KevKibe/kaggle-script-action@v1.0.3
+        uses: KevKibe/kaggle-script-action@v1.0.4
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         with:

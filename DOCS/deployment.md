@@ -41,10 +41,23 @@ make up
    - `MODEL_NAME`: Name of the fine-tuned model to use in your Hugging Face Hub repository.
    - `HUGGINGFACE_TOKEN`: Your Hugging Face authentication token for write access.
 
-2. Top deploy a docker container running the application and monitoring endpoints.
+2. To deploy a docker container running the application and monitoring endpoints.
    ```bash
    make deploy
    ```
+   - To rebuild the image, before deploying:
+   ```bash
+   make build
+   ```
+   - To shut down the deployment:
+   ```bash
+   make down
+   ```
+   - To add custom flags:
+   ```bash
+   docker-compose -f src/deployment/docker-compose.yaml
+   ```
+   
 - `http://localhost:8000` - Application. `/docs` for Swagger UI.
 - `http://localhost:3000` - Grafana dashboard.
 - `http://localhost:9090` - Prometheus dashboard
