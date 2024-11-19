@@ -110,7 +110,7 @@ class SpeechTranscriptionPipeline:
         self.device = 0 if torch.cuda.is_available() else "cpu"
         self.batch_size = batch_size
         self.chunk_size = chunk_size
-        self.huggingface_token = huggingface_token,
+        self.huggingface_token = huggingface_token
         self.language = language
         self._login_to_huggingface()
 
@@ -120,6 +120,7 @@ class SpeechTranscriptionPipeline:
         """
         if not self.huggingface_token:
             raise ValueError("Hugging Face token is required for authentication.")
+
         login(token=self.huggingface_token)
         print("Logged in to Hugging Face Hub successfully.")
 
