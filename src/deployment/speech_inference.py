@@ -1,5 +1,6 @@
 import torch
 import os
+from huggingface_hub import login
 from .faster_whisper.load_asr_model import load_asr_model
 from .faster_whisper.audio import load_audio
 from .faster_whisper.diarize import DiarizationPipeline, assign_word_speakers
@@ -9,6 +10,7 @@ from dotenv import load_dotenv
 from .faster_whisper.utils import get_writer
 from typing import Dict
 load_dotenv()
+
 
 class ModelOptimization:
     """
@@ -108,9 +110,19 @@ class SpeechTranscriptionPipeline:
         self.device = 0 if torch.cuda.is_available() else "cpu"
         self.batch_size = batch_size
         self.chunk_size = chunk_size
-        self.huggingface_token = huggingface_token,
+        self.huggingface_token = huggingface_token
         self.language = language
+        self._login_to_huggingface()
 
+    def _login_to_huggingface(self) -> None:
+        """
+        Logs into the Hugging Face Hub using the provided token.
+        """
+        if not self.huggingface_token:
+            raise ValueError("Hugging Face token is required for authentication.")
+
+        login(token=self.huggingface_token)
+        print("Logged in to Hugging Face Hub successfully.")
 
     def transcribe_audio(self, model) -> Dict:
         """

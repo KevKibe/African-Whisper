@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Execute Tests with GPU Support
-        uses: KevKibe/kaggle-script-action@v1.0.4
+        uses: KevKibe/kaggle-script-action@v1.0.5
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         with:
