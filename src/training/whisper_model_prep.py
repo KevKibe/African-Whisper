@@ -98,7 +98,7 @@ class WhisperModelPrep:
             WhisperForConditionalGeneration: The configured Whisper model ready for conditional generation tasks.
 
         """
-        whisper_lang_code = fleurs_to_whisper.get(self.language)
+        whisper_lang_code = convert_language_code(self.language)
         if self.use_peft:
             quantization_config = BitsAndBytesConfig(load_in_8bit=True)
             model = WhisperForConditionalGeneration.from_pretrained(
@@ -211,6 +211,10 @@ fleurs_to_whisper = {
     "vi_vn": "vi",  # Vietnamese
     "zh_cn": "zh",  # Chinese
 }
+def convert_language_code(language_code):
+    if language_code in fleurs_to_whisper.values():
+        return language_code
+    return fleurs_to_whisper.get(language_code, None)
 
 #################################
 
