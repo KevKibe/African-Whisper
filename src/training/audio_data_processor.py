@@ -44,10 +44,7 @@ class AudioDataProcessor:
         sample["audio"]["sampling_rate"] = 16000
 
         audio_features = self.feature_extractor(resampled_audio, sampling_rate=16000).input_features[0]
-        if self.dataset == "facebook/multilingual_librispeech":
-            tokenized_sentence = self.tokenizer(sample["transcript"]).input_ids
-        else:
-            tokenized_sentence = self.tokenizer(sample["sentence"]).input_ids
+        tokenized_sentence = self.tokenizer(sample.get("transcript", sample.get("sentence", ""))).input_ids
 
         sample["input_features"] = audio_features
         sample["labels"] = tokenized_sentence
