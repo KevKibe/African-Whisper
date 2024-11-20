@@ -8,7 +8,7 @@ from transformers import (
     WhisperProcessor,
     WhisperTokenizerFast,
     WhisperTokenizer,
-
+    BitsAndBytesConfig
 )
 import torch
 warnings.filterwarnings("ignore")
@@ -98,16 +98,16 @@ class WhisperModelPrep:
             WhisperForConditionalGeneration: The configured Whisper model ready for conditional generation tasks.
 
         """
-        processor = self.initialize_processor()
         if self.use_peft:
+            quantization_config = BitsAndBytesConfig(load_in_8bit=True)
             model = WhisperForConditionalGeneration.from_pretrained(
                 self.model_id,
-                load_in_8bit=True,
+                quantization_config=quantization_config,
                 device_map="auto",
             )
-            model.config.forced_decoder_ids = processor.get_decoder_prompt_ids(task=self.processing_task)
-            # model.config.suppress_tokens = []
-            model.config.use_cache = True
+            model.config.forced_decoder_ids = None
+            model.config.suppress_tokens = []
+            model.config.use_cache = False
             model.generation_config.language = self.language if self.processing_task == "transcribe" else "en"
             model.generation_config.task = self.processing_task
             model = prepare_model_for_kbit_training(model)
@@ -126,9 +126,9 @@ class WhisperModelPrep:
                 self.model_id,
                 low_cpu_mem_usage = True
             )
-            model.config.forced_decoder_ids = processor.get_decoder_prompt_ids(task=self.processing_task)
-            # model.config.suppress_tokens = []
-            model.config.use_cache = True
+            model.config.forced_decoder_ids = None
+            model.config.suppress_tokens = []
+            model.config.use_cache = False
             model.generation_config.language = self.language if self.processing_task == "transcribe" else "en"
             model.generation_config.task = self.processing_task
             model = model.to("cuda") if torch.cuda.is_available() else model
