@@ -23,7 +23,7 @@
 
 ## Features
   
-- 🔧 **Fine-Tuning**: Fine-tune the [Whisper](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013) model on any audio dataset from Huggingface, e.g., [Mozilla's](https://huggingface.co/mozilla-foundation) Common Voice datasets.
+- 🔧 **Fine-Tuning**: Fine-tune the [Whisper](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013) model on any audio dataset from Huggingface, e.g., [Mozilla's](https://huggingface.co/mozilla-foundation) Common Voice, [Fleurs](https://huggingface.co/datasets/google/fleurs), [LibriSpeech](https://huggingface.co/datasets/facebook/multilingual_librispeech), or your own custom private/public dataset etc
 
 - 📊 **Metrics Monitoring**: View training run metrics on [Wandb](https://wandb.ai/).
 

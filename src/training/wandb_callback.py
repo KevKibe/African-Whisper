@@ -91,7 +91,7 @@ class RecordAnalyzer:
             audio_data = item['input_features']
             audio_duration = len(audio_data) / 16000
             record["audio_with_spec"] = wandb.Html(self.record_to_html(item))
-            record["sentence"] = item["sentence"]
+            record["sentence"] = item.get("sentence", item.get("transcript", item.get("transcription")))
             record["length"] = audio_duration
             records.append(record)
         records = pd.DataFrame(records)

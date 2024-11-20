@@ -8,7 +8,7 @@ from transformers import (
     WhisperProcessor,
     WhisperTokenizerFast,
     WhisperTokenizer,
-
+    BitsAndBytesConfig
 )
 import torch
 warnings.filterwarnings("ignore")
@@ -98,17 +98,18 @@ class WhisperModelPrep:
             WhisperForConditionalGeneration: The configured Whisper model ready for conditional generation tasks.
 
         """
-        processor = self.initialize_processor()
+        whisper_lang_code = convert_language_code(self.language)
         if self.use_peft:
+            quantization_config = BitsAndBytesConfig(load_in_8bit=True)
             model = WhisperForConditionalGeneration.from_pretrained(
                 self.model_id,
-                load_in_8bit=True,
+                quantization_config=quantization_config,
                 device_map="auto",
             )
-            model.config.forced_decoder_ids = processor.get_decoder_prompt_ids(task=self.processing_task)
-            # model.config.suppress_tokens = []
-            model.config.use_cache = True
-            model.generation_config.language = self.language if self.processing_task == "transcribe" else "en"
+            model.config.forced_decoder_ids = None
+            model.config.suppress_tokens = []
+            model.config.use_cache = False
+            model.generation_config.language = whisper_lang_code if self.processing_task == "transcribe" else "en"
             model.generation_config.task = self.processing_task
             model = prepare_model_for_kbit_training(model)
             config = LoraConfig(
@@ -126,14 +127,94 @@ class WhisperModelPrep:
                 self.model_id,
                 low_cpu_mem_usage = True
             )
-            model.config.forced_decoder_ids = processor.get_decoder_prompt_ids(task=self.processing_task)
-            # model.config.suppress_tokens = []
-            model.config.use_cache = True
-            model.generation_config.language = self.language if self.processing_task == "transcribe" else "en"
+            model.config.forced_decoder_ids = None
+            model.config.suppress_tokens = []
+            model.config.use_cache = False
+            model.generation_config.language = whisper_lang_code if self.processing_task == "transcribe" else "en"
             model.generation_config.task = self.processing_task
             model = model.to("cuda") if torch.cuda.is_available() else model
         return model
 
+# Define the mapping between FLEURS language codes and Whisper language tokens
+fleurs_to_whisper = {
+    "af_za": "af",  # Afrikaans
+    "am_et": "am",  # Amharic
+    "ar_eg": "ar",  # Arabic
+    "as_in": "as",  # Assamese
+    "az_az": "az",  # Azerbaijani
+    "be_by": "be",  # Belarusian
+    "bg_bg": "bg",  # Bulgarian
+    "bn_in": "bn",  # Bengali
+    "bs_ba": "bs",  # Bosnian
+    "ca_es": "ca",  # Catalan
+    "cs_cz": "cs",  # Czech
+    "cy_gb": "cy",  # Welsh
+    "da_dk": "da",  # Danish
+    "de_de": "de",  # German
+    "el_gr": "el",  # Greek
+    "en_us": "en",  # English
+    "es_es": "es",  # Spanish
+    "et_ee": "et",  # Estonian
+    "fa_ir": "fa",  # Persian
+    "fi_fi": "fi",  # Finnish
+    "fr_fr": "fr",  # French
+    "ga_ie": "ga",  # Irish
+    "gl_es": "gl",  # Galician
+    "gu_in": "gu",  # Gujarati
+    "he_il": "he",  # Hebrew
+    "hi_in": "hi",  # Hindi
+    "hr_hr": "hr",  # Croatian
+    "hu_hu": "hu",  # Hungarian
+    "hy_am": "hy",  # Armenian
+    "id_id": "id",  # Indonesian
+    "is_is": "is",  # Icelandic
+    "it_it": "it",  # Italian
+    "ja_jp": "ja",  # Japanese
+    "jv_id": "jv",  # Javanese
+    "ka_ge": "ka",  # Georgian
+    "kk_kz": "kk",  # Kazakh
+    "km_kh": "km",  # Khmer
+    "kn_in": "kn",  # Kannada
+    "ko_kr": "ko",  # Korean
+    "lo_la": "lo",  # Lao
+    "lt_lt": "lt",  # Lithuanian
+    "lv_lv": "lv",  # Latvian
+    "mk_mk": "mk",  # Macedonian
+    "ml_in": "ml",  # Malayalam
+    "mn_mn": "mn",  # Mongolian
+    "mr_in": "mr",  # Marathi
+    "ms_my": "ms",  # Malay
+    "my_mm": "my",  # Burmese
+    "ne_np": "ne",  # Nepali
+    "nl_nl": "nl",  # Dutch
+    "no_no": "no",  # Norwegian
+    "or_in": "or",  # Odia
+    "pa_in": "pa",  # Punjabi
+    "pl_pl": "pl",  # Polish
+    "pt_br": "pt",  # Portuguese
+    "ro_ro": "ro",  # Romanian
+    "ru_ru": "ru",  # Russian
+    "si_lk": "si",  # Sinhala
+    "sk_sk": "sk",  # Slovak
+    "sl_si": "sl",  # Slovenian
+    "sq_al": "sq",  # Albanian
+    "sr_rs": "sr",  # Serbian
+    "sv_se": "sv",  # Swedish
+    "sw_ke": "sw",  # Swahili
+    "ta_in": "ta",  # Tamil
+    "te_in": "te",  # Telugu
+    "th_th": "th",  # Thai
+    "tl_ph": "tl",  # Filipino
+    "tr_tr": "tr",  # Turkish
+    "uk_ua": "uk",  # Ukrainian
+    "ur_pk": "ur",  # Urdu
+    "vi_vn": "vi",  # Vietnamese
+    "zh_cn": "zh",  # Chinese
+}
+def convert_language_code(language_code):
+    if language_code in fleurs_to_whisper.values():
+        return language_code
+    return fleurs_to_whisper.get(language_code, None)
 
 #################################
 
