@@ -11,6 +11,7 @@ from transformers import (
     BitsAndBytesConfig
 )
 import torch
+import fleurs_map
 warnings.filterwarnings("ignore")
 
 class WhisperModelPrep:
@@ -98,6 +99,7 @@ class WhisperModelPrep:
             WhisperForConditionalGeneration: The configured Whisper model ready for conditional generation tasks.
 
         """
+        whisper_lang_code = fleurs_map.fleurs_to_whisper.get(self.language)
         if self.use_peft:
             quantization_config = BitsAndBytesConfig(load_in_8bit=True)
             model = WhisperForConditionalGeneration.from_pretrained(
@@ -108,7 +110,7 @@ class WhisperModelPrep:
             model.config.forced_decoder_ids = None
             model.config.suppress_tokens = []
             model.config.use_cache = False
-            model.generation_config.language = self.language if self.processing_task == "transcribe" else "en"
+            model.generation_config.language = whisper_lang_code if self.processing_task == "transcribe" else "en"
             model.generation_config.task = self.processing_task
             model = prepare_model_for_kbit_training(model)
             config = LoraConfig(
@@ -129,7 +131,7 @@ class WhisperModelPrep:
             model.config.forced_decoder_ids = None
             model.config.suppress_tokens = []
             model.config.use_cache = False
-            model.generation_config.language = self.language if self.processing_task == "transcribe" else "en"
+            model.generation_config.language = whisper_lang_code if self.processing_task == "transcribe" else "en"
             model.generation_config.task = self.processing_task
             model = model.to("cuda") if torch.cuda.is_available() else model
         return model
