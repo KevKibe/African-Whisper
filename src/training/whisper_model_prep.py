@@ -11,7 +11,7 @@ from transformers import (
     BitsAndBytesConfig
 )
 import torch
-import fleurs_map
+from .fleurs_map import fleurs_to_whisper
 warnings.filterwarnings("ignore")
 
 class WhisperModelPrep:
@@ -99,7 +99,7 @@ class WhisperModelPrep:
             WhisperForConditionalGeneration: The configured Whisper model ready for conditional generation tasks.
 
         """
-        whisper_lang_code = fleurs_map.fleurs_to_whisper.get(self.language)
+        whisper_lang_code = fleurs_to_whisper.get(self.language)
         if self.use_peft:
             quantization_config = BitsAndBytesConfig(load_in_8bit=True)
             model = WhisperForConditionalGeneration.from_pretrained(
