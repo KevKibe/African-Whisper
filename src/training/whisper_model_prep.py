@@ -11,7 +11,7 @@ from transformers import (
     BitsAndBytesConfig
 )
 import torch
-from .fleurs_map import fleurs_to_whisper
+from training.fleurs_map import fleurs_to_whisper
 warnings.filterwarnings("ignore")
 
 class WhisperModelPrep:
