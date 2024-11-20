@@ -34,7 +34,7 @@
 ``` py
 # Set the parameters (refer to the 'Usage on VM' section for more details)
 huggingface_token = " "  # make sure token has write permissions
-dataset_name = "mozilla-foundation/common_voice_16_1" 
+dataset_name = "mozilla-foundation/common_voice_16_1" # supports "google/fleurs" and "facebook/multilingual_librispeech" too
 language_abbr= [ ]                                    # Example `["ti", "yi"]`. see abbreviations here https://huggingface.co/datasets/mozilla-foundation/common_voice_16_1. 
 model_id= "model-id"                                  # Example openai/whisper-small, openai/whisper-medium
 processing_task= "translate"                          # translate or transcribe
