@@ -107,7 +107,7 @@ class SpeechTranscriptionPipeline:
                  chunk_size: int = 30) -> None:
         self.audio = load_audio(audio_file_path)
         self.task = task
-        self.device = 0 if torch.cuda.is_available() else "cpu"
+        self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
         self.batch_size = batch_size
         self.chunk_size = chunk_size
         self.huggingface_token = huggingface_token
