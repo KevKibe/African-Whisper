@@ -150,8 +150,11 @@ model = model_optimizer.load_transcription_model()  # For fine-tuning v3 or v3-t
 inference = SpeechTranscriptionPipeline(
         audio_file_path=audiofile_dir,
         task=task,
-        huggingface_token=huggingface_token
-    )
+        huggingface_token=huggingface_token,
+        chunk_size=10 )                     # Duration of each audio chunk; shorter chunks improve accuracy but increase processing time.
+                                            # Optional parameter language: The language of the audio for transcription/translation.
+                                            # For fine-tuning v3 or v3-turbo models or a fine-tuned version of them specify is_v3_architecture=True
+    
 
 # To get transcriptions
 transcription = inference.transcribe_audio(model=model)
@@ -160,7 +163,6 @@ print(transcription)
 # To get transcriptions with speaker labels
 alignment_result = inference.align_transcription(transcription) # Optional parameter alignment_model: if the default wav2vec alignment model is not available e.g thinkKenya/wav2vec2-large-xls-r-300m-sw
 diarization_result = inference.diarize_audio(alignment_result)
-print(diarization_result)
 
 #To generate subtitles(.srt format), will be saved in root directory
 inference.generate_subtitles(transcription, alignment_result, diarization_result)

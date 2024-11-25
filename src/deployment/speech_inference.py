@@ -91,12 +91,15 @@ class SpeechTranscriptionPipeline:
     Class for handling speech transcription, alignment, and diarization tasks.
 
     Attributes:
-        audio (AudioFile): Loaded audio file for processing.
-        task (str): Task type (e.g. "transcription").
-        device (str or int): Device identifier, either 'cpu' or GPU device index.
-        batch_size (int): Number of audio segments to process per batch.
-        chunk_size (int): Duration of each audio chunk for processing.
-        huggingface_token (str): Read token for accessing Huggingface API.
+        audio (AudioFile): The loaded audio file to be processed.
+        task (str): The type of task to perform (e.g., "transcription").
+        device (str): The device used for computation, either 'cpu' or the GPU (e.g., 'cuda:0').
+        batch_size (int): The number of audio segments to process in a single batch.
+        chunk_size (int): The duration (in seconds) of each audio chunk for processing.
+                         Shorter chunks improve accuracy but may increase processing time.
+        huggingface_token (str): Token used to authenticate with the Hugging Face API.
+        language (str, optional): The language of the audio for transcription, if specified.
+        is_v3_architecture (bool): Specifies if the model uses the v3 architecture.
     """
     def __init__(self,
                  audio_file_path: str,
@@ -104,15 +107,29 @@ class SpeechTranscriptionPipeline:
                  huggingface_token: str,
                  language: str = None,
                  batch_size: int = 32,
-                 chunk_size: int = 30) -> None:
+                 chunk_size: int = 30,
+                 is_v3_architecture = False) -> None:
         self.audio = load_audio(audio_file_path)
         self.task = task
-        self.device = 0 if torch.cuda.is_available() else "cpu"
+        self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
         self.batch_size = batch_size
         self.chunk_size = chunk_size
         self.huggingface_token = huggingface_token
+        self.is_v3_architecture = is_v3_architecture
         self.language = language
         self._login_to_huggingface()
+        self.fix_v3_architecture_tasks()
+
+
+    def fix_v3_architecture_tasks(self):
+        """
+        Switches between 'transcribe' and 'translate' tasks if is_v3_architecture is True.
+        """
+        if self.is_v3_architecture:
+            if self.task == "transcribe":
+                self.task = "translate"
+            elif self.task == "translate":
+                self.task = "transcribe"
 
     def _login_to_huggingface(self) -> None:
         """
