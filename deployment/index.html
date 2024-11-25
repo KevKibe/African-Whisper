@@ -602,11 +602,24 @@
 <p><code>HUGGINGFACE_TOKEN</code>: Your Hugging Face authentication token for write access.</p>
 </li>
 <li>
-<p>Top deploy a docker container running the application and monitoring endpoints.
+<p>To deploy a docker container running the application and monitoring endpoints.
    <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>make<span class="w"> </span>deploy
 </code></pre></div></p>
 </li>
-<li><code>http://localhost:8000</code> - Application. <code>/docs</code> for Swagger UI.</li>
+<li>To rebuild the image, before deploying:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>make<span class="w"> </span>build
+</code></pre></div></li>
+<li>To shut down the deployment:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>make<span class="w"> </span>down
+</code></pre></div></li>
+<li>
+<p>To add custom flags:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker-compose<span class="w"> </span>-f<span class="w"> </span>src/deployment/docker-compose.yaml
+</code></pre></div></p>
+</li>
+<li>
+<p><code>http://localhost:8000</code> - Application. <code>/docs</code> for Swagger UI.</p>
+</li>
 <li><code>http://localhost:3000</code> - Grafana dashboard.</li>
 <li><code>http://localhost:9090</code> - Prometheus dashboard</li>
 </ol>
