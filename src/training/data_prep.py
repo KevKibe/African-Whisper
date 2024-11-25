@@ -20,7 +20,7 @@ from accelerate.logging import get_logger
 from .load_data import Dataset
 from .whisper_model_prep import WhisperModelPrep
 from .audio_data_processor import AudioDataProcessor
-from typing import Tuple, List
+from typing import Tuple
 import warnings
 warnings.filterwarnings("ignore")
 
