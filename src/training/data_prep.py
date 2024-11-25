@@ -39,7 +39,7 @@ class DataPrep:
         self,
         huggingface_token: str,
         dataset_name: str,
-        language_abbr: List[str],
+        language_abbr: str,
         model_id: str,
         processing_task: str,
         use_peft: bool,

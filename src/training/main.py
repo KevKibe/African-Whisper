@@ -41,9 +41,8 @@ def parse_args():
     )
     parser.add_argument(
         "--language_abbr",
-        nargs='+',
         required=True,
-        help="Abbreviation(s) of the language(s) for the dataset.",
+        help="Abbreviation of the language(s) for the dataset.",
     )
     parser.add_argument(
         "--model_id",

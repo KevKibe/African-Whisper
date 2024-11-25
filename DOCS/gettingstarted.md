@@ -36,7 +36,7 @@
 huggingface_token = " "  # make sure token has write permissions
 dataset_name = "mozilla-foundation/common_voice_16_1" # Also supports "google/fleurs" and "facebook/multilingual_librispeech".
                                                       # For custom datasets, ensure the text key is one of the following: "sentence", "transcript", or "transcription".
-language_abbr= [ ]                                    # Example `["af"]`. see specific dataset for language code.
+language_abbr= " "                                    # Example `"af"`. see specific dataset for language code.
 model_id= "model-id"                                  # Example openai/whisper-small, openai/whisper-medium
 processing_task= "translate"                          # translate or transcribe
 wandb_api_key = " "     

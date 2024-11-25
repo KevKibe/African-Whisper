@@ -19,7 +19,7 @@ class TestAudioDataProcessor(unittest.TestCase):
         self.data_loader = Dataset(
             huggingface_token = os.environ.get("HF_TOKEN"),
             dataset_name="mozilla-foundation/common_voice_16_1",
-            language_abbr=["af"]
+            language_abbr="af"
         )
         self.dataset_streaming = self.data_loader.load_dataset(streaming=True, train_num_samples=10, test_num_samples=10)
         self.dataset_batch = self.data_loader.load_dataset(streaming=False, train_num_samples=10, test_num_samples=10)
@@ -38,7 +38,7 @@ class TestAudioDataProcessor(unittest.TestCase):
 
         # Initialize model preparation
         self.model_prep = WhisperModelPrep(
-            language = ["af"],
+            language = "af",
             model_id="openai/whisper-tiny",
             processing_task="transcribe",
             use_peft=False

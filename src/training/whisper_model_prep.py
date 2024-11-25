@@ -29,7 +29,7 @@ class WhisperModelPrep:
     def __init__(
         self,
         model_id: str,
-        language: list,
+        language: str,
         processing_task: str,
         use_peft: bool,
     ):
@@ -45,7 +45,7 @@ class WhisperModelPrep:
         """
 
         self.model_id = model_id
-        self.language = language[0]
+        self.language = language
         self.processing_task = processing_task
         self.use_peft = use_peft
 
