@@ -16,13 +16,13 @@ class TestDatasetManager(unittest.TestCase):
         self.data_prep = DataPrep(
             huggingface_token= os.environ.get("HF_TOKEN"),
             dataset_name="mozilla-foundation/common_voice_16_1",
-            language_abbr=["af"],
+            language_abbr="af",
             model_id="openai/whisper-small",
             processing_task="transcribe",
             use_peft=False,
         )
         self.model_prep=WhisperModelPrep(
-            language= ["af"],
+            language= "af",
             model_id="openai/whisper-small",
             processing_task="transcribe",
             use_peft=False),

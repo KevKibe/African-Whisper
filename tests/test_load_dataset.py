@@ -12,7 +12,7 @@ class TestDatasetManager(unittest.TestCase):
         self.dataset_manager = Dataset(
             huggingface_token=os.environ.get("HF_TOKEN"),
             dataset_name="mozilla-foundation/common_voice_16_1",
-            language_abbr=["af"]
+            language_abbr="af"
         )
 
     def test_load_dataset(self):

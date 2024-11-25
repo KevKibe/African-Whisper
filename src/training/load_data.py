@@ -1,6 +1,5 @@
-from datasets import load_dataset, IterableDatasetDict, concatenate_datasets
+from datasets import load_dataset, IterableDatasetDict
 import warnings
-from typing import List
 from datasets import DatasetDict
 from huggingface_hub import HfFolder
 warnings.filterwarnings("ignore")
@@ -15,7 +14,7 @@ class Dataset:
         language_abbr (str): Abbreviation of the language for the dataset.
     """
 
-    def __init__(self, huggingface_token: str, dataset_name: str, language_abbr: List[str]):
+    def __init__(self, huggingface_token: str, dataset_name: str, language_abbr: str):
         """
         Initializes the DatasetManager with necessary details for dataset operations.
 
@@ -46,39 +45,44 @@ class Dataset:
             dict: A dictionary containing concatenated train and test splits for each language.
         """
         data = {}
-        for lang in self.language_abbr:
-            train_dataset = load_dataset(self.dataset_name,
-                                         lang,
-                                         split='train',
-                                         streaming=streaming,
-                                         token=self.huggingface_token,
-                                         trust_remote_code=True)
-            test_dataset = load_dataset(self.dataset_name,
-                                        lang,
-                                        split='test',
-                                        streaming=streaming,
-                                        token=self.huggingface_token,
-                                        trust_remote_code=True)
-            if streaming:
-                train_split = train_dataset.take(train_num_samples) if train_num_samples else train_dataset
-                test_split = test_dataset.take(test_num_samples) if test_num_samples else test_dataset
 
-            else:
+        train_dataset = load_dataset(
+            self.dataset_name,
+            self.language_abbr,
+            split="train",
+            streaming=streaming,
+            token=self.huggingface_token,
+            trust_remote_code=True,
+        )
+        test_dataset = load_dataset(
+            self.dataset_name,
+            self.language_abbr,
+            split="test",
+            streaming=streaming,
+            token=self.huggingface_token,
+            trust_remote_code=True,
+        )
 
-                train_split = train_dataset if not train_num_samples or len(train_dataset) < train_num_samples else \
-                    train_dataset.select(range(train_num_samples))
+        if streaming:
+            train_split = train_dataset.take(train_num_samples) if train_num_samples else train_dataset
+        else:
+            train_split = (
+                train_dataset
+                if not train_num_samples or len(train_dataset) < train_num_samples
+                else train_dataset.select(range(train_num_samples))
+            )
 
-                test_split = test_dataset if not test_num_samples or len(test_dataset) < test_num_samples else \
-                    test_dataset.select(range(test_num_samples))
+        if streaming:
+            test_split = test_dataset.take(test_num_samples) if test_num_samples else test_dataset
+        else:
+            test_split = (
+                test_dataset
+                if not test_num_samples or len(test_dataset) < test_num_samples
+                else test_dataset.select(range(test_num_samples))
+            )
 
-            if "train" in data:
-                data["train"] = concatenate_datasets([data["train"], train_split])
-            else:
-                data["train"] = train_split
-            if "test" in data:
-                data["test"] = concatenate_datasets([data["test"], test_split])
-            else:
-                data["test"] = test_split
+        data["train"] = train_split
+        data["test"] = test_split
 
         return data
 
