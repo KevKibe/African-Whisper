@@ -40,17 +40,10 @@ jobs:
         run: |
           choco install ffmpeg
 
+      - name: Change Directory
+        run: |
+          cd src
+
       - name: Run command test
-        run: python -m training.main \
-                --huggingface_token ${{ secrets.HF_TOKEN }} \
-                --dataset_name "mozilla-foundation/common_voice_16_1" \
-                --train_num_samples 10 \
-                --test_num_samples 10 \
-                --language_abbr "af" \
-                --model_id "openai/whisper-tiny" \
-                --processing_task "transcribe" \
-                --wandb_api_key "" \
-                --max_steps 15 \
-                --train_batch_size 8 \
-                --eval_batch_size 8 \
-                --save_eval_logging_steps 10 \
+        run: |
+          python3 -m training.main --huggingface_token ${{ secrets.HF_TOKEN }}  --dataset_name mozilla-foundation/common_voice_16_1 --train_num_samples 10 --test_num_samples 10 --language_abbr sw --model_id openai/whisper-tiny --processing_task transcribe --report_to None --wandb_api_key "" --max_steps 15 --train_batch_size 8 --eval_batch_size 8 --save_eval_logging_steps 10
