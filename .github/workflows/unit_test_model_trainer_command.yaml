@@ -1,0 +1,56 @@
+name: Test training.model_trainer Module command on CPU
+
+on: [pull_request]
+
+jobs:
+  unit-test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt --no-cache-dir
+          pip install pytest einops lion-pytorch
+
+      - name: Install FFmpeg
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Install FFmpeg (macOS)
+        if: startsWith(matrix.os, 'macos')
+        run: |
+          brew install ffmpeg
+
+      - name: Install FFmpeg (Windows)
+        if: startsWith(matrix.os, 'windows')
+        run: |
+          choco install ffmpeg
+
+      - name: Run command test
+        run: python -m training.main \
+                --huggingface_token ${{ secrets.HF_TOKEN }} \
+                --dataset_name "mozilla-foundation/common_voice_16_1" \
+                --train_num_samples 10 \
+                --test_num_samples 10 \
+                --language_abbr "af" \
+                --model_id "openai/whisper-tiny" \
+                --processing_task "transcribe" \
+                --wandb_api_key "" \
+                --max_steps 15 \
+                --train_batch_size 8 \
+                --eval_batch_size 8 \
+                --save_eval_logging_steps 10 \
