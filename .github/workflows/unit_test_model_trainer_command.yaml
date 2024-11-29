@@ -41,5 +41,7 @@ jobs:
           choco install ffmpeg
 
       - name: Run command test
+        env:
+          PYTORCH_MPS_HIGH_WATERMARK_RATIO: 0.0
         run: |
           cd src && python3 -m training.main --huggingface_token ${{ secrets.HF_TOKEN }}  --dataset_name mozilla-foundation/common_voice_16_1 --train_num_samples 10 --test_num_samples 10 --language_abbr ti --model_id openai/whisper-tiny --processing_task transcribe --report_to wandb --wandb_api_key ${{ secrets.WANDB_TOKEN }} --max_steps 15 --train_batch_size 4 --eval_batch_size 4 --save_eval_logging_steps 10
