@@ -57,9 +57,16 @@ def parse_args():
         help="The processing task to be performed.",
     )
     parser.add_argument(
+        "--report_to",
+        type=str,
+        default=None,
+        help="The list of integrations to report the results and logs to.",
+    )
+    parser.add_argument(
         "--wandb_api_key",
         type=str,
-        help="The wandb.ai api key for monitoring training runs, signup and generate an api key.",
+        default="",
+        help="The wandb.ai API key for monitoring training runs, signup and generate an API key.",
     )
     parser.add_argument(
         "--use_peft",
@@ -83,7 +90,7 @@ def parse_args():
     )
     parser.add_argument(
         "--save_eval_logging_steps",
-        type=int, 
+        type=int,
         help="The number of training steps before saving the model, evaluating the model and logging the training info. Defaults to 25",
     )
 
@@ -92,6 +99,7 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
+
     process = DataPrep(
         huggingface_token=args.huggingface_token,
         dataset_name=args.dataset_name,
@@ -102,23 +110,24 @@ if __name__ == "__main__":
     )
     tokenizer, feature_extractor, feature_processor, model = process.prepare_model()
 
-    dataset = process.load_dataset(feature_extractor, 
-                                   tokenizer, 
-                                   feature_processor,
-                                   streaming = args.streaming,
-                                   train_num_samples = args.train_num_samples,
-                                   test_num_samples = args.test_num_samples)
+    dataset = process.load_dataset(
+        feature_extractor,
+        tokenizer,
+        feature_processor,
+        streaming=args.streaming,
+        train_num_samples=args.train_num_samples,
+        test_num_samples=args.test_num_samples
+    )
     trainer = Trainer(
-
         huggingface_token=args.huggingface_token,
         model_id=args.model_id,
         dataset=dataset,
-        language = args.language_abbr,
+        language=args.language_abbr,
         model=model,
         feature_processor=feature_processor,
         feature_extractor=feature_extractor,
         tokenizer=tokenizer,
-        wandb_api_key=args.wandb_api_key,
+        wandb_api_key=args.wandb_api_key if args.report_to else "",
         use_peft=args.use_peft,
         processing_task=args.processing_task
     )
@@ -128,5 +137,6 @@ if __name__ == "__main__":
         per_device_eval_batch_size=args.eval_batch_size,
         save_steps=args.save_eval_logging_steps,
         eval_steps=args.save_eval_logging_steps,
-        logging_steps=args.save_eval_logging_steps
+        logging_steps=args.save_eval_logging_steps,
+        report_to=args.report_to
     )
