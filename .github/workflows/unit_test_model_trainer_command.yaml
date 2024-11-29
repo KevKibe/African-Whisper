@@ -12,36 +12,21 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.10'
-
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt --no-cache-dir
-          pip install pytest einops lion-pytorch
-
-      - name: Install FFmpeg
-        if: startsWith(matrix.os, 'ubuntu')
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg
-
-      - name: Install FFmpeg (macOS)
-        if: startsWith(matrix.os, 'macos')
-        run: |
-          brew install ffmpeg
-
-      - name: Install FFmpeg (Windows)
-        if: startsWith(matrix.os, 'windows')
-        run: |
-          choco install ffmpeg
-
-      - name: Run command test
+      - name: Execute Trainer Command
+        uses: KevKibe/kaggle-script-action@v1.0.5
         env:
-          PYTORCH_MPS_HIGH_WATERMARK_RATIO: 0.0
-        run: |
-          cd src && python3 -m training.main --huggingface_token ${{ secrets.HF_TOKEN }}  --dataset_name mozilla-foundation/common_voice_16_1 --train_num_samples 10 --test_num_samples 10 --language_abbr ti --model_id openai/whisper-tiny --processing_task transcribe --report_to wandb --wandb_api_key ${{ secrets.WANDB_TOKEN }} --max_steps 15 --train_batch_size 4 --eval_batch_size 4 --save_eval_logging_steps 10
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        with:
+          username: ${{ secrets.KAGGLE_USERNAME }}
+          key: ${{ secrets.KAGGLE_KEY }}
+          title: "Test Trainer Command"
+          working_subdir: "src"
+          custom_script: |
+            python3 -m training.main --huggingface_token ${{ secrets.HF_TOKEN }}  --dataset_name mozilla-foundation/common_voice_16_1 --train_num_samples 10 --test_num_samples 10 --language_abbr af --model_id openai/whisper-tiny --processing_task transcribe --report_to wandb --wandb_api_key ${{ secrets.WANDB_TOKEN }} --max_steps 15 --train_batch_size 4 --eval_batch_size 4 --save_eval_logging_steps 10
+          enable_internet: true
+          enable_gpu: false
+          enable_tpu: false
+          sleep_time: 120
+
