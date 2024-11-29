@@ -100,9 +100,6 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
 
-    if args.report_to == "None":
-        args.report_to = None
-
     process = DataPrep(
         huggingface_token=args.huggingface_token,
         dataset_name=args.dataset_name,
