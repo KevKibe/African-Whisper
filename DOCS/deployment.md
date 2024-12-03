@@ -8,13 +8,11 @@ git clone https://github.com/KevKibe/African-Whisper.git
 ```
 
 ### Set up Environment Variables
+
+- Set environment variables using `export` by running this in the terminal, with the appropriate variables
 ```bash
-cd src/deployment
-```
-- Create a `.env` file using `nano .env` command or using `vim` and add these keys and save the file.
-```python
-MODEL_NAME = "your-finetuned-model"
-HUGGINGFACE_TOKEN = "huggingface-token"
+export HUGGINGFACE_TOKEN="your_huggingface_token"
+export MODEL_NAME="your_model_name"
 ```
 
 ### Run Application
@@ -31,15 +29,13 @@ make up
 
 ### Set up Environment Variables
 
-1. Navigate to `src/deployment` and set up environment variables by creating a `.env` file with the following content:
- 
-    ```python
-    MODEL_NAME = "your-model-name"
-    HUGGINGFACE_TOKEN = "your-token"
-    ```
+1. Set environment variables using `export` by running this in the terminal, with the appropriate variables:
 
-   - `MODEL_NAME`: Name of the fine-tuned model to use in your Hugging Face Hub repository.
-   - `HUGGINGFACE_TOKEN`: Your Hugging Face authentication token for write access.
+   ```bash
+   export HUGGINGFACE_TOKEN="your_huggingface_token"
+   export MODEL_NAME="your_model_name"
+   ```
+
 
 2. To deploy a docker container running the application and monitoring endpoints.
    ```bash
