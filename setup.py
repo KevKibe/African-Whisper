@@ -4,14 +4,14 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 BASE_DEPS = [
-    "transformers==4.42.3",
+    "transformers==4.47.0",
     "datasets==2.19.2",
     "librosa==0.10.2.post1",
     "evaluate==0.4.1",
     "jiwer==3.0.4",
-    "bitsandbytes==0.42.0",
+    "bitsandbytes==0.45.0",
     "accelerate==0.31.0",
-    "peft==0.11.1",
+    "peft==0.14.0",
     "numpy==1.26.4",
     "wandb==0.17.4",
     "holoviews==1.18.3",
@@ -35,7 +35,7 @@ BASE_DEPS = [
 
 DEPLOYMENT_DEPS = [
     "torch",
-    "transformers==4.42.3",
+    "transformers==4.47.0",
     "pydantic==2.7.3",
     "prometheus-client==0.20.0",
     "fastapi==0.111.0",
