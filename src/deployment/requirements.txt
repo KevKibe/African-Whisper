@@ -1,5 +1,5 @@
 torch
-transformers==4.39.1
+transformers==4.47.0
 pydantic==2.6.4
 prometheus-client==0.20.0
 fastapi==0.110.1

@@ -1,12 +1,12 @@
 pip==24.0
-transformers==4.39.2
+transformers==4.47.0
 datasets==2.19.2
 librosa==0.10.2.post1
 evaluate==0.4.1
 jiwer==3.0.4
-bitsandbytes==0.42.0
+bitsandbytes
 accelerate==0.31.0
-peft==0.11.1
+peft==0.14.0
 numpy==1.26.4
 wandb==0.17.4
 holoviews==1.18.3
