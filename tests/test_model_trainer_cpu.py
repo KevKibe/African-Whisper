@@ -51,7 +51,7 @@ class TestTrainerManager(unittest.TestCase):
         )
         self.trainer_batch = Trainer(
             language =["af"],
-            huggingface_token="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",
+            huggingface_token=os.environ.get("HF_TOKEN"),
             model_id=self.model_id,
             dataset=self.dataset_batch,
             model=model,

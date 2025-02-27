@@ -1,4 +1,4 @@
-import evaluate
+from evaluate import load
 import warnings
 from typing import List, Dict
 import numpy as np
@@ -13,7 +13,7 @@ class MetricComputer:
 
     """
 
-    def __init__(self, metric_name: str, tokenizer):
+    def __init__(self, tokenizer):
         """
         Initializes the MetricComputer with a specified metric and tokenizer.
 
@@ -21,7 +21,7 @@ class MetricComputer:
             metric_name (str): The name of the metric to load (e.g., "wer" for word error rate).
             tokenizer: The tokenizer to use for decoding prediction and label IDs.
         """
-        self.metric = evaluate.load(metric_name)
+        self.metric = load("wer")
         self.tokenizer = tokenizer
 
     def compute_metrics(self, pred) -> dict:
@@ -124,7 +124,7 @@ def compute_metrics(
     # filtering step to only evaluate the samples that correspond to non-zero normalized references:
     norm_pred_str = [norm_pred_str[i] for i in range(len(norm_pred_str)) if len(norm_label_str[i]) > 0]
     norm_label_str = [norm_label_str[i] for i in range(len(norm_label_str)) if len(norm_label_str[i]) > 0]
-    metric = evaluate.load("wer")
+    metric = load("wer")
     wer = 100 * metric.compute(predictions=norm_pred_str, references=norm_label_str)
 
     return {"wer": wer}, pred_str, label_str, norm_pred_str, norm_label_str, file_ids
