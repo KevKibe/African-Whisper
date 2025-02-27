@@ -1,4 +1,4 @@
-import evaluate
+from evaluate import load
 import warnings
 from typing import List, Dict
 import numpy as np
@@ -13,7 +13,7 @@ class MetricComputer:
 
     """
 
-    def __init__(self, metric_name: str, tokenizer):
+    def __init__(self, tokenizer):
         """
         Initializes the MetricComputer with a specified metric and tokenizer.
 
@@ -21,7 +21,7 @@ class MetricComputer:
             metric_name (str): The name of the metric to load (e.g., "wer" for word error rate).
             tokenizer: The tokenizer to use for decoding prediction and label IDs.
         """
-        self.metric = evaluate.load(metric_name)
+        self.metric = load("wer")
         self.tokenizer = tokenizer
 
     def compute_metrics(self, pred) -> dict:
