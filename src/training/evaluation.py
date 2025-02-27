@@ -124,7 +124,7 @@ def compute_metrics(
     # filtering step to only evaluate the samples that correspond to non-zero normalized references:
     norm_pred_str = [norm_pred_str[i] for i in range(len(norm_pred_str)) if len(norm_label_str[i]) > 0]
     norm_label_str = [norm_label_str[i] for i in range(len(norm_label_str)) if len(norm_label_str[i]) > 0]
-    metric = evaluate.load("wer")
+    metric = load("wer")
     wer = 100 * metric.compute(predictions=norm_pred_str, references=norm_label_str)
 
     return {"wer": wer}, pred_str, label_str, norm_pred_str, norm_label_str, file_ids
