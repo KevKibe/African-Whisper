@@ -26,7 +26,7 @@ BASE_DEPS = [
     "pyannote-audio==3.2.0",
     "nltk==3.8.1",
     "torchvision",
-    "ctranslate2==4.4.0",
+    "ctranslate2==4.5.0",
     "pandas==2.2.2",
     "huggingface_hub",
     "soundfile",
@@ -45,7 +45,7 @@ DEPLOYMENT_DEPS = [
     "pyannote-audio==3.2.0",
     "nltk==3.8.1",
     "torchvision",
-    "ctranslate2==4.4.0",
+    "ctranslate2==4.5.0",
     "pandas==2.2.2",
 ]
 ALL_DEPS = BASE_DEPS + DEPLOYMENT_DEPS
